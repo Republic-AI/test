@@ -11,11 +11,6 @@ type Tag = {
 const MOCK_TAGS: Tag[] = [
   { id: 'ranch', label: 'RANCH LOVE STORY' },
   { id: 'idol', label: 'URBAN IDOL LIFE' },
-  { id: 'fantasy', label: 'FANTASY ADVENTURE' },
-  { id: 'office', label: 'OFFICE ROMANCE' },
-  { id: 'college', label: 'CAMPUS CRUSH' },
-  { id: 'mystery', label: 'MYSTERY MANSION' },
-  { id: 'royalty', label: 'ROYAL AFFAIRS' },
 ];
 
 interface HeaderProps {
