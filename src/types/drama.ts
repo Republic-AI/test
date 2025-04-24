@@ -26,3 +26,36 @@ export interface Drama {
 export interface TabContent {
   drama: Drama;
 }
+
+// Scene page related types
+export interface CharacterHistory {
+  characterId: string;
+  avatar: string;
+  preview: string;
+  jumpToSceneId: string;
+}
+
+export interface VoteOption {
+  type: 'single' | 'multiple';
+  options: string[];
+}
+
+export interface AIPost {
+  author: string;
+  avatar: string;
+  content: string;
+  image?: string;
+  vote?: VoteOption;
+  timestamp: string;
+}
+
+export interface VoteHistory {
+  question: string;
+  options: string[];
+  userChoice: string;
+}
+
+export interface ScenePageProps {
+  sceneId: string;
+  userId?: string;
+}

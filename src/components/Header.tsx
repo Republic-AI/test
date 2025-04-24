@@ -1,6 +1,7 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 type Tag = {
   id: string;
@@ -11,6 +12,7 @@ type Tag = {
 const MOCK_TAGS: Tag[] = [
   { id: 'ranch', label: 'RANCH LOVE STORY' },
   { id: 'idol', label: 'URBAN IDOL LIFE' },
+  { id: 'fantasy', label: 'FANTASY ADVENTURE' },
 ];
 
 interface HeaderProps {
@@ -18,19 +20,38 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ onTagSelect }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [selectedTag, setSelectedTag] = useState<string>(MOCK_TAGS[0].id);
   const [tags] = useState<Tag[]>(MOCK_TAGS);
+
+  // Set the selected tag based on URL params when component mounts
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const tagId = urlParams.get('tagId');
+    
+    if (tagId) {
+      setSelectedTag(tagId);
+    }
+  }, [location.search]);
 
   const handleTagClick = (tagId: string) => {
     setSelectedTag(tagId);
     onTagSelect(tagId);
   };
 
+  const handleLogoClick = () => {
+    navigate('/');
+  };
+
   return (
     <header className="w-full bg-white dark:bg-gray-900 shadow-sm z-10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-6">
-          <div className="flex justify-center items-center mb-6">
+          <div 
+            className="flex justify-center items-center mb-6 cursor-pointer" 
+            onClick={handleLogoClick}
+          >
             <h1 className="text-3xl md:text-4xl font-serif font-bold bg-gradient-to-r from-drama-pink via-drama-lavender to-drama-blue bg-clip-text text-transparent">
               DraMai
             </h1>

@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import Sidebar from '@/components/Sidebar';
 import DramaCover from '@/components/DramaCover';
@@ -9,7 +10,11 @@ import { MOCK_DRAMAS } from '@/mock/dramas';
 import { toast } from '@/components/ui/use-toast';
 
 const Index = () => {
-  const [selectedTagId, setSelectedTagId] = useState<string>('ranch');
+  const [searchParams] = useSearchParams();
+  const tagIdParam = searchParams.get('tagId');
+  const navigate = useNavigate();
+  
+  const [selectedTagId, setSelectedTagId] = useState<string>(tagIdParam || 'ranch');
   const [currentContent, setCurrentContent] = useState<TabContent | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -43,15 +48,11 @@ const Index = () => {
 
   const handleTagSelect = (tagId: string) => {
     setSelectedTagId(tagId);
+    navigate(`/?tagId=${tagId}`);
   };
 
   const handleJumpTo = (sceneId: string) => {
-    // In a real app, this would navigate to the Cocos instance
-    console.log(`Jumping to scene: ${sceneId}`);
-    toast({
-      title: "Feature Coming Soon",
-      description: `Requested navigation to: ${sceneId}`,
-    });
+    navigate(`/scene?sceneId=${sceneId}`);
   };
 
   return (
