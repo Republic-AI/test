@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -8,6 +7,8 @@ export default {
 		"./components/**/*.{ts,tsx}",
 		"./app/**/*.{ts,tsx}",
 		"./src/**/*.{ts,tsx}",
+		"./index.html",
+		"./src/**/*.{js,ts,jsx,tsx}",
 	],
 	prefix: "",
 	theme: {
@@ -17,6 +18,21 @@ export default {
 			screens: {
 				'2xl': '1400px'
 			}
+		},
+		fontSize: {
+			'xs': ['1.125rem', { lineHeight: '1.5rem' }],      // 12px * 1.5 = 18px
+			'sm': ['1.3125rem', { lineHeight: '1.75rem' }],    // 14px * 1.5 = 21px
+			'base': ['1.5rem', { lineHeight: '2rem' }],        // 16px * 1.5 = 24px
+			'lg': ['1.6875rem', { lineHeight: '2.25rem' }],    // 18px * 1.5 = 27px
+			'xl': ['1.875rem', { lineHeight: '2.5rem' }],      // 20px * 1.5 = 30px
+			'2xl': ['2.25rem', { lineHeight: '2.75rem' }],     // 24px * 1.5 = 36px
+			'3xl': ['2.8125rem', { lineHeight: '3rem' }],      // 30px * 1.5 = 45px
+			'4xl': ['3.375rem', { lineHeight: '3.5rem' }],     // 36px * 1.5 = 54px
+			'5xl': ['4.5rem', { lineHeight: '1' }],            // 48px * 1.5 = 72px
+			'6xl': ['5.625rem', { lineHeight: '1' }],          // 60px * 1.5 = 90px
+			'7xl': ['7.5rem', { lineHeight: '1' }],            // 72px * 1.5 = 108px
+			'8xl': ['9rem', { lineHeight: '1' }],              // 96px * 1.5 = 144px
+			'9xl': ['12rem', { lineHeight: '1' }],             // 128px * 1.5 = 192px
 		},
 		extend: {
 			colors: {
@@ -107,8 +123,8 @@ export default {
 				'card-hover': 'card-hover 0.3s ease-out forwards'
 			},
 			fontFamily: {
-				sans: ['Inter', 'system-ui', 'sans-serif'],
-				serif: ['Playfair Display', 'Georgia', 'serif']
+				'sans': ['BitCell', 'system-ui'],
+				'serif': ['BitCell', 'Georgia'],
 			}
 		}
 	},

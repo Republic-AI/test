@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
@@ -9,6 +8,14 @@ import { TabContent } from '@/types/drama';
 import { MOCK_DRAMAS } from '@/mock/dramas';
 import { toast } from '@/components/ui/use-toast';
 
+interface UserInfo {
+  userId: string;
+  id: string;
+  location: string;
+  avatar: string;
+  points: number;
+}
+
 const Index = () => {
   const [searchParams] = useSearchParams();
   const tagIdParam = searchParams.get('tagId');
@@ -17,6 +24,19 @@ const Index = () => {
   const [selectedTagId, setSelectedTagId] = useState<string>(tagIdParam || 'ranch');
   const [currentContent, setCurrentContent] = useState<TabContent | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+
+  // Check login status on component mount
+  useEffect(() => {
+    const storedUserInfo = localStorage.getItem('userInfo');
+    const storedLoginStatus = localStorage.getItem('isSignedIn');
+    
+    if (storedUserInfo && storedLoginStatus) {
+      setUserInfo(JSON.parse(storedUserInfo));
+      setIsSignedIn(true);
+    }
+  }, []);
 
   // Mock API call to fetch tab content
   const fetchTabContent = async (tagId: string) => {
@@ -42,6 +62,29 @@ const Index = () => {
     setLoading(false);
   };
 
+  const handleLogin = () => {
+    const mockUserInfo = {
+      userId: "JohnDoe",
+      id: "123456",
+      location: "New York",
+      avatar: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
+      points: 100
+    };
+
+    // Save to localStorage
+    localStorage.setItem('userInfo', JSON.stringify(mockUserInfo));
+    localStorage.setItem('isSignedIn', 'true');
+    
+    // Update state
+    setIsSignedIn(true);
+    setUserInfo(mockUserInfo);
+    
+    toast({
+      title: "Welcome back!",
+      description: "You have successfully signed in."
+    });
+  };
+
   useEffect(() => {
     fetchTabContent(selectedTagId);
   }, [selectedTagId]);
@@ -56,18 +99,24 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-drama-gray/30 flex">
-      {/* Sidebar (hidden on mobile) */}
-      <Sidebar />
+    <div className="h-screen flex overflow-hidden">
+      {/* Sidebar */}
+      <Sidebar 
+        className="flex-shrink-0" 
+        characters={[]}
+        isSignedIn={isSignedIn}
+        userInfo={userInfo}
+        onLogin={handleLogin}
+      />
 
       {/* Main Content */}
-      <main className="flex-1 flex flex-col">
-        <Header onTagSelect={handleTagSelect} />
+      <main className="flex-1 flex flex-col overflow-hidden">
+        <Header onTagSelect={handleTagSelect} className="flex-shrink-0" />
         
-        <div className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-8">
+        <div className="flex-1 overflow-y-auto">
           {loading ? (
-            <div className="space-y-4 animate-pulse">
-              <div className="h-[300px] w-full bg-slate-200 dark:bg-slate-700 rounded-xl"></div>
+            <div className="space-y-4 animate-pulse p-8">
+              <div className="h-[300px] min-w-[800px] w-[calc(100%-2rem)] bg-slate-200 dark:bg-slate-700 rounded-xl"></div>
               <div className="h-6 w-48 bg-slate-200 dark:bg-slate-700 rounded"></div>
               <div className="flex space-x-4">
                 {[1, 2, 3, 4].map(i => (
@@ -76,19 +125,29 @@ const Index = () => {
               </div>
             </div>
           ) : currentContent ? (
-            <div className="space-y-8">
-              <DramaCover
-                coverImage={currentContent.drama.coverImageUrl}
-                title={currentContent.drama.title}
-                description={currentContent.drama.description}
-                jumpTo={currentContent.drama.jumpTo}
-                onJumpTo={handleJumpTo}
-              />
+            <div className="space-y-8 p-4">
+              {/* Drama Cover Section */}
+              <div className="min-w-[800px] w-[calc(100%-1rem)]">
+                <DramaCover
+                  coverImage={currentContent.drama.coverImageUrl}
+                  coverVideo={currentContent.drama.coverVideoUrl}
+                  title={currentContent.drama.title}
+                  description={currentContent.drama.description}
+                  jumpTo={currentContent.drama.jumpTo}
+                  onJumpTo={handleJumpTo}
+                />
+              </div>
               
-              <CharacterList
-                characters={currentContent.drama.characters}
-                onJumpTo={handleJumpTo}
-              />
+              {/* Character List Section */}
+              <div className="mt-8">
+                <div className="px-4">
+                  <CharacterList
+                    characters={currentContent.drama.characters}
+                    onJumpTo={handleJumpTo}
+                    className="bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+                  />
+                </div>
+              </div>
             </div>
           ) : (
             <div className="text-center py-12">

@@ -1,25 +1,37 @@
-
 import React, { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { useNavigate, useLocation } from 'react-router-dom';
+import DragonBonesAnimation from './DragonBonesAnimation';
 
 type Tag = {
   id: string;
   label: string;
+  activeIconUrl: string;
+  inactiveIconUrl: string;
 };
 
 // Mock data for initial development
 const MOCK_TAGS: Tag[] = [
-  { id: 'ranch', label: 'RANCH LOVE STORY' },
-  { id: 'idol', label: 'URBAN IDOL LIFE' },
-  { id: 'fantasy', label: 'FANTASY ADVENTURE' },
+  { 
+    id: 'ranch', 
+    label: 'RANCH LOVE STORY',
+    activeIconUrl: '/icons/ranch-active.png',
+    inactiveIconUrl: '/icons/ranch-inactive.png'
+  },
+  { 
+    id: 'idol', 
+    label: 'URBAN IDOL LIFE',
+    activeIconUrl: '/icons/idol-active.png',
+    inactiveIconUrl: '/icons/idol-inactive.png'
+  },
 ];
 
 interface HeaderProps {
   onTagSelect: (tagId: string) => void;
+  className?: string;
 }
 
-const Header: React.FC<HeaderProps> = ({ onTagSelect }) => {
+const Header: React.FC<HeaderProps> = ({ onTagSelect, className }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedTag, setSelectedTag] = useState<string>(MOCK_TAGS[0].id);
@@ -45,36 +57,64 @@ const Header: React.FC<HeaderProps> = ({ onTagSelect }) => {
   };
 
   return (
-    <header className="w-full bg-white dark:bg-gray-900 shadow-sm z-10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="py-6">
-          <div 
-            className="flex justify-center items-center mb-6 cursor-pointer" 
-            onClick={handleLogoClick}
-          >
-            <h1 className="text-3xl md:text-4xl font-serif font-bold bg-gradient-to-r from-drama-pink via-drama-lavender to-drama-blue bg-clip-text text-transparent">
-              DraMai
-            </h1>
-            <span className="ml-4 text-lg text-muted-foreground">Live Stream AI Drama</span>
-          </div>
-          
-          <div className="relative">
-            <div className="overflow-x-auto py-2 flex space-x-2 scrollbar-hide">
-              {tags.map((tag) => (
-                <button
-                  key={tag.id}
-                  onClick={() => handleTagClick(tag.id)}
-                  className={cn(
-                    "px-4 py-2 text-sm font-medium rounded-full whitespace-nowrap transition-all duration-300",
-                    selectedTag === tag.id
-                      ? "bg-primary text-primary-foreground shadow-md"
-                      : "bg-secondary hover:bg-accent/50 text-foreground"
-                  )}
-                >
-                  {tag.label}
-                </button>
-              ))}
+    <header className={cn("bg-background border-b", className)}>
+      <div className="w-full">
+        {location.pathname === '/' && (
+          <>
+            <div className="relative w-full h-[250px] overflow-hidden">
+              <img
+                src="/images/header-bg.png"
+                alt="DraMai Header"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute top-4 right-4">
+                <img
+                  src="/icons/live.png"
+                  alt="Live"
+                  className="h-6 w-auto animate-pulse"
+                />
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background" />
+              <div className="absolute inset-0 flex flex-col items-center justify-center">
+              <DragonBonesAnimation
+                className="w-[100px] h-[120px]"
+                skePath="/animations/painting/painting_ske.json"
+                texJsonPath="/animations/painting/painting_tex.json"
+                texPngPath="/animations/painting/painting_tex.png"
+                animationName="paint"
+              />
+              </div>
+              <div className="absolute bottom-8 left-8">
+                <img
+                  src="/images/title.png"
+                  alt="Live Stream AI Story"
+                  className="h-[120px] w-auto"
+                />
+              </div>
             </div>
+          </>
+        )}
+        <div className={cn(
+          "flex items-end justify-start px-4 bg-background",
+          location.pathname === '/' ? "-mt-5" : "mt-0"
+        )}>
+          <div className="flex gap-6 w-full">
+            {tags.map((tag) => (
+              <button
+                key={tag.id}
+                onClick={() => handleTagClick(tag.id)}
+                className={cn(
+                  "transition-transform hover:scale-105 flex items-end",
+                  selectedTag === tag.id ? "opacity-100" : "opacity-70 hover:opacity-90"
+                )}
+              >
+                <img
+                  src={selectedTag === tag.id ? tag.activeIconUrl : tag.inactiveIconUrl}
+                  alt={tag.label}
+                  className="w-56 h-20 object-contain"
+                />
+              </button>
+            ))}
           </div>
         </div>
       </div>

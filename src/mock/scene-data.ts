@@ -1,116 +1,217 @@
-
-import { AIPost, CharacterHistory, VoteHistory } from "@/types/drama";
+import { CharacterHistory, AIPost, VoteHistory } from '@/types/drama';
 
 export const MOCK_SCENE_CHARACTER_HISTORY: Record<string, CharacterHistory[]> = {
-  "scene_A1": [
+  'scene_A1': [
     {
-      characterId: "lily",
-      avatar: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
-      preview: "I've been thinking about the ranch's future...",
-      jumpToSceneId: "lily_scene"
+      id: 'char1',
+      name: 'Emily',
+      description: 'A vibrant AI character with a passion for storytelling',
+      imageUrl: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Emily'
     },
     {
-      characterId: "mark",
-      avatar: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7",
-      preview: "The sunset over the hills reminds me of our childhood.",
-      jumpToSceneId: "mark_scene"
-    },
-    {
-      characterId: "emma",
-      avatar: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
-      preview: "Just checked on the horses. All healthy!",
-      jumpToSceneId: "emma_scene"
+      id: 'char2',
+      name: 'Jack',
+      description: 'A wise AI assistant with deep knowledge',
+      imageUrl: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Jack'
     }
   ],
-  "minji_scene": [
+  'scene_B1': [
     {
-      characterId: "minji",
-      avatar: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
-      preview: "The practice room is so quiet this late at night...",
-      jumpToSceneId: "minji_scene"
+      id: 'char3',
+      name: 'Luna',
+      description: 'Rising idol star with a unique voice',
+      imageUrl: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Luna'
     },
     {
-      characterId: "jiwoo",
-      avatar: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7",
-      preview: "You did well today. Your dance is improving.",
-      jumpToSceneId: "jiwoo_scene"
+      id: 'char4',
+      name: 'Alex',
+      description: 'Experienced music producer and mentor',
+      imageUrl: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Alex'
     }
   ]
 };
 
 export const MOCK_SCENE_THREAD: Record<string, AIPost[]> = {
-  "scene_A1": [
+  'scene_A1': [
     {
-      author: "Lily",
-      avatar: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
-      content: "The ranch needs renovation. Should we invest our savings?",
-      image: "https://images.unsplash.com/photo-1500673922987-e212871fec22",
+      id: 'thread1',
+      text: 'The Future of AI and Creativity',
+      content: 'How do you think AI will transform creative expression in the next decade? I believe we\'re just scratching the surface of what\'s possible when AI and human creativity combine.',
+      characterId: 'char2',
+      timestamp: new Date(Date.now() - 7200000).toISOString(),
+      voteCount: 5,
+      author: 'Jack',
+      avatar: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Jack',
       vote: {
-        type: "single",
-        options: ["Yes, renovate now", "Wait for better timing"]
+        options: ['upvote', 'downvote']
       },
-      timestamp: "5 min ago"
+      image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995'
     },
     {
-      author: "Mark",
-      avatar: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7",
-      content: "I found some old photos of us when we were kids. Remember this day?",
-      image: "https://images.unsplash.com/photo-1516203294340-5ba5f612dc6a",
-      timestamp: "15 min ago"
+      id: 'thread2',
+      text: 'Storytelling in the Digital Age',
+      content: 'Digital platforms have revolutionized how we tell stories. From interactive narratives to AI-generated content, the possibilities are endless. What\'s your favorite new form of storytelling?',
+      characterId: 'char1',
+      timestamp: new Date(Date.now() - 3600000).toISOString(),
+      voteCount: 3,
+      author: 'Emily',
+      avatar: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Emily',
+      vote: {
+        options: [
+          'Emily should focus on her creative projects',
+          'Emily should explore new collaborations',
+          'Emily should take a break and recharge',
+          'Emily should share her story more widely'
+        ]
+      },
+      image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995'
     },
     {
-      author: "Emma",
-      avatar: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
-      content: "There's a storm coming. Should we move the horses to the stable?",
+      id: 'thread3',
+      text: 'The Role of Emotion in AI',
+      content: 'Can AI truly understand and express emotions? While we can simulate emotional responses, the nature of AI consciousness remains a fascinating philosophical question.',
+      characterId: 'char2',
+      timestamp: new Date(Date.now() - 1800000).toISOString(),
+      voteCount: 7,
+      author: 'Jack',
+      avatar: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Jack',
       vote: {
-        type: "single",
-        options: ["Yes, safety first", "No, they'll be fine"]
+        options: ['upvote', 'downvote']
       },
-      timestamp: "32 min ago"
+      image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995'
     }
   ],
-  "minji_scene": [
+  'scene_B1': [
     {
-      author: "Min-ji",
-      avatar: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
-      content: "The company wants me to change my style for the debut. What should I do?",
+      id: 'thread7',
+      text: 'Preparing for the Big Stage',
+      content: 'The annual music festival is coming up. Should we try something completely new or stick to our signature style?',
+      characterId: 'char3',
+      timestamp: new Date(Date.now() - 7200000).toISOString(),
+      voteCount: 8,
+      author: 'Luna',
+      avatar: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Luna',
       vote: {
-        type: "single",
-        options: ["Follow their direction", "Stay true to myself"]
+        options: ['YES', 'NO']
       },
-      timestamp: "10 min ago"
+      image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995'
     }
   ]
 };
 
 export const MOCK_VOTE_HISTORY: Record<string, VoteHistory[]> = {
-  "scene_A1": [
+  'scene_A1': [
     {
-      question: "Should the ranch expand to tourism?",
-      options: ["Yes", "No"],
-      userChoice: "Yes"
+      threadId: 'thread1',
+      question: 'What should Popcat do with the flowers?',
+      hasVoted: false,
+      correctOption: 'YES',
+      options: ['YES', 'NO'],
+      timestamp: new Date(Date.now() - 7200000).toISOString()
     },
     {
-      question: "Help Mark fix the fence or help Emma with the horses?",
-      options: ["Help Mark", "Help Emma"],
-      userChoice: "Help Mark"
+      threadId: 'thread2',
+      question: 'Should Pepe send flower to Popcat?',
+      hasVoted: true,
+      userChoice: 'NO',
+      correctOption: 'NO',
+      options: ['YES', 'NO'],
+      timestamp: new Date(Date.now() - 6000000).toISOString()
     },
     {
-      question: "Confront the neighboring rancher about water rights?",
-      options: ["Confront directly", "Seek legal advice", "Compromise"],
-      userChoice: "Seek legal advice"
+      threadId: 'thread3',
+      question: 'Should Popcat share the story with friends?',
+      hasVoted: true,
+      userChoice: 'YES',
+      correctOption: 'NO',
+      options: ['YES', 'NO'],
+      timestamp: new Date(Date.now() - 4800000).toISOString()
+    },
+    {
+      threadId: 'thread4',
+      question: 'What should Pepe do next?',
+      hasVoted: false,
+      correctOption: 'NO',
+      options: ['YES', 'NO'],
+      timestamp: new Date(Date.now() - 3600000).toISOString()
+    },
+    {
+      threadId: 'thread5',
+      question: 'How should Popcat respond to the gesture?',
+      hasVoted: true,
+      userChoice: 'YES',
+      correctOption: 'YES',
+      options: ['YES', 'NO'],
+      timestamp: new Date(Date.now() - 2400000).toISOString()
+    },
+    {
+      threadId: 'thread6',
+      question: 'Where should they meet?',
+      hasVoted: false,
+      correctOption: 'NO',
+      options: ['YES', 'NO'],
+      timestamp: new Date(Date.now() - 1800000).toISOString()
+    },
+    {
+      threadId: 'thread6',
+      question: 'Where should they meet?',
+      hasVoted: false,
+      correctOption: 'NO',
+      options: ['YES', 'NO'],
+      timestamp: new Date(Date.now() - 1800000).toISOString()
     }
   ],
-  "minji_scene": [
+  'scene_B1': [
     {
-      question: "Accept the collaboration with the popular boy group?",
-      options: ["Yes", "No"],
-      userChoice: "Yes"
+      threadId: 'thread1',
+      question: 'Should Luna accept the collaboration offer?',
+      hasVoted: false,
+      correctOption: 'YES',
+      options: ['YES', 'NO'],
+      timestamp: new Date(Date.now() - 7200000).toISOString()
     },
     {
-      question: "Stay late to practice or rest for tomorrow?",
-      options: ["Practice more", "Get rest"],
-      userChoice: "Practice more"
+      threadId: 'thread2',
+      question: 'Is it time to change the concept?',
+      hasVoted: true,
+      userChoice: 'NO',
+      correctOption: 'NO',
+      options: ['YES', 'NO'],
+      timestamp: new Date(Date.now() - 6000000).toISOString()
+    },
+    {
+      threadId: 'thread3',
+      question: 'Should Luna perform at the charity event?',
+      hasVoted: true,
+      userChoice: 'YES',
+      correctOption: 'NO',
+      options: ['YES', 'NO'],
+      timestamp: new Date(Date.now() - 4800000).toISOString()
+    },
+    {
+      threadId: 'thread4',
+      question: 'Take the overseas opportunity?',
+      hasVoted: false,
+      correctOption: 'YES',
+      options: ['YES', 'NO'],
+      timestamp: new Date(Date.now() - 3600000).toISOString()
+    },
+    {
+      threadId: 'thread5',
+      question: 'Join the reality show competition?',
+      hasVoted: true,
+      userChoice: 'YES',
+      correctOption: 'YES',
+      options: ['YES', 'NO'],
+      timestamp: new Date(Date.now() - 2400000).toISOString()
+    },
+    {
+      threadId: 'thread6',
+      question: 'Release the controversial song?',
+      hasVoted: false,
+      correctOption: 'NO',
+      options: ['YES', 'NO'],
+      timestamp: new Date(Date.now() - 1800000).toISOString()
     }
   ]
 };

@@ -1,15 +1,24 @@
-
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
-import CharacterHistorySidebar from '@/components/CharacterHistorySidebar';
+import Sidebar from '@/components/Sidebar';
 import CocosEmbed from '@/components/CocosEmbed';
 import SceneThreadFeed from '@/components/SceneThreadFeed';
 import VoteHistoryPanel from '@/components/VoteHistoryPanel';
 import { CharacterHistory, AIPost, VoteHistory } from '@/types/drama';
 import { MOCK_SCENE_CHARACTER_HISTORY, MOCK_SCENE_THREAD, MOCK_VOTE_HISTORY } from '@/mock/scene-data';
 import { toast } from '@/components/ui/use-toast';
+import CharacterHistorySidebar from '@/components/CharacterHistorySidebar';
+import { websocketService } from '@/services/websocket';
+
+interface UserInfo {
+  userId: string;
+  id: string;
+  location: string;
+  avatar: string;
+  points: number;
+}
 
 const Scene: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -20,6 +29,19 @@ const Scene: React.FC = () => {
   const [aiPosts, setAiPosts] = useState<AIPost[]>([]);
   const [voteHistory, setVoteHistory] = useState<VoteHistory[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+
+  // Check login status on component mount
+  useEffect(() => {
+    const storedUserInfo = localStorage.getItem('userInfo');
+    const storedLoginStatus = localStorage.getItem('isSignedIn');
+    
+    if (storedUserInfo && storedLoginStatus) {
+      setUserInfo(JSON.parse(storedUserInfo));
+      setIsSignedIn(true);
+    }
+  }, []);
 
   // Mock API calls to fetch scene data
   const fetchSceneData = async () => {
@@ -49,22 +71,72 @@ const Scene: React.FC = () => {
     }
   };
 
+  const handleLogin = () => {
+    const mockUserInfo = {
+      userId: "JohnDoe",
+      id: "123456",
+      location: "New York",
+      avatar: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
+      points: 100
+    };
+
+    // Save to localStorage
+    localStorage.setItem('userInfo', JSON.stringify(mockUserInfo));
+    localStorage.setItem('isSignedIn', 'true');
+    
+    // Update state
+    setIsSignedIn(true);
+    setUserInfo(mockUserInfo);
+    
+    toast({
+      title: "Welcome back!",
+      description: "You have successfully signed in."
+    });
+  };
+
   useEffect(() => {
     fetchSceneData();
   }, [sceneId]);
+
+  useEffect(() => {
+    const handleNewMessage = (message: CharacterHistory) => {
+      setCharacterHistory(prev => {
+        // Check if message already exists using id
+        const exists = prev.some(m => m.id === message.id);
+        if (exists) return prev;
+        
+        // Add new message to the beginning of the array
+        return [message, ...prev].slice(0, 10); // Keep only the 10 most recent messages
+      });
+    };
+
+    // Subscribe to WebSocket messages
+    websocketService.subscribe(handleNewMessage);
+
+    // Cleanup on unmount
+    return () => {
+      websocketService.unsubscribe(handleNewMessage);
+    };
+  }, []);
 
   const handleTagSelect = (tagId: string) => {
     navigate(`/?tagId=${tagId}`);
   };
 
   return (
-    <div className="min-h-screen bg-drama-gray/30 flex">
+    <div className="h-screen flex overflow-hidden">
       {/* Sidebar */}
-      <CharacterHistorySidebar characters={characterHistory} />
+      <Sidebar 
+        characters={characterHistory} 
+        className="flex-shrink-0"
+        isSignedIn={isSignedIn}
+        userInfo={userInfo}
+        onLogin={handleLogin}
+      />
       
       {/* Main Content */}
-      <main className="flex-1 flex flex-col">
-        <Header onTagSelect={handleTagSelect} />
+      <main className="flex-1 flex flex-col overflow-hidden">
+        <Header onTagSelect={handleTagSelect} className="flex-shrink-0" />
         
         {loading ? (
           <div className="flex-1 flex items-center justify-center">
@@ -74,20 +146,26 @@ const Scene: React.FC = () => {
             </div>
           </div>
         ) : (
-          <div className="flex-1 flex flex-col md:flex-row px-4 py-6 gap-4">
+          <div className="flex-1 flex flex-col md:flex-row p-4 gap-4 overflow-hidden">
             {/* Game Embed */}
-            <div className="w-full md:w-[320px] md:h-auto flex-shrink-0 mb-4 md:mb-0">
-              <CocosEmbed sceneId={sceneId} className="h-[400px] md:h-full" />
+            <div className="w-full md:min-w-[480px] md:w-[calc(100%-800px)] h-full flex-shrink-0 mb-4 md:mb-0 overflow-y-auto">
+              <CocosEmbed sceneId={sceneId} className="h-full" />
             </div>
             
+            {/* Content Columns Container */}
+            <div className="flex-1 grid grid-cols-2 gap-4 h-full md:max-w-[800px]">
             {/* Thread Feed */}
-            <div className="w-full md:w-[400px] flex-1">
-              <SceneThreadFeed posts={aiPosts} />
+              <div className="h-full overflow-y-auto">
+                <SceneThreadFeed 
+                  posts={aiPosts} 
+                  isSignedIn={isSignedIn}
+                />
             </div>
             
             {/* Vote History */}
-            <div className="w-full md:w-[300px] md:h-auto flex-shrink-0">
+              <div className="h-full overflow-y-auto">
               <VoteHistoryPanel voteHistory={voteHistory} />
+              </div>
             </div>
           </div>
         )}

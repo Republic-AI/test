@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { CharacterHistory } from '@/types/drama';
 import { useNavigate } from 'react-router-dom';
@@ -25,36 +24,47 @@ const CharacterHistorySidebar: React.FC<CharacterHistorySidebarProps> = ({
       className
     )}>
       {/* Logo */}
-      <div className="flex justify-center mb-8">
-        <div className="font-serif font-bold text-2xl 
-                      bg-gradient-to-r 
-                      from-drama-pink via-drama-lavender to-drama-blue 
-                      bg-clip-text text-transparent">
-          DraMai
-        </div>
+      <div className="flex justify-center mb-2 -mt-8">
+        <img 
+          src="/logo.png" 
+          alt="DraMai Logo" 
+          className="h-28 w-auto object-contain hover:scale-105 transition-transform duration-200"
+        />
+      </div>
+
+      {/* Navigation */}
+      <div className="space-y-3 mb-6 -mt-4">
+        <button className="w-full flex items-center space-x-3 px-4 py-3 rounded-xl bg-[#E6E0FF] hover:bg-[#E6E0FF]/90 transition-colors">
+          <span className="text-[#6B4EFF] font-semibold text-lg">Discover Stories</span>
+        </button>
+        <button className="w-full flex items-center space-x-3 px-4 py-3 rounded-xl bg-[#F3F3F3] hover:bg-[#EBEBEB] transition-colors">
+          <span className="text-[#999999] font-semibold text-lg">Search</span>
+        </button>
       </div>
 
       {/* Character History */}
-      <h2 className="font-medium text-lg mb-4">Recent Messages</h2>
-      <div className="space-y-3 overflow-y-auto flex-1">
+      <div className="space-y-1.5 overflow-y-auto flex-1 bg-[#F6F6F6] p-2 rounded-2xl -mt-2">
         {characters.map((character) => (
           <div
-            key={character.characterId}
-            className="bg-sidebar-accent rounded-lg p-3 cursor-pointer hover:bg-sidebar-accent/80 transition-all"
-            onClick={() => handleCharacterClick(character.jumpToSceneId)}
+            key={character.id}
+            className="bg-white rounded-2xl py-2 px-3 cursor-pointer hover:bg-gray-50 transition-all shadow-sm min-h-[18px]"
+            onClick={() => handleCharacterClick(character.id)}
           >
-            <div className="flex items-center space-x-3">
-              <div className="h-10 w-10 rounded-full overflow-hidden">
+            <div className="flex items-start space-x-2">
+              <div className="h-12 w-12 rounded-full bg-gray-200 overflow-hidden flex-shrink-0 mt-3">
                 <img
-                  src={character.avatar}
-                  alt={`${character.characterId} avatar`}
+                  src={character.imageUrl}
+                  alt={`${character.name} avatar`}
                   className="h-full w-full object-cover"
                 />
               </div>
-              <div className="flex-1">
-                <div className="font-medium text-sm">{character.characterId}</div>
-                <p className="text-xs text-muted-foreground line-clamp-2">
-                  {character.preview}
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center space-x-2">
+                  <span className="font-medium text-[#4A95E7] text-base capitalize">{character.name}</span>
+                  <span className="text-gray-400 text-sm">1 day</span>
+                </div>
+                <p className="text-gray-600 text-sm mt-0.3 line-clamp-2 leading-[0.8]">
+                  {character.description}
                 </p>
               </div>
             </div>
