@@ -73,7 +73,7 @@ export const MOCK_SCENE_THREAD: AIPost[] = [
   {
     roomId: 'scene_A1',
     id: 'thread2',
-    content: 'Digital platforms have revolutionized how we tell stories. From interactive narratives to AI-generated content, the possibilities are endless. What\'s your favorite new form of storytelling?',
+      content: 'Digital platforms have revolutionized how we tell stories. From interactive narratives to AI-generated content, the possibilities are endless. What\'s your favorite new form of storytelling?',
     imgUrl: 'https://images.unsplash.com/photo-1677442136019-21780ecad995',
     tweetCommentVoList: [],
     commentCount: 0,
@@ -92,11 +92,11 @@ export const MOCK_SCENE_THREAD: AIPost[] = [
     ],
     choose: false,
     rateList: [6, 22, 40, 32]
-  },
-  {
+    },
+    {
     roomId: 'scene_A1',
-    id: 'thread3',
-    content: 'Can AI truly understand and express emotions? While we can simulate emotional responses, the nature of AI consciousness remains a fascinating philosophical question.',
+      id: 'thread3',
+      content: 'Can AI truly understand and express emotions? While we can simulate emotional responses, the nature of AI consciousness remains a fascinating philosophical question.',
     imgUrl: 'https://images.unsplash.com/photo-1677442136019-21780ecad995',
     tweetCommentVoList: [
       {
@@ -118,8 +118,8 @@ export const MOCK_SCENE_THREAD: AIPost[] = [
   },
   {
     roomId: 'scene_B1',
-    id: 'thread7',
-    content: 'The annual music festival is coming up. Should we try something completely new or stick to our signature style?',
+      id: 'thread7',
+      content: 'The annual music festival is coming up. Should we try something completely new or stick to our signature style?',
     imgUrl: 'https://images.unsplash.com/photo-1677442136019-21780ecad995',
     tweetCommentVoList: [],
     commentCount: 0,
@@ -137,131 +137,131 @@ export const MOCK_SCENE_THREAD: AIPost[] = [
     ],
     choose: false,
     rateList: [75, 25, 0]
-  }
+    }
 ];
 
 export const MOCK_VOTE_HISTORY: VoteHistory[] = [
   {
     roomId: 'scene_A1',
-    threadId: 'thread1',
-    question: 'What should Popcat do with the flowers?',
-    hasVoted: false,
-    correctOption: 'YES',
-    options: ['YES', 'NO'],
-    timestamp: new Date(Date.now() - 7200000).toISOString()
-  },
-  {
+      threadId: 'thread1',
+      question: 'What should Popcat do with the flowers?',
+      hasVoted: false,
+      correctOption: 'YES',
+      options: ['YES', 'NO'],
+      timestamp: new Date(Date.now() - 7200000).toISOString()
+    },
+    {
     roomId: 'scene_A1',
-    threadId: 'thread2',
-    question: 'Should Pepe send flower to Popcat?',
-    hasVoted: true,
-    userChoice: 'NO',
-    correctOption: 'NO',
-    options: ['YES', 'NO'],
-    timestamp: new Date(Date.now() - 6000000).toISOString()
-  },
-  {
+      threadId: 'thread2',
+      question: 'Should Pepe send flower to Popcat?',
+      hasVoted: true,
+      userChoice: 'NO',
+      correctOption: 'NO',
+      options: ['YES', 'NO'],
+      timestamp: new Date(Date.now() - 6000000).toISOString()
+    },
+    {
     roomId: 'scene_A1',
-    threadId: 'thread3',
-    question: 'Should Popcat share the story with friends?',
-    hasVoted: true,
-    userChoice: 'YES',
-    correctOption: 'NO',
-    options: ['YES', 'NO'],
-    timestamp: new Date(Date.now() - 4800000).toISOString()
-  },
-  {
+      threadId: 'thread3',
+      question: 'Should Popcat share the story with friends?',
+      hasVoted: true,
+      userChoice: 'YES',
+      correctOption: 'NO',
+      options: ['YES', 'NO'],
+      timestamp: new Date(Date.now() - 4800000).toISOString()
+    },
+    {
     roomId: 'scene_A1',
-    threadId: 'thread4',
-    question: 'What should Pepe do next?',
-    hasVoted: false,
-    correctOption: 'NO',
-    options: ['YES', 'NO'],
-    timestamp: new Date(Date.now() - 3600000).toISOString()
-  },
-  {
+      threadId: 'thread4',
+      question: 'What should Pepe do next?',
+      hasVoted: false,
+      correctOption: 'NO',
+      options: ['YES', 'NO'],
+      timestamp: new Date(Date.now() - 3600000).toISOString()
+    },
+    {
     roomId: 'scene_A1',
-    threadId: 'thread5',
-    question: 'How should Popcat respond to the gesture?',
-    hasVoted: true,
-    userChoice: 'YES',
-    correctOption: 'YES',
-    options: ['YES', 'NO'],
-    timestamp: new Date(Date.now() - 2400000).toISOString()
-  },
-  {
+      threadId: 'thread5',
+      question: 'How should Popcat respond to the gesture?',
+      hasVoted: true,
+      userChoice: 'YES',
+      correctOption: 'YES',
+      options: ['YES', 'NO'],
+      timestamp: new Date(Date.now() - 2400000).toISOString()
+    },
+    {
     roomId: 'scene_A1',
-    threadId: 'thread6',
-    question: 'Where should they meet?',
-    hasVoted: false,
-    correctOption: 'NO',
-    options: ['YES', 'NO'],
-    timestamp: new Date(Date.now() - 1800000).toISOString()
-  },
-  {
+      threadId: 'thread6',
+      question: 'Where should they meet?',
+      hasVoted: false,
+      correctOption: 'NO',
+      options: ['YES', 'NO'],
+      timestamp: new Date(Date.now() - 1800000).toISOString()
+    },
+    {
     roomId: 'scene_A1',
-    threadId: 'thread6',
-    question: 'Where should they meet?',
-    hasVoted: false,
-    correctOption: 'NO',
-    options: ['YES', 'NO'],
-    timestamp: new Date(Date.now() - 1800000).toISOString()
+      threadId: 'thread6',
+      question: 'Where should they meet?',
+      hasVoted: false,
+      correctOption: 'NO',
+      options: ['YES', 'NO'],
+      timestamp: new Date(Date.now() - 1800000).toISOString()
   },
-  {
+    {
     roomId: 'scene_B1',
-    threadId: 'thread1',
-    question: 'Should Luna accept the collaboration offer?',
-    hasVoted: false,
-    correctOption: 'YES',
-    options: ['YES', 'NO'],
-    timestamp: new Date(Date.now() - 7200000).toISOString()
-  },
-  {
+      threadId: 'thread1',
+      question: 'Should Luna accept the collaboration offer?',
+      hasVoted: false,
+      correctOption: 'YES',
+      options: ['YES', 'NO'],
+      timestamp: new Date(Date.now() - 7200000).toISOString()
+    },
+    {
     roomId: 'scene_B1',
-    threadId: 'thread2',
-    question: 'Is it time to change the concept?',
-    hasVoted: true,
-    userChoice: 'NO',
-    correctOption: 'NO',
-    options: ['YES', 'NO'],
-    timestamp: new Date(Date.now() - 6000000).toISOString()
-  },
-  {
+      threadId: 'thread2',
+      question: 'Is it time to change the concept?',
+      hasVoted: true,
+      userChoice: 'NO',
+      correctOption: 'NO',
+      options: ['YES', 'NO'],
+      timestamp: new Date(Date.now() - 6000000).toISOString()
+    },
+    {
     roomId: 'scene_B1',
-    threadId: 'thread3',
-    question: 'Should Luna perform at the charity event?',
-    hasVoted: true,
-    userChoice: 'YES',
-    correctOption: 'NO',
-    options: ['YES', 'NO'],
-    timestamp: new Date(Date.now() - 4800000).toISOString()
-  },
-  {
+      threadId: 'thread3',
+      question: 'Should Luna perform at the charity event?',
+      hasVoted: true,
+      userChoice: 'YES',
+      correctOption: 'NO',
+      options: ['YES', 'NO'],
+      timestamp: new Date(Date.now() - 4800000).toISOString()
+    },
+    {
     roomId: 'scene_B1',
-    threadId: 'thread4',
-    question: 'Take the overseas opportunity?',
-    hasVoted: false,
-    correctOption: 'YES',
-    options: ['YES', 'NO'],
-    timestamp: new Date(Date.now() - 3600000).toISOString()
-  },
-  {
+      threadId: 'thread4',
+      question: 'Take the overseas opportunity?',
+      hasVoted: false,
+      correctOption: 'YES',
+      options: ['YES', 'NO'],
+      timestamp: new Date(Date.now() - 3600000).toISOString()
+    },
+    {
     roomId: 'scene_B1',
-    threadId: 'thread5',
-    question: 'Join the reality show competition?',
-    hasVoted: true,
-    userChoice: 'YES',
-    correctOption: 'YES',
-    options: ['YES', 'NO'],
-    timestamp: new Date(Date.now() - 2400000).toISOString()
-  },
-  {
+      threadId: 'thread5',
+      question: 'Join the reality show competition?',
+      hasVoted: true,
+      userChoice: 'YES',
+      correctOption: 'YES',
+      options: ['YES', 'NO'],
+      timestamp: new Date(Date.now() - 2400000).toISOString()
+    },
+    {
     roomId: 'scene_B1',
-    threadId: 'thread6',
-    question: 'Release the controversial song?',
-    hasVoted: false,
-    correctOption: 'NO',
-    options: ['YES', 'NO'],
-    timestamp: new Date(Date.now() - 1800000).toISOString()
-  }
+      threadId: 'thread6',
+      question: 'Release the controversial song?',
+      hasVoted: false,
+      correctOption: 'NO',
+      options: ['YES', 'NO'],
+      timestamp: new Date(Date.now() - 1800000).toISOString()
+    }
 ];

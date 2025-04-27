@@ -12,6 +12,10 @@ interface GameMessage {
   data: any;
 }
 
+const IFRAME_URL = "https://dramai.world/test/"; // 这里替换为你的实际地址
+
+const EVENT_NAME = "SEND_CUSTOM_EVENT";
+
 const CocosEmbed: React.FC<CocosEmbedProps> = ({
   sceneId,
   className
@@ -19,6 +23,7 @@ const CocosEmbed: React.FC<CocosEmbedProps> = ({
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [gameLoaded, setGameLoaded] = useState(false);
   const [lastMessage, setLastMessage] = useState<string>('');
+  const [log, setLog] = useState<string[]>([]);
 
   // 发送消息到 Cocos 游戏
   const sendMessageToGame = (message: GameMessage) => {
@@ -88,6 +93,28 @@ const CocosEmbed: React.FC<CocosEmbedProps> = ({
     });
   };
 
+  // 发送事件到 iframe
+  const sendCustomEvent = () => {
+    if (iframeRef.current && iframeRef.current.contentWindow) {
+      const message = {
+        type: EVENT_NAME,
+        data: { msg: "Hello from parent!", time: Date.now() }
+      };
+      iframeRef.current.contentWindow.postMessage(message, "*");
+      setLog(l => [`[Parent] Sent: ${JSON.stringify(message)}`, ...l]);
+    }
+  };
+
+  // 监听来自 iframe 的消息
+  useEffect(() => {
+    const handler = (event: MessageEvent) => {
+      // 你可以加 event.origin 校验
+      setLog(l => [`[Parent] Received: ${JSON.stringify(event.data)}`, ...l]);
+    };
+    window.addEventListener("message", handler);
+    return () => window.removeEventListener("message", handler);
+  }, []);
+
   return (
     <div className={cn("w-full h-full flex flex-col", className)}>
       <div className="bg-gray-100 dark:bg-gray-800 rounded-lg flex-1 flex flex-col">
@@ -107,7 +134,7 @@ const CocosEmbed: React.FC<CocosEmbedProps> = ({
         <div className="flex-1 relative">
           <iframe
             ref={iframeRef}
-            src={`/game/index.html?sceneId=${sceneId}`}
+            src={IFRAME_URL}
             className="absolute inset-0 w-full h-full border-0"
             title="Cocos Game"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -122,11 +149,23 @@ const CocosEmbed: React.FC<CocosEmbedProps> = ({
             >
               Send Test Message
             </button>
+            <button
+              className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
+              onClick={sendCustomEvent}
+            >
+              发送自定义事件到游戏
+            </button>
             <div className="text-xs text-gray-500 truncate max-w-[60%]">
               {lastMessage ? `Last event: ${lastMessage}` : 'No events yet'}
             </div>
           </div>
         </div>
+      </div>
+      <div className="p-2 border-t bg-gray-50 text-xs h-32 overflow-auto">
+        <div>日志：</div>
+        {log.map((line, idx) => (
+          <div key={idx}>{line}</div>
+        ))}
       </div>
     </div>
   );

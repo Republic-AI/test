@@ -175,11 +175,11 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
             <div className="flex items-start space-x-3">
               <div className="h-12 w-12 rounded-full bg-gray-200 overflow-hidden flex-shrink-0 mt-3">
                 {post.npcAvatar && (
-                  <img
+                <img
                     src={post.npcAvatar}
                     alt={`${post.npcName || 'NPC'} avatar`}
-                    className="h-full w-full object-cover"
-                  />
+                  className="h-full w-full object-cover"
+                />
                 )}
               </div>
               <div className="flex-1 min-w-0">
@@ -244,17 +244,17 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
                         const { letter, content } = parseOptionText(option);
                         
                         return (
-                          <button
+                    <button
                             key={`option-${index}`}
                             onClick={() => handleVote(post, index)}
-                            className={cn(
+                      className={cn(
                               "w-full h-10 px-4 text-sm rounded-xl border border-gray-300 bg-white transition-all text-left flex items-center mb-1 hover:bg-gray-50",
                               "text-gray-700"
-                            )}
-                          >
+                      )}
+                    >
                             {letter && <span className="font-bold mr-2">{letter}:</span>}
                             <span>{content}</span>
-                          </button>
+                    </button>
                         );
                       })}
                 </div>

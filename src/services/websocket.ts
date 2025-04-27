@@ -27,40 +27,40 @@ class WebSocketService {
     }
 
     try {
-      this.ws = new WebSocket('ws://localhost:8081');
+    this.ws = new WebSocket('ws://localhost:8081');
 
-      this.ws.onopen = () => {
-        console.log('WebSocket connected');
-        this.reconnectAttempts = 0;
-      };
+    this.ws.onopen = () => {
+      console.log('WebSocket connected');
+      this.reconnectAttempts = 0;
+    };
 
       this.ws.onmessage = (event) => {
-        try {
+      try {
           // Parse the JSON data directly
           const data = JSON.parse(event.data);
           console.log('Received message:', data);
 
           // 通知所有订阅 GET_RECENT_MESSAGES 的处理程序
           const handler = this.messageHandlers.get(Commands.GET_RECENT_MESSAGES);
-          if (handler) {
-            handler(data);
-          }
-        } catch (error) {
-          console.error('Error processing message:', error);
+        if (handler) {
+          handler(data);
         }
-      };
+      } catch (error) {
+        console.error('Error processing message:', error);
+      }
+    };
 
-      this.ws.onclose = () => {
-        console.log('WebSocket disconnected');
-        if (this.reconnectAttempts < this.maxReconnectAttempts) {
-          this.reconnectAttempts++;
-          setTimeout(() => this.connect(), 1000 * this.reconnectAttempts);
-        }
-      };
+    this.ws.onclose = () => {
+      console.log('WebSocket disconnected');
+      if (this.reconnectAttempts < this.maxReconnectAttempts) {
+        this.reconnectAttempts++;
+        setTimeout(() => this.connect(), 1000 * this.reconnectAttempts);
+      }
+    };
 
-      this.ws.onerror = (error) => {
-        console.error('WebSocket error:', error);
-      };
+    this.ws.onerror = (error) => {
+      console.error('WebSocket error:', error);
+    };
     } catch (error) {
       console.error('Error connecting to WebSocket:', error);
     }

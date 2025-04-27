@@ -68,21 +68,21 @@ const Scene: React.FC = () => {
         console.warn(`No character data found for sceneId: ${sceneId}, using default scene_A1 data`);
         setCharacterHistory(MOCK_SCENE_CHARACTER_HISTORY.filter(char => char.roomId === 'scene_A1'));
       } else {
-        setCharacterHistory(charactersData);
+      setCharacterHistory(charactersData);
       }
       
       if (postsData.length === 0) {
         console.warn(`No posts data found for sceneId: ${sceneId}, using default scene_A1 data`);
         setAiPosts(MOCK_SCENE_THREAD.filter(post => post.roomId === 'scene_A1'));
       } else {
-        setAiPosts(postsData);
+      setAiPosts(postsData);
       }
       
       if (votesData.length === 0) {
         console.warn(`No vote data found for sceneId: ${sceneId}, using default scene_A1 data`);
         setVoteHistory(MOCK_VOTE_HISTORY.filter(vote => vote.roomId === 'scene_A1'));
       } else {
-        setVoteHistory(votesData);
+      setVoteHistory(votesData);
       }
     } catch (error) {
       console.error("Error fetching scene data:", error);
