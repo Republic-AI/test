@@ -12,7 +12,7 @@ interface GameMessage {
   data: any;
 }
 
-const IFRAME_URL = "https://dramai.world/test/"; // 这里替换为你的实际地址
+const IFRAME_URL = "https://dramai.world/webframe/"; // 这里替换为你的实际地址
 
 const EVENT_NAME = "SEND_CUSTOM_EVENT";
 
