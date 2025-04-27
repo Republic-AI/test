@@ -1,4 +1,3 @@
-import protobuf from 'protobufjs';
 import { CharacterHistory } from '@/types/drama';
 import { MOCK_SCENE_CHARACTER_HISTORY } from '@/mock/scene-data';
 
@@ -13,23 +12,12 @@ export const Commands = {
 
 class WebSocketService {
   private ws: WebSocket | null = null;
-  private root: protobuf.Root | null = null;
   private messageHandlers: Map<number, (data: any) => void> = new Map();
   private reconnectAttempts = 0;
   private maxReconnectAttempts = 5;
 
   constructor() {
-    this.initProtobuf();
     this.connect();
-  }
-
-  private async initProtobuf() {
-    try {
-      this.root = await protobuf.load('/proto/messages.proto');
-      console.log('Protobuf definitions loaded successfully');
-    } catch (err) {
-      console.error('Failed to load protobuf definitions:', err);
-    }
   }
 
   private connect() {
@@ -38,49 +26,44 @@ class WebSocketService {
       return;
     }
 
-    this.ws = new WebSocket('ws://localhost:8081');
+    try {
+      this.ws = new WebSocket('ws://localhost:8081');
 
-    this.ws.onopen = () => {
-      console.log('WebSocket connected');
-      this.reconnectAttempts = 0;
-    };
+      this.ws.onopen = () => {
+        console.log('WebSocket connected');
+        this.reconnectAttempts = 0;
+      };
 
-    this.ws.onmessage = async (event) => {
-      try {
-        if (!this.root) {
-          console.error('Protobuf definitions not loaded');
-          return;
+      this.ws.onmessage = (event) => {
+        try {
+          // Parse the JSON data directly
+          const data = JSON.parse(event.data);
+          console.log('Received message:', data);
+
+          // 通知所有订阅 GET_RECENT_MESSAGES 的处理程序
+          const handler = this.messageHandlers.get(Commands.GET_RECENT_MESSAGES);
+          if (handler) {
+            handler(data);
+          }
+        } catch (error) {
+          console.error('Error processing message:', error);
         }
+      };
 
-        // Decode the binary message
-        const buffer = await event.data.arrayBuffer();
-        const BaseMessage = this.root.lookupType('BaseMessage');
-        const baseMessage = BaseMessage.decode(new Uint8Array(buffer));
-        
-        // Parse the JSON data
-        const data = JSON.parse(baseMessage.data);
-        console.log('Received message:', { command: baseMessage.command, data });
-
-        const handler = this.messageHandlers.get(baseMessage.command);
-        if (handler) {
-          handler(data);
+      this.ws.onclose = () => {
+        console.log('WebSocket disconnected');
+        if (this.reconnectAttempts < this.maxReconnectAttempts) {
+          this.reconnectAttempts++;
+          setTimeout(() => this.connect(), 1000 * this.reconnectAttempts);
         }
-      } catch (error) {
-        console.error('Error processing message:', error);
-      }
-    };
+      };
 
-    this.ws.onclose = () => {
-      console.log('WebSocket disconnected');
-      if (this.reconnectAttempts < this.maxReconnectAttempts) {
-        this.reconnectAttempts++;
-        setTimeout(() => this.connect(), 1000 * this.reconnectAttempts);
-      }
-    };
-
-    this.ws.onerror = (error) => {
-      console.error('WebSocket error:', error);
-    };
+      this.ws.onerror = (error) => {
+        console.error('WebSocket error:', error);
+      };
+    } catch (error) {
+      console.error('Error connecting to WebSocket:', error);
+    }
   }
 
   disconnect() {
@@ -90,28 +73,18 @@ class WebSocketService {
     }
   }
 
-  async send(command: number, data: any) {
+  send(command: number, data: any) {
     if (!this.ws || this.ws.readyState !== WebSocket.OPEN) {
       console.error('WebSocket is not connected');
       return;
     }
 
-    if (!this.root) {
-      console.error('Protobuf definitions not loaded');
-      return;
-    }
-
     try {
-      // Create base message
-      const BaseMessage = this.root.lookupType('BaseMessage');
-      const message = BaseMessage.create({
+      // 直接发送 JSON 数据
+      this.ws.send(JSON.stringify({
         command,
-        data: JSON.stringify(data)
-      });
-
-      // Encode and send
-      const buffer = BaseMessage.encode(message).finish();
-      this.ws.send(buffer);
+        data
+      }));
     } catch (error) {
       console.error('Error sending message:', error);
     }
@@ -144,8 +117,13 @@ class WebSocketService {
 
   public subscribe(handler: (message: CharacterHistory) => void) {
     this.messageHandlers.set(Commands.GET_RECENT_MESSAGES, handler);
-    // Send initial messages
-    MOCK_SCENE_CHARACTER_HISTORY['scene_A1'].forEach(message => handler(message));
+    
+    // 如果 WebSocket 未连接，使用本地数据
+    if (!this.ws || this.ws.readyState !== WebSocket.OPEN) {
+      console.log('WebSocket not connected, using local mock data');
+      const sceneCharacters = MOCK_SCENE_CHARACTER_HISTORY.filter(character => character.roomId === 'scene_A1');
+      sceneCharacters.forEach(message => handler(message));
+    }
   }
 
   public unsubscribe(handler: (message: CharacterHistory) => void) {

@@ -1,39 +1,43 @@
 import React, { useState } from 'react';
-import { AIPost } from '@/types/drama';
+import { AIPost, TweetComment } from '@/types/drama';
 import { cn } from '@/lib/utils';
 import { toast } from '@/components/ui/use-toast';
 import { MessageSquare, Heart, ChevronDown, ChevronUp, Share2, Send } from 'lucide-react';
+import { formatDistanceToNow } from 'date-fns';
 
 interface SceneThreadFeedProps {
   posts: AIPost[];
   className?: string;
   isSignedIn?: boolean;
-  onVote?: (threadId: string, isUpvote: boolean) => void;
+  onVote?: (threadId: string | number, optionIndex: number) => void;
+  onLike?: (threadId: string | number) => void;
+  onComment?: (threadId: string | number, comment: string) => void;
 }
 
-interface Comment {
-  id: string;
-  author: string;
-  avatar: string;
-  content: string;
-  timestamp: string;
-}
+// 进度条颜色列表
+const BAR_COLORS = [
+  'bg-red-300',    // 0
+  'bg-blue-200',   // 1
+  'bg-yellow-300', // 2
+  'bg-green-300',  // 3
+  'bg-purple-300', // 4
+  'bg-pink-300',   // 5
+];
 
 const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
   posts,
   className,
   isSignedIn = false,
-  onVote
+  onVote,
+  onLike,
+  onComment
 }) => {
-  const [votedPosts, setVotedPosts] = useState<Record<string, string>>({});
-  const [likedPosts, setLikedPosts] = useState<Record<string, boolean>>({});
-  const [likeCounts, setLikeCounts] = useState<Record<string, number>>({});
-  const [expandedPosts, setExpandedPosts] = useState<Record<string, boolean>>({});
-  const [replyCount, setReplyCount] = useState<Record<string, number>>({});
-  const [comments, setComments] = useState<Record<string, Comment[]>>({});
-  const [newComment, setNewComment] = useState<Record<string, string>>({});
+  const [expandedPosts, setExpandedPosts] = useState<Record<string | number, boolean>>({});
+  const [newComment, setNewComment] = useState<Record<string | number, string>>({});
+  const [chosenOptions, setChosenOptions] = useState<Record<string | number, number>>({});
+  const [localLikes, setLocalLikes] = useState<Record<string | number, boolean>>({});
 
-  const handleVote = (threadId: string, option: string) => {
+  const handleVote = (post: AIPost, optionIndex: number) => {
     if (!isSignedIn) {
       toast({
         title: "Please sign in",
@@ -42,7 +46,7 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
       return;
     }
 
-    if (votedPosts[threadId]) {
+    if (post.choose) {
       toast({
         title: "Already voted",
         description: "You have already voted on this thread"
@@ -50,15 +54,15 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
       return;
     }
 
-    setVotedPosts(prev => ({
+    setChosenOptions(prev => ({
       ...prev,
-      [threadId]: option
+      [String(post.id)]: optionIndex
     }));
 
-    onVote?.(threadId, option === "upvote");
+    onVote?.(post.id, optionIndex);
   };
 
-  const handleLike = (threadId: string) => {
+  const handleLike = (post: AIPost) => {
     if (!isSignedIn) {
       toast({
         title: "Please sign in",
@@ -66,32 +70,30 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
       });
       return;
     }
-    const isLiked = likedPosts[threadId];
-    setLikedPosts(prev => ({
+
+    setLocalLikes(prev => ({
       ...prev,
-      [threadId]: !isLiked
+      [String(post.id)]: !post.like
     }));
-    setLikeCounts(prev => ({
-      ...prev,
-      [threadId]: (prev[threadId] || 0) + (isLiked ? -1 : 1)
-    }));
+
+    onLike?.(post.id);
   };
 
-  const toggleExpand = (threadId: string) => {
+  const toggleExpand = (threadId: string | number) => {
     setExpandedPosts(prev => ({
       ...prev,
-      [threadId]: !prev[threadId]
+      [String(threadId)]: !prev[String(threadId)]
     }));
   };
 
-  const handleCommentChange = (threadId: string, value: string) => {
+  const handleCommentChange = (threadId: string | number, value: string) => {
     setNewComment(prev => ({
       ...prev,
-      [threadId]: value
+      [String(threadId)]: value
     }));
   };
 
-  const handleCommentSubmit = (threadId: string) => {
+  const handleCommentSubmit = (threadId: string | number) => {
     if (!isSignedIn) {
       toast({
         title: "Please sign in",
@@ -100,31 +102,70 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
       return;
     }
 
-    if (!newComment[threadId]?.trim()) return;
+    if (!newComment[String(threadId)]?.trim()) return;
 
-    const comment: Comment = {
-      id: Date.now().toString(),
-      author: "Current User", // This would come from user context
-      avatar: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158", // This would come from user context
-      content: newComment[threadId],
-      timestamp: "Just now"
-    };
-
-    setComments(prev => ({
-      ...prev,
-      [threadId]: [...(prev[threadId] || []), comment]
-    }));
+    onComment?.(threadId, newComment[String(threadId)]);
 
     setNewComment(prev => ({
       ...prev,
-      [threadId]: ""
-    }));
-
-    setReplyCount(prev => ({
-      ...prev,
-      [threadId]: (prev[threadId] || 0) + 1
+      [String(threadId)]: ""
     }));
   };
+
+  const formatTime = (timestamp: number) => {
+    return formatDistanceToNow(timestamp, { addSuffix: true });
+  };
+
+  const isPostLiked = (post: AIPost) => {
+    return localLikes[String(post.id)] !== undefined ? localLikes[String(post.id)] : post.like;
+  };
+
+  const parseOptionText = (optionText: string) => {
+    // 解析选项格式 "A: 选项内容"
+    const match = optionText.match(/^([A-Z]):\s*(.+)$/);
+    if (match) {
+      return {
+        letter: match[1],
+        content: match[2]
+      };
+    }
+    return {
+      letter: "",
+      content: optionText
+    };
+  };
+
+  const renderComment = (comment: TweetComment, level = 0) => (
+    <div key={comment.id} className={`flex items-start space-x-3 mb-2 ${level > 0 ? 'ml-8' : ''}`}>
+      <div className="h-8 w-8 rounded-full overflow-hidden bg-gray-200 mt-2">
+        {comment.authorAvatar && (
+          <img
+            src={comment.authorAvatar}
+            alt={`${comment.nickName} avatar`}
+            className="h-full w-full object-cover"
+          />
+        )}
+      </div>
+      <div className="flex-1">
+        <div className="flex items-center space-x-2 mb-[-5px]">
+          <span className="font-medium text-sm">{comment.nickName}</span>
+          {comment.createTime && (
+            <span className="text-xs text-gray-500">{formatTime(comment.createTime)}</span>
+          )}
+        </div>
+        <p className="text-sm text-gray-400 mt-0">{comment.content}</p>
+        
+        {/* 嵌套评论 - 支持两种字段名 */}
+        {(comment.tweetCommentVoList || comment.tweetCommentVo) && (
+          <div className="mt-2 space-y-2">
+            {(comment.tweetCommentVoList || comment.tweetCommentVo || []).map(reply => 
+              renderComment(reply, level + 1)
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
 
   return (
     <div className={cn("w-full h-full flex flex-col", className)}>
@@ -133,16 +174,20 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
           <div key={post.id} className="bg-white rounded-2xl py-2 px-4 cursor-pointer hover:bg-gray-50 transition-all shadow-sm">
             <div className="flex items-start space-x-3">
               <div className="h-12 w-12 rounded-full bg-gray-200 overflow-hidden flex-shrink-0 mt-3">
-                <img
-                  src={post.avatar}
-                  alt={`${post.author} avatar`}
-                  className="h-full w-full object-cover"
-                />
+                {post.npcAvatar && (
+                  <img
+                    src={post.npcAvatar}
+                    alt={`${post.npcName || 'NPC'} avatar`}
+                    className="h-full w-full object-cover"
+                  />
+                )}
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center space-x-2">
-                  <span className="font-medium text-[#4A95E7] text-base capitalize">{post.author}</span>
-                  <span className="text-gray-400 text-sm">{post.timestamp}</span>
+                  <span className="font-medium text-[#4A95E7] text-base capitalize">
+                    {post.npcName || `NPC-${post.npcId}`}
+                  </span>
+                  <span className="text-gray-400 text-sm">{formatTime(post.createTime)}</span>
                 </div>
                 <p className="text-gray-600 text-sm mt-0.3 line-clamp-2 leading-[0.8]">
                   {post.content}
@@ -150,10 +195,10 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
               </div>
             </div>
             
-            {post.image && (
+            {post.imgUrl && (
               <div className="mt-3 rounded-xl overflow-hidden">
                 <img
-                  src={post.image}
+                  src={post.imgUrl}
                   alt="Post image"
                   className="w-full h-auto object-cover"
                   loading="lazy"
@@ -161,25 +206,57 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
               </div>
             )}
             
-            {post.vote && (
+            {(post.tweetType === 'VOTE' || post.tweetType === 2) && post.chooseList && post.chooseList.length > 0 && (
               <div className="mt-4">
                 <div className="space-y-2">
                   <h3 className="text-base font-medium text-gray-700 mb-[-6px]">Voting (single choice)</h3>
-                  {post.vote.options.map((option, index) => (
-                    <button
-                      key={`${option}-${index}`}
-                      onClick={() => handleVote(post.id, option)}
-                      disabled={!!votedPosts[post.id]}
-                      className={cn(
-                        "w-full h-8 px-4 text-sm rounded-lg transition-all text-left bg-gray-200 leading-[0.8] flex items-center",
-                        votedPosts[post.id] && votedPosts[post.id] === option
-                          ? "bg-gray-300 text-gray-900 font-medium"
-                          : "hover:bg-gray-300 text-gray-700"
-                      )}
-                    >
-                      {option}
-                    </button>
-                  ))}
+                  {post.choose || chosenOptions[String(post.id)] !== undefined
+                    ? post.chooseList.map((option, index) => {
+                        const rate = post.rateList?.[index] || 0;
+                        const { letter, content } = parseOptionText(option);
+                        
+                        return (
+                          <div
+                            key={`option-${index}`}
+                            className="w-full border border-gray-300 rounded-xl overflow-hidden flex items-center h-10 bg-white"
+                          >
+                            <div
+                              className={`h-full ${BAR_COLORS[index % BAR_COLORS.length]} flex items-center pl-3 transition-all duration-300`}
+                              style={{ 
+                                width: `${rate}%`, 
+                                minWidth: rate > 0 ? '2.5rem' : 0 
+                              }}
+                            >
+                              <span className="font-bold text-gray-700 text-sm select-none">
+                                {Math.round(rate)}%
+                              </span>
+                            </div>
+                            
+                            {/* 空白部分填充，同时显示选项内容 */}
+                            <div className="flex-1 h-full flex items-center px-3">
+                              {letter && <span className="font-bold mr-2">{letter}:</span>}
+                              <span>{content}</span>
+                            </div>
+                          </div>
+                        );
+                      })
+                    : post.chooseList.map((option, index) => {
+                        const { letter, content } = parseOptionText(option);
+                        
+                        return (
+                          <button
+                            key={`option-${index}`}
+                            onClick={() => handleVote(post, index)}
+                            className={cn(
+                              "w-full h-10 px-4 text-sm rounded-xl border border-gray-300 bg-white transition-all text-left flex items-center mb-1 hover:bg-gray-50",
+                              "text-gray-700"
+                            )}
+                          >
+                            {letter && <span className="font-bold mr-2">{letter}:</span>}
+                            <span>{content}</span>
+                          </button>
+                        );
+                      })}
                 </div>
               </div>
             )}
@@ -190,25 +267,25 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
                 onClick={() => toggleExpand(post.id)}
               >
                 <MessageSquare size={20} />
-                <span className="text-sm">{replyCount[post.id] || 0}</span>
+                <span className="text-sm">{post.commentCount}</span>
               </button>
               
               <button 
                 className={cn(
                   "flex items-center space-x-1",
-                  likedPosts[post.id] ? "text-red-500" : "text-gray-500 hover:text-gray-700"
+                  isPostLiked(post) ? "text-red-500" : "text-gray-500 hover:text-gray-700"
                 )}
-                onClick={() => handleLike(post.id)}
+                onClick={() => handleLike(post)}
               >
                 <Heart size={20} />
-                <span className="text-sm">{likeCounts[post.id] || 0}</span>
+                <span className="text-sm">{post.likeCount}</span>
               </button>
 
               <button 
                 className="flex items-center space-x-1 text-gray-500 hover:text-gray-700 ml-auto"
                 onClick={() => toggleExpand(post.id)}
               >
-                {expandedPosts[post.id] ? (
+                {expandedPosts[String(post.id)] ? (
                   <>
                     <span className="text-sm">Fold</span>
                     <ChevronUp size={20} />
@@ -222,13 +299,13 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
               </button>
             </div>
 
-            {expandedPosts[post.id] && (
+            {expandedPosts[String(post.id)] && (
               <div className="mt-4 pt-3 border-t border-gray-100">
                 {isSignedIn && (
                   <div className="flex items-center space-x-2 mb-4">
                     <input
                       type="text"
-                      value={newComment[post.id] || ""}
+                      value={newComment[String(post.id)] || ""}
                       onChange={(e) => handleCommentChange(post.id, e.target.value)}
                       placeholder="Write a comment..."
                       className="flex-1 px-3 py-2 text-sm rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20"
@@ -242,24 +319,8 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
                   </div>
                 )}
 
-                {comments[post.id]?.map((comment) => (
-                  <div key={comment.id} className="flex items-start space-x-3 mb-2">
-                    <div className="h-8 w-8 rounded-full overflow-hidden bg-gray-200 mt-2">
-                      <img
-                        src={comment.avatar}
-                        alt={`${comment.author} avatar`}
-                        className="h-full w-full object-cover"
-                      />
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center space-x-2 mb-[-5px]">
-                        <span className="font-medium text-sm">{comment.author}</span>
-                        <span className="text-xs text-gray-500">{comment.timestamp}</span>
-                      </div>
-                      <p className="text-sm text-gray-400 mt-0">{comment.content}</p>
-                    </div>
-                  </div>
-                ))}
+                {/* 评论部分 */}
+                {post.tweetCommentVoList.map(comment => renderComment(comment))}
               </div>
             )}
           </div>

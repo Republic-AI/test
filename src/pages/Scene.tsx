@@ -51,16 +51,47 @@ const Scene: React.FC = () => {
       // Simulate API delay
       await new Promise(resolve => setTimeout(resolve, 300));
       
-      // Get mock data
-      const charactersData = MOCK_SCENE_CHARACTER_HISTORY[sceneId] || MOCK_SCENE_CHARACTER_HISTORY['scene_A1'];
-      const postsData = MOCK_SCENE_THREAD[sceneId] || MOCK_SCENE_THREAD['scene_A1'];
-      const votesData = MOCK_VOTE_HISTORY[sceneId] || MOCK_VOTE_HISTORY['scene_A1'];
+      // Get filtered mock data based on roomId
+      const charactersData = MOCK_SCENE_CHARACTER_HISTORY.filter(char => char.roomId === sceneId);
+      const postsData = MOCK_SCENE_THREAD.filter(post => post.roomId === sceneId);
+      const votesData = MOCK_VOTE_HISTORY.filter(vote => vote.roomId === sceneId);
       
-      setCharacterHistory(charactersData);
-      setAiPosts(postsData);
-      setVoteHistory(votesData);
+      console.log('Fetched data:', { 
+        charactersCount: charactersData.length,
+        postsCount: postsData.length,
+        votesCount: votesData.length,
+        sceneId
+      });
+      
+      // Make sure we always have some data
+      if (charactersData.length === 0) {
+        console.warn(`No character data found for sceneId: ${sceneId}, using default scene_A1 data`);
+        setCharacterHistory(MOCK_SCENE_CHARACTER_HISTORY.filter(char => char.roomId === 'scene_A1'));
+      } else {
+        setCharacterHistory(charactersData);
+      }
+      
+      if (postsData.length === 0) {
+        console.warn(`No posts data found for sceneId: ${sceneId}, using default scene_A1 data`);
+        setAiPosts(MOCK_SCENE_THREAD.filter(post => post.roomId === 'scene_A1'));
+      } else {
+        setAiPosts(postsData);
+      }
+      
+      if (votesData.length === 0) {
+        console.warn(`No vote data found for sceneId: ${sceneId}, using default scene_A1 data`);
+        setVoteHistory(MOCK_VOTE_HISTORY.filter(vote => vote.roomId === 'scene_A1'));
+      } else {
+        setVoteHistory(votesData);
+      }
     } catch (error) {
       console.error("Error fetching scene data:", error);
+      
+      // Fallback to scene_A1 data on error
+      setCharacterHistory(MOCK_SCENE_CHARACTER_HISTORY.filter(char => char.roomId === 'scene_A1'));
+      setAiPosts(MOCK_SCENE_THREAD.filter(post => post.roomId === 'scene_A1'));
+      setVoteHistory(MOCK_VOTE_HISTORY.filter(vote => vote.roomId === 'scene_A1'));
+      
       toast({
         title: "Error loading scene data",
         description: "Could not load the scene data. Using default content.",

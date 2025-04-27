@@ -77,11 +77,18 @@ const Header: React.FC<HeaderProps> = ({ onTagSelect, className }) => {
               <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background" />
               <div className="absolute inset-0 flex flex-col items-center justify-center">
               <DragonBonesAnimation
-                className="w-[100px] h-[120px]"
+                className="w-[800px] h-[00px] ml-[700px] mt-[-50px]"
                 skePath="/animations/painting/painting_ske.json"
                 texJsonPath="/animations/painting/painting_tex.json"
                 texPngPath="/animations/painting/painting_tex.png"
                 animationName="paint"
+              />
+              <DragonBonesAnimation
+                className="w-[-800px] h-[100px] ml-[900px] -mt-20"
+                skePath="/animations/pickflower/pickflower_ske.json"
+                texJsonPath="/animations/pickflower/pickflower_tex.json"
+                texPngPath="/animations/pickflower/pickflower_tex.png"
+                animationName="pickflower"
               />
               </div>
               <div className="absolute bottom-8 left-8">

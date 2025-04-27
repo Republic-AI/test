@@ -1,0 +1,2882 @@
+{
+    "frameRate": 40,
+    "isGlobal": 0,
+    "armature": [
+        {
+            "skin": [
+                {
+                    "name": "",
+                    "slot": [
+                        {
+                            "display": [
+                                {
+                                    "path": "artist/tsb",
+                                    "type": "image",
+                                    "name": "artist/tsb",
+                                    "transform": {
+                                        "y": -0.4532,
+                                        "skX": 180,
+                                        "skY": 180,
+                                        "x": 0.5616
+                                    }
+                                }
+                            ],
+                            "name": "tsb"
+                        },
+                        {
+                            "display": [
+                                {
+                                    "path": "artist/pen",
+                                    "type": "image",
+                                    "name": "artist/pen",
+                                    "transform": {
+                                        "y": -0.2044,
+                                        "skX": 62.4592,
+                                        "skY": 62.4592,
+                                        "x": 17.232
+                                    }
+                                }
+                            ],
+                            "name": "pen"
+                        },
+                        {
+                            "display": [
+                                {
+                                    "path": "artist/head-side",
+                                    "type": "image",
+                                    "name": "analyst/head-side",
+                                    "transform": {
+                                        "y": -23.4004,
+                                        "skX": 0.1774,
+                                        "skY": 0.1774,
+                                        "x": 0.1608
+                                    }
+                                }
+                            ],
+                            "name": "head-side"
+                        },
+                        {
+                            "display": [
+                                {
+                                    "path": "artist/body-down",
+                                    "type": "image",
+                                    "name": "analyst/body-up",
+                                    "transform": {
+                                        "y": -0.0496,
+                                        "skX": -89.8226,
+                                        "skY": -89.8226,
+                                        "x": 12
+                                    }
+                                }
+                            ],
+                            "name": "body-up"
+                        },
+                        {
+                            "display": [
+                                {
+                                    "path": "artist/hair-up",
+                                    "type": "image",
+                                    "name": "analyst/hair-up",
+                                    "transform": {
+                                        "y": 2.0004,
+                                        "skX": 90,
+                                        "skY": 90,
+                                        "x": 17.64
+                                    }
+                                }
+                            ],
+                            "name": "hair-up"
+                        },
+                        {
+                            "display": [
+                                {
+                                    "path": "artist/body-down",
+                                    "type": "image",
+                                    "name": "analyst/body-down",
+                                    "transform": {
+                                        "y": -0.0432,
+                                        "skX": -89.8226,
+                                        "skY": -89.8226,
+                                        "x": 14
+                                    }
+                                }
+                            ],
+                            "name": "body-down"
+                        },
+                        {
+                            "display": [
+                                {
+                                    "path": "artist/leg-l",
+                                    "type": "image",
+                                    "name": "analyst/leg-l",
+                                    "transform": {
+                                        "y": 0.0556,
+                                        "skX": -89.2748,
+                                        "skY": -89.2748,
+                                        "x": 4.3996
+                                    }
+                                }
+                            ],
+                            "name": "leg-l"
+                        },
+                        {
+                            "display": [
+                                {
+                                    "path": "artist/hand-l",
+                                    "type": "image",
+                                    "name": "analyst/hand-l",
+                                    "transform": {
+                                        "y": -1.3016,
+                                        "skX": -120.8014,
+                                        "skY": -120.8014,
+                                        "x": 12.7288
+                                    }
+                                }
+                            ],
+                            "name": "hand-l"
+                        },
+                        {
+                            "display": [
+                                {
+                                    "path": "easel",
+                                    "type": "image",
+                                    "name": "easel",
+                                    "transform": {
+                                        "scX": 0.25,
+                                        "y": -67.102,
+                                        "scY": 0.25,
+                                        "x": 32.9136
+                                    }
+                                }
+                            ],
+                            "name": "easel"
+                        },
+                        {
+                            "display": [
+                                {
+                                    "path": "artist/head-down",
+                                    "type": "image",
+                                    "name": "analyst/head-down",
+                                    "transform": {
+                                        "y": -23.4004,
+                                        "skX": 0.1774,
+                                        "skY": 0.1774,
+                                        "x": 0.1608
+                                    }
+                                }
+                            ],
+                            "name": "head-down"
+                        },
+                        {
+                            "actions": [
+                                {
+                                    "gotoAndPlay": "pickflower"
+                                }
+                            ],
+                            "display": [
+                                {
+                                    "path": "normal1",
+                                    "type": "armature",
+                                    "name": "normal1",
+                                    "transform": {
+                                        "y": -32.8376,
+                                        "skX": 122.3807,
+                                        "skY": 122.3807,
+                                        "x": -22.1396
+                                    },
+                                    "filterType": "armature"
+                                }
+                            ],
+                            "name": "normal1"
+                        },
+                        {
+                            "display": [
+                                {
+                                    "path": "artist/leg-r",
+                                    "type": "image",
+                                    "name": "analyst/leg-r",
+                                    "transform": {
+                                        "y": -1.6,
+                                        "skX": -90,
+                                        "skY": -90,
+                                        "x": 4.4
+                                    }
+                                }
+                            ],
+                            "name": "leg-r"
+                        },
+                        {
+                            "display": [
+                                {
+                                    "path": "artist/hair-downside",
+                                    "type": "image",
+                                    "name": "analyst/hair-down",
+                                    "transform": {
+                                        "y": -2.106,
+                                        "skX": 90,
+                                        "skY": 90,
+                                        "x": 17.6408
+                                    }
+                                }
+                            ],
+                            "name": "hair-down"
+                        },
+                        {
+                            "display": [
+                                {
+                                    "path": "artist/hand-r",
+                                    "type": "image",
+                                    "name": "analyst/hand-r",
+                                    "transform": {
+                                        "y": 0.996,
+                                        "skX": -58.2764,
+                                        "skY": -58.2764,
+                                        "x": 13.022
+                                    }
+                                }
+                            ],
+                            "name": "hand-r"
+                        }
+                    ]
+                }
+            ],
+            "type": "Armature",
+            "bone": [
+                {
+                    "name": "root",
+                    "transform": {}
+                },
+                {
+                    "length": 64,
+                    "transform": {
+                        "y": -12,
+                        "skX": -0.1774,
+                        "skY": -0.1774
+                    },
+                    "parent": "root",
+                    "name": "hip"
+                },
+                {
+                    "length": 48,
+                    "transform": {
+                        "y": -104.2,
+                        "skX": -122.3807,
+                        "skY": -122.3807,
+                        "x": 396.6
+                    },
+                    "parent": "root",
+                    "name": "normal1"
+                },
+                {
+                    "length": 8,
+                    "transform": {
+                        "y": -2.38,
+                        "skX": 90.1774,
+                        "skY": 90.1774,
+                        "x": 6.4072
+                    },
+                    "parent": "hip",
+                    "name": "leg-r"
+                },
+                {
+                    "length": 12,
+                    "transform": {
+                        "y": -2.4248,
+                        "skX": 90.1774,
+                        "skY": 90.1774,
+                        "x": -7.9924
+                    },
+                    "parent": "hip",
+                    "name": "leg-l"
+                },
+                {
+                    "length": 24,
+                    "transform": {
+                        "y": -28,
+                        "skX": 90,
+                        "skY": 90
+                    },
+                    "parent": "hip",
+                    "name": "body"
+                },
+                {
+                    "length": 44,
+                    "transform": {
+                        "y": 0.0056,
+                        "skX": -90,
+                        "skY": -90,
+                        "x": 1.2008
+                    },
+                    "parent": "body",
+                    "name": "head"
+                },
+                {
+                    "length": 24,
+                    "transform": {
+                        "y": -12.0732,
+                        "skX": -31.5462,
+                        "skY": -31.5462,
+                        "x": 4.4372
+                    },
+                    "parent": "body",
+                    "name": "hand-r"
+                },
+                {
+                    "length": 24,
+                    "transform": {
+                        "y": 12.5268,
+                        "skX": 30.9788,
+                        "skY": 30.9788,
+                        "x": 4.3612
+                    },
+                    "parent": "body",
+                    "name": "hand-l"
+                },
+                {
+                    "length": 12,
+                    "transform": {
+                        "y": -12.644,
+                        "skX": -59.7452,
+                        "skY": -59.7452,
+                        "x": 24.6972
+                    },
+                    "parent": "hand-r",
+                    "name": "item"
+                },
+                {
+                    "length": 40,
+                    "transform": {
+                        "y": -11.6004,
+                        "skX": -89.8226,
+                        "skY": -89.8226,
+                        "x": 0.1244
+                    },
+                    "parent": "head",
+                    "name": "hair"
+                },
+                {
+                    "length": 36,
+                    "transform": {
+                        "y": 0.6264,
+                        "skX": -120.7356,
+                        "skY": -120.7356,
+                        "x": 24.4016
+                    },
+                    "parent": "hand-r",
+                    "name": "pen"
+                },
+                {
+                    "length": 20,
+                    "transform": {
+                        "y": 13.6532,
+                        "skX": 59.1986,
+                        "skY": 59.1986,
+                        "x": 21.3024
+                    },
+                    "parent": "hand-l",
+                    "name": "tsb"
+                }
+            ],
+            "aabb": {
+                "width": 800,
+                "y": -331.1018285084207,
+                "height": 528,
+                "x": -367.0863877366387
+            },
+            "defaultActions": [
+                {
+                    "gotoAndPlay": "paint"
+                }
+            ],
+            "animation": [
+                {
+                    "duration": 220,
+                    "frame": [],
+                    "zOrder": {
+                        "frame": [
+                            {
+                                "duration": 70,
+                                "zOrder": [],
+                                "tweenEasing": null
+                            },
+                            {
+                                "duration": 10,
+                                "zOrder": [
+                                    5,
+                                    -1,
+                                    6,
+                                    -3
+                                ],
+                                "tweenEasing": null
+                            },
+                            {
+                                "duration": 5,
+                                "zOrder": [
+                                    5,
+                                    -1,
+                                    6,
+                                    -3
+                                ],
+                                "tweenEasing": null
+                            },
+                            {
+                                "duration": 10,
+                                "zOrder": [
+                                    5,
+                                    -1,
+                                    6,
+                                    -3
+                                ],
+                                "tweenEasing": null
+                            },
+                            {
+                                "duration": 10,
+                                "zOrder": [
+                                    5,
+                                    -1,
+                                    6,
+                                    -3
+                                ],
+                                "tweenEasing": null
+                            },
+                            {
+                                "duration": 10,
+                                "zOrder": [
+                                    5,
+                                    -1,
+                                    6,
+                                    -3
+                                ],
+                                "tweenEasing": null
+                            },
+                            {
+                                "duration": 10,
+                                "zOrder": [
+                                    5,
+                                    -1,
+                                    6,
+                                    -3
+                                ],
+                                "tweenEasing": null
+                            },
+                            {
+                                "duration": 95,
+                                "zOrder": [
+                                    5,
+                                    -1,
+                                    6,
+                                    -3
+                                ],
+                                "tweenEasing": null
+                            }
+                        ]
+                    },
+                    "bone": [
+                        {
+                            "rotateFrame": [],
+                            "name": "root",
+                            "translateFrame": [],
+                            "scaleFrame": []
+                        },
+                        {
+                            "rotateFrame": [
+                                {
+                                    "duration": 210
+                                },
+                                {
+                                    "duration": 10
+                                }
+                            ],
+                            "name": "hip",
+                            "translateFrame": [
+                                {
+                                    "duration": 210
+                                },
+                                {
+                                    "duration": 10
+                                }
+                            ],
+                            "scaleFrame": [
+                                {
+                                    "duration": 210
+                                },
+                                {
+                                    "duration": 10
+                                }
+                            ]
+                        },
+                        {
+                            "rotateFrame": [],
+                            "name": "leg-r",
+                            "translateFrame": [],
+                            "scaleFrame": []
+                        },
+                        {
+                            "rotateFrame": [],
+                            "name": "leg-l",
+                            "translateFrame": [],
+                            "scaleFrame": []
+                        },
+                        {
+                            "rotateFrame": [
+                                {
+                                    "duration": 220
+                                }
+                            ],
+                            "name": "body",
+                            "translateFrame": [
+                                {
+                                    "duration": 220
+                                }
+                            ],
+                            "scaleFrame": [
+                                {
+                                    "duration": 220
+                                }
+                            ]
+                        },
+                        {
+                            "rotateFrame": [
+                                {
+                                    "duration": 50,
+                                    "tweenEasing": 0,
+                                    "rotate": -7.5304
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0,
+                                    "rotate": -26.034
+                                },
+                                {
+                                    "duration": 5,
+                                    "tweenEasing": 0,
+                                    "rotate": -32.0222
+                                },
+                                {
+                                    "duration": 60,
+                                    "tweenEasing": 0,
+                                    "rotate": -38.6284
+                                },
+                                {
+                                    "duration": 85,
+                                    "rotate": -7.5304
+                                }
+                            ],
+                            "name": "hand-l",
+                            "translateFrame": [
+                                {
+                                    "duration": 50
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 160
+                                }
+                            ],
+                            "scaleFrame": [
+                                {
+                                    "duration": 50
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 160
+                                }
+                            ]
+                        },
+                        {
+                            "rotateFrame": [
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0,
+                                    "rotate": -39.9864
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0,
+                                    "rotate": -53.7092
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0,
+                                    "rotate": -39.9864
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0,
+                                    "rotate": -53.7092
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0,
+                                    "rotate": -39.9864
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0,
+                                    "rotate": -53.7092
+                                },
+                                {
+                                    "duration": 15,
+                                    "tweenEasing": 0,
+                                    "rotate": -39.9864
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0,
+                                    "rotate": 29.1979
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0,
+                                    "rotate": 29.1979
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0,
+                                    "rotate": 29.1979
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0,
+                                    "rotate": 29.1979
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0,
+                                    "rotate": 29.1979
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0,
+                                    "rotate": 29.1979
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0,
+                                    "rotate": -39.9864
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0,
+                                    "rotate": -53.7092
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0,
+                                    "rotate": -39.9864
+                                },
+                                {
+                                    "duration": 2,
+                                    "tweenEasing": 0,
+                                    "rotate": -53.7092
+                                },
+                                {
+                                    "duration": 8,
+                                    "tweenEasing": 0,
+                                    "rotate": -50.9646
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0,
+                                    "rotate": -39.9864
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0,
+                                    "rotate": -53.7092
+                                },
+                                {
+                                    "duration": 13,
+                                    "tweenEasing": 0,
+                                    "rotate": -39.9864
+                                },
+                                {
+                                    "duration": 12,
+                                    "tweenEasing": 0,
+                                    "rotate": -53.7092
+                                },
+                                {
+                                    "duration": 0,
+                                    "rotate": -39.9864
+                                }
+                            ],
+                            "name": "hand-r",
+                            "translateFrame": [
+                                {
+                                    "duration": 10,
+                                    "y": 2.0848,
+                                    "tweenEasing": 0,
+                                    "x": 2.072
+                                },
+                                {
+                                    "duration": 10,
+                                    "y": 2.0848,
+                                    "tweenEasing": 0,
+                                    "x": 2.072
+                                },
+                                {
+                                    "duration": 10,
+                                    "y": 2.0848,
+                                    "tweenEasing": 0,
+                                    "x": 2.072
+                                },
+                                {
+                                    "duration": 10,
+                                    "y": 2.0848,
+                                    "tweenEasing": 0,
+                                    "x": 2.072
+                                },
+                                {
+                                    "duration": 10,
+                                    "y": 2.0848,
+                                    "tweenEasing": 0,
+                                    "x": 2.072
+                                },
+                                {
+                                    "duration": 10,
+                                    "y": 2.0848,
+                                    "tweenEasing": 0,
+                                    "x": 2.072
+                                },
+                                {
+                                    "duration": 15,
+                                    "y": 2.0848,
+                                    "tweenEasing": 0,
+                                    "x": 2.072
+                                },
+                                {
+                                    "duration": 10,
+                                    "y": 2.0848,
+                                    "tweenEasing": 0,
+                                    "x": 2.072
+                                },
+                                {
+                                    "duration": 10,
+                                    "y": 2.0848,
+                                    "tweenEasing": 0,
+                                    "x": 2.072
+                                },
+                                {
+                                    "duration": 10,
+                                    "y": 2.0848,
+                                    "tweenEasing": 0,
+                                    "x": 2.072
+                                },
+                                {
+                                    "duration": 10,
+                                    "y": 2.0848,
+                                    "tweenEasing": 0,
+                                    "x": 2.072
+                                },
+                                {
+                                    "duration": 10,
+                                    "y": 2.0848,
+                                    "tweenEasing": 0,
+                                    "x": 2.072
+                                },
+                                {
+                                    "duration": 10,
+                                    "y": 2.0848,
+                                    "tweenEasing": 0,
+                                    "x": 2.072
+                                },
+                                {
+                                    "duration": 10,
+                                    "y": 2.0848,
+                                    "tweenEasing": 0,
+                                    "x": 2.072
+                                },
+                                {
+                                    "duration": 10,
+                                    "y": 2.0848,
+                                    "tweenEasing": 0,
+                                    "x": 2.072
+                                },
+                                {
+                                    "duration": 10,
+                                    "y": 2.0848,
+                                    "tweenEasing": 0,
+                                    "x": 2.072
+                                },
+                                {
+                                    "duration": 10,
+                                    "y": 2.0848,
+                                    "tweenEasing": 0,
+                                    "x": 2.072
+                                },
+                                {
+                                    "duration": 10,
+                                    "y": 2.0848,
+                                    "tweenEasing": 0,
+                                    "x": 2.072
+                                },
+                                {
+                                    "duration": 10,
+                                    "y": 2.0848,
+                                    "tweenEasing": 0,
+                                    "x": 2.072
+                                },
+                                {
+                                    "duration": 13,
+                                    "y": 2.0848,
+                                    "tweenEasing": 0,
+                                    "x": 2.072
+                                },
+                                {
+                                    "duration": 12,
+                                    "y": 2.0848,
+                                    "tweenEasing": 0,
+                                    "x": 2.072
+                                },
+                                {
+                                    "duration": 0,
+                                    "y": 2.0848,
+                                    "x": 2.072
+                                }
+                            ],
+                            "scaleFrame": [
+                                {
+                                    "duration": 60,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 15,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 20,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 20,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 20,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 25,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 0
+                                }
+                            ]
+                        },
+                        {
+                            "rotateFrame": [],
+                            "name": "head",
+                            "translateFrame": [],
+                            "scaleFrame": []
+                        },
+                        {
+                            "rotateFrame": [],
+                            "name": "hair",
+                            "translateFrame": [],
+                            "scaleFrame": []
+                        },
+                        {
+                            "rotateFrame": [
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0,
+                                    "rotate": 56.4285
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0,
+                                    "rotate": 49.5045
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0,
+                                    "rotate": 56.4285
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0,
+                                    "rotate": 49.5045
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0,
+                                    "rotate": 56.4285
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0,
+                                    "rotate": 49.5045
+                                },
+                                {
+                                    "duration": 7,
+                                    "tweenEasing": 0,
+                                    "rotate": 56.4285
+                                },
+                                {
+                                    "duration": 8,
+                                    "tweenEasing": 0,
+                                    "rotate": 1.3716
+                                },
+                                {
+                                    "duration": 5,
+                                    "tweenEasing": 0,
+                                    "rotate": -71.6495
+                                },
+                                {
+                                    "duration": 5,
+                                    "tweenEasing": 0,
+                                    "rotate": -71.6495
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0,
+                                    "rotate": -175.2853
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0,
+                                    "rotate": -168.828
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0,
+                                    "rotate": -175.2853
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0,
+                                    "rotate": -168.828
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0,
+                                    "rotate": -175.2853
+                                },
+                                {
+                                    "duration": 85,
+                                    "rotate": 56.4285
+                                }
+                            ],
+                            "name": "pen",
+                            "translateFrame": [
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 7,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 8,
+                                    "y": 1.1728,
+                                    "tweenEasing": 0,
+                                    "x": -6.0024
+                                },
+                                {
+                                    "duration": 5,
+                                    "y": 3.176,
+                                    "tweenEasing": 0,
+                                    "x": -22.7376
+                                },
+                                {
+                                    "duration": 5,
+                                    "y": 3.176,
+                                    "tweenEasing": 0,
+                                    "x": -22.7376
+                                },
+                                {
+                                    "duration": 10,
+                                    "y": -18.0096,
+                                    "tweenEasing": 0,
+                                    "x": -21.8032
+                                },
+                                {
+                                    "duration": 10,
+                                    "y": -17.912,
+                                    "tweenEasing": 0,
+                                    "x": -19.5964
+                                },
+                                {
+                                    "duration": 10,
+                                    "y": -18.0096,
+                                    "tweenEasing": 0,
+                                    "x": -21.8032
+                                },
+                                {
+                                    "duration": 10,
+                                    "y": -17.912,
+                                    "tweenEasing": 0,
+                                    "x": -19.5964
+                                },
+                                {
+                                    "duration": 10,
+                                    "y": -18.0096,
+                                    "tweenEasing": 0,
+                                    "x": -21.8032
+                                },
+                                {
+                                    "duration": 85
+                                }
+                            ],
+                            "scaleFrame": [
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0,
+                                    "x": 0.9
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0,
+                                    "x": 0.9375
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0,
+                                    "x": 0.9
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0,
+                                    "x": 0.9375
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0,
+                                    "x": 0.9
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0,
+                                    "x": 0.9375
+                                },
+                                {
+                                    "duration": 75,
+                                    "tweenEasing": 0,
+                                    "x": 0.9
+                                },
+                                {
+                                    "duration": 85,
+                                    "x": 0.9
+                                }
+                            ]
+                        },
+                        {
+                            "rotateFrame": [
+                                {
+                                    "duration": 50
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 65,
+                                    "tweenEasing": 0,
+                                    "rotate": 40.4282
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0,
+                                    "rotate": 40.4282
+                                },
+                                {
+                                    "duration": 85
+                                }
+                            ],
+                            "name": "tsb",
+                            "translateFrame": [
+                                {
+                                    "duration": 50
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 65,
+                                    "y": -16.4796,
+                                    "tweenEasing": 0,
+                                    "x": -7.3988
+                                },
+                                {
+                                    "duration": 10,
+                                    "y": -16.4796,
+                                    "tweenEasing": 0,
+                                    "x": -7.3988
+                                },
+                                {
+                                    "duration": 85
+                                }
+                            ],
+                            "scaleFrame": [
+                                {
+                                    "duration": 50
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 65,
+                                    "tweenEasing": 0,
+                                    "x": 1.05
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0,
+                                    "x": 1.05
+                                },
+                                {
+                                    "duration": 85
+                                }
+                            ]
+                        },
+                        {
+                            "rotateFrame": [],
+                            "name": "item",
+                            "translateFrame": [],
+                            "scaleFrame": []
+                        },
+                        {
+                            "rotateFrame": [],
+                            "name": "normal1",
+                            "translateFrame": [],
+                            "scaleFrame": []
+                        }
+                    ],
+                    "slot": [
+                        {
+                            "colorFrame": [],
+                            "displayFrame": [],
+                            "name": "leg-l"
+                        },
+                        {
+                            "colorFrame": [],
+                            "displayFrame": [],
+                            "name": "leg-r"
+                        },
+                        {
+                            "colorFrame": [],
+                            "displayFrame": [],
+                            "name": "hand-r"
+                        },
+                        {
+                            "colorFrame": [],
+                            "displayFrame": [
+                                {
+                                    "value": -1,
+                                    "duration": 220
+                                }
+                            ],
+                            "name": "body-down"
+                        },
+                        {
+                            "colorFrame": [],
+                            "displayFrame": [
+                                {
+                                    "duration": 220
+                                }
+                            ],
+                            "name": "body-up"
+                        },
+                        {
+                            "colorFrame": [],
+                            "displayFrame": [],
+                            "name": "hand-l"
+                        },
+                        {
+                            "colorFrame": [],
+                            "displayFrame": [],
+                            "name": "head-down"
+                        },
+                        {
+                            "colorFrame": [],
+                            "displayFrame": [
+                                {
+                                    "value": -1,
+                                    "duration": 220
+                                }
+                            ],
+                            "name": "head-side"
+                        },
+                        {
+                            "colorFrame": [],
+                            "displayFrame": [
+                                {
+                                    "value": -1,
+                                    "duration": 220
+                                }
+                            ],
+                            "name": "hair-down"
+                        },
+                        {
+                            "colorFrame": [],
+                            "displayFrame": [
+                                {
+                                    "duration": 220
+                                }
+                            ],
+                            "name": "hair-up"
+                        },
+                        {
+                            "colorFrame": [],
+                            "displayFrame": [
+                                {
+                                    "duration": 220
+                                }
+                            ],
+                            "name": "pen"
+                        },
+                        {
+                            "colorFrame": [],
+                            "displayFrame": [
+                                {
+                                    "duration": 220
+                                }
+                            ],
+                            "name": "tsb"
+                        },
+                        {
+                            "colorFrame": [],
+                            "displayFrame": [],
+                            "name": "easel"
+                        },
+                        {
+                            "colorFrame": [],
+                            "displayFrame": [],
+                            "name": "normal1"
+                        }
+                    ],
+                    "ffd": [],
+                    "ik": [],
+                    "playTimes": 0,
+                    "name": "paint"
+                }
+            ],
+            "ik": [],
+            "name": "normal",
+            "frameRate": 40,
+            "slot": [
+                {
+                    "color": {},
+                    "name": "easel",
+                    "parent": "root"
+                },
+                {
+                    "z": 1,
+                    "color": {},
+                    "name": "tsb",
+                    "parent": "tsb"
+                },
+                {
+                    "z": 2,
+                    "color": {},
+                    "name": "pen",
+                    "parent": "pen"
+                },
+                {
+                    "z": 3,
+                    "color": {},
+                    "name": "leg-l",
+                    "parent": "leg-l"
+                },
+                {
+                    "z": 4,
+                    "color": {},
+                    "name": "leg-r",
+                    "parent": "leg-r"
+                },
+                {
+                    "z": 5,
+                    "color": {},
+                    "name": "hand-l",
+                    "parent": "hand-l"
+                },
+                {
+                    "z": 6,
+                    "color": {},
+                    "name": "hand-r",
+                    "parent": "hand-r"
+                },
+                {
+                    "z": 7,
+                    "color": {},
+                    "name": "body-down",
+                    "parent": "body"
+                },
+                {
+                    "z": 8,
+                    "color": {},
+                    "name": "body-up",
+                    "parent": "body"
+                },
+                {
+                    "z": 9,
+                    "color": {},
+                    "name": "head-down",
+                    "parent": "head"
+                },
+                {
+                    "z": 10,
+                    "color": {},
+                    "name": "head-side",
+                    "parent": "head"
+                },
+                {
+                    "z": 11,
+                    "color": {},
+                    "name": "hair-down",
+                    "parent": "hair"
+                },
+                {
+                    "z": 12,
+                    "color": {},
+                    "name": "hair-up",
+                    "parent": "hair"
+                },
+                {
+                    "actions": [
+                        {
+                            "gotoAndPlay": "pickflower"
+                        }
+                    ],
+                    "z": 13,
+                    "color": {},
+                    "name": "normal1",
+                    "parent": "normal1"
+                }
+            ]
+        },
+        {
+            "skin": [
+                {
+                    "name": "",
+                    "slot": [
+                        {
+                            "display": [
+                                {
+                                    "path": "gardener/hand-r",
+                                    "type": "image",
+                                    "name": "analyst/hand-r",
+                                    "transform": {
+                                        "y": 0.996,
+                                        "skX": -58.2764,
+                                        "skY": -58.2764,
+                                        "x": 13.022
+                                    }
+                                }
+                            ],
+                            "name": "hand-r"
+                        },
+                        {
+                            "display": [
+                                {
+                                    "path": "gardener/leg-r",
+                                    "type": "image",
+                                    "name": "analyst/leg-r",
+                                    "transform": {
+                                        "y": -3.8,
+                                        "skX": -90,
+                                        "skY": -90,
+                                        "x": 4.4
+                                    }
+                                }
+                            ],
+                            "name": "leg-r"
+                        },
+                        {
+                            "display": [
+                                {
+                                    "path": "gardener/head-smile",
+                                    "type": "image",
+                                    "name": "gardener/head-side_拷贝",
+                                    "transform": {
+                                        "y": -23.4,
+                                        "skX": 0.1774,
+                                        "skY": 0.1774,
+                                        "x": 0.1952
+                                    }
+                                }
+                            ],
+                            "name": "head-smile"
+                        },
+                        {
+                            "display": [
+                                {
+                                    "path": "gardener/hair-down",
+                                    "type": "image",
+                                    "name": "analyst/hair-down",
+                                    "transform": {
+                                        "y": -2,
+                                        "skX": 90,
+                                        "skY": 90,
+                                        "x": 5.6964
+                                    }
+                                }
+                            ],
+                            "name": "hair-down"
+                        },
+                        {
+                            "display": [
+                                {
+                                    "path": "gardener/head-down",
+                                    "type": "image",
+                                    "name": "analyst/head-down",
+                                    "transform": {
+                                        "y": -23.4004,
+                                        "skX": 0.1774,
+                                        "skY": 0.1774,
+                                        "x": 0.1608
+                                    }
+                                }
+                            ],
+                            "name": "head-down"
+                        },
+                        {
+                            "display": [
+                                {
+                                    "path": "gardener/hand-l",
+                                    "type": "image",
+                                    "name": "analyst/hand-l",
+                                    "transform": {
+                                        "y": -1.3016,
+                                        "skX": -120.8014,
+                                        "skY": -120.8014,
+                                        "x": 12.7288
+                                    }
+                                }
+                            ],
+                            "name": "hand-l"
+                        },
+                        {
+                            "display": [
+                                {
+                                    "path": "gardener/body-up",
+                                    "type": "image",
+                                    "name": "analyst/body-down",
+                                    "transform": {
+                                        "y": -0.0432,
+                                        "skX": -89.8226,
+                                        "skY": -89.8226,
+                                        "x": 14
+                                    }
+                                }
+                            ],
+                            "name": "body-up"
+                        },
+                        {
+                            "display": [
+                                {
+                                    "path": "gardener/heart",
+                                    "type": "image",
+                                    "name": "gardener/heart",
+                                    "transform": {
+                                        "y": -0.102,
+                                        "skX": 91.1458,
+                                        "skY": 91.1458,
+                                        "x": 0.9376
+                                    }
+                                }
+                            ],
+                            "name": "heart"
+                        },
+                        {
+                            "display": [
+                                {
+                                    "path": "gardener/leg-l",
+                                    "type": "image",
+                                    "name": "analyst/leg-l",
+                                    "transform": {
+                                        "y": 1.6556,
+                                        "skX": -89.2748,
+                                        "skY": -89.2748,
+                                        "x": 4.3996
+                                    }
+                                }
+                            ],
+                            "name": "leg-l"
+                        },
+                        {
+                            "display": [
+                                {
+                                    "path": "gardener/body-down",
+                                    "type": "image",
+                                    "name": "analyst/body-down",
+                                    "transform": {
+                                        "y": -0.0432,
+                                        "skX": -89.8226,
+                                        "skY": -89.8226,
+                                        "x": 14
+                                    }
+                                }
+                            ],
+                            "name": "body-down"
+                        },
+                        {
+                            "display": [
+                                {
+                                    "path": "gardener/body-side",
+                                    "type": "image",
+                                    "name": "analyst/body-down",
+                                    "transform": {
+                                        "y": -0.0432,
+                                        "skX": -89.8226,
+                                        "skY": -89.8226,
+                                        "x": 14
+                                    }
+                                }
+                            ],
+                            "name": "body-side"
+                        },
+                        {
+                            "display": [
+                                {
+                                    "path": "gardener/hair-up",
+                                    "type": "image",
+                                    "name": "analyst/hair-up",
+                                    "transform": {
+                                        "y": 0.1696,
+                                        "skX": 90,
+                                        "skY": 90,
+                                        "x": 11.8916
+                                    }
+                                }
+                            ],
+                            "name": "hair-up"
+                        },
+                        {
+                            "display": [
+                                {
+                                    "path": "gardener/head-side",
+                                    "type": "image",
+                                    "name": "analyst/head-side",
+                                    "transform": {
+                                        "y": -23.4004,
+                                        "skX": 0.1774,
+                                        "skY": 0.1774,
+                                        "x": 0.1608
+                                    }
+                                }
+                            ],
+                            "name": "head-side"
+                        },
+                        {
+                            "display": [
+                                {
+                                    "path": "gardener/hair-dside",
+                                    "type": "image",
+                                    "name": "analyst/hair-down",
+                                    "transform": {
+                                        "y": -4,
+                                        "skX": 90,
+                                        "skY": 90,
+                                        "x": 5.68
+                                    }
+                                }
+                            ],
+                            "name": "hair-side"
+                        },
+                        {
+                            "display": [
+                                {
+                                    "path": "gardener/flower",
+                                    "type": "image",
+                                    "name": "gardener/flower",
+                                    "transform": {
+                                        "y": 0.2152,
+                                        "skX": 90.3431,
+                                        "skY": 90.3431,
+                                        "x": 13.0932
+                                    }
+                                }
+                            ],
+                            "name": "flower"
+                        }
+                    ]
+                }
+            ],
+            "type": "Armature",
+            "bone": [
+                {
+                    "name": "root",
+                    "transform": {}
+                },
+                {
+                    "length": 64,
+                    "transform": {
+                        "y": -12,
+                        "skX": -0.1774,
+                        "skY": -0.1774
+                    },
+                    "parent": "root",
+                    "name": "hip"
+                },
+                {
+                    "length": 8,
+                    "transform": {
+                        "y": -91.6,
+                        "skX": -91.1458,
+                        "skY": -91.1458,
+                        "x": -57.4
+                    },
+                    "parent": "root",
+                    "name": "heart"
+                },
+                {
+                    "length": 32,
+                    "transform": {
+                        "y": -9.642,
+                        "skX": -90.3431,
+                        "skY": -90.3431,
+                        "x": 57.5344
+                    },
+                    "parent": "root",
+                    "name": "flower"
+                },
+                {
+                    "length": 8,
+                    "transform": {
+                        "y": -2.38,
+                        "skX": 90.1774,
+                        "skY": 90.1774,
+                        "x": 6.4072
+                    },
+                    "parent": "hip",
+                    "name": "leg-r"
+                },
+                {
+                    "length": 24,
+                    "transform": {
+                        "y": -28,
+                        "skX": 90,
+                        "skY": 90
+                    },
+                    "parent": "hip",
+                    "name": "body"
+                },
+                {
+                    "length": 12,
+                    "transform": {
+                        "y": -2.4248,
+                        "skX": 90.1774,
+                        "skY": 90.1774,
+                        "x": -7.9924
+                    },
+                    "parent": "hip",
+                    "name": "leg-l"
+                },
+                {
+                    "length": 44,
+                    "transform": {
+                        "skX": -90,
+                        "skY": -90,
+                        "x": -0.5992
+                    },
+                    "parent": "body",
+                    "name": "head"
+                },
+                {
+                    "length": 24,
+                    "transform": {
+                        "y": 12.5268,
+                        "skX": 30.9788,
+                        "skY": 30.9788,
+                        "x": 4.3612
+                    },
+                    "parent": "body",
+                    "name": "hand-l"
+                },
+                {
+                    "length": 24,
+                    "transform": {
+                        "y": -12.0732,
+                        "skX": -31.5462,
+                        "skY": -31.5462,
+                        "x": 4.4372
+                    },
+                    "parent": "body",
+                    "name": "hand-r"
+                },
+                {
+                    "length": 40,
+                    "transform": {
+                        "y": -11.6004,
+                        "skX": -89.8226,
+                        "skY": -89.8226,
+                        "x": 0.1244
+                    },
+                    "parent": "head",
+                    "name": "hair"
+                },
+                {
+                    "length": 12,
+                    "transform": {
+                        "y": -9.7904,
+                        "skX": -59.7452,
+                        "skY": -59.7452,
+                        "x": 22.9332
+                    },
+                    "parent": "hand-r",
+                    "name": "item"
+                }
+            ],
+            "aabb": {
+                "width": 153.1919200505422,
+                "y": -108.53537286581107,
+                "height": 113.79911896031037,
+                "x": -75.52072846352202
+            },
+            "defaultActions": [
+                {
+                    "gotoAndPlay": "pickflower"
+                }
+            ],
+            "animation": [
+                {
+                    "duration": 220,
+                    "frame": [],
+                    "zOrder": {
+                        "frame": [
+                            {
+                                "duration": 100,
+                                "zOrder": [
+                                    0,
+                                    1,
+                                    2,
+                                    4,
+                                    9,
+                                    5,
+                                    13,
+                                    0
+                                ],
+                                "tweenEasing": null
+                            },
+                            {
+                                "duration": 120,
+                                "zOrder": [
+                                    0,
+                                    1,
+                                    2,
+                                    4,
+                                    9,
+                                    2,
+                                    13,
+                                    1
+                                ],
+                                "tweenEasing": null
+                            }
+                        ]
+                    },
+                    "bone": [
+                        {
+                            "rotateFrame": [],
+                            "name": "root",
+                            "translateFrame": [],
+                            "scaleFrame": []
+                        },
+                        {
+                            "rotateFrame": [
+                                {
+                                    "duration": 220
+                                }
+                            ],
+                            "name": "hip",
+                            "translateFrame": [
+                                {
+                                    "duration": 220
+                                }
+                            ],
+                            "scaleFrame": [
+                                {
+                                    "duration": 220
+                                }
+                            ]
+                        },
+                        {
+                            "rotateFrame": [
+                                {
+                                    "duration": 220
+                                }
+                            ],
+                            "name": "leg-r",
+                            "translateFrame": [
+                                {
+                                    "duration": 220,
+                                    "y": -0.0104,
+                                    "x": -3.8076
+                                }
+                            ],
+                            "scaleFrame": [
+                                {
+                                    "duration": 220
+                                }
+                            ]
+                        },
+                        {
+                            "rotateFrame": [
+                                {
+                                    "duration": 220
+                                }
+                            ],
+                            "name": "leg-l",
+                            "translateFrame": [
+                                {
+                                    "duration": 220,
+                                    "x": 3.9924
+                                }
+                            ],
+                            "scaleFrame": [
+                                {
+                                    "duration": 220
+                                }
+                            ]
+                        },
+                        {
+                            "rotateFrame": [
+                                {
+                                    "duration": 30,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 30,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 15,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0,
+                                    "rotate": 20.9994
+                                },
+                                {
+                                    "duration": 15,
+                                    "tweenEasing": 0,
+                                    "rotate": 20.9994
+                                },
+                                {
+                                    "duration": 30,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 30,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 30,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 30,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 0
+                                }
+                            ],
+                            "name": "body",
+                            "translateFrame": [
+                                {
+                                    "duration": 30,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 30,
+                                    "y": -0.8976,
+                                    "tweenEasing": 0,
+                                    "x": 0.0028
+                                },
+                                {
+                                    "duration": 15,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 10,
+                                    "y": 0.976,
+                                    "tweenEasing": 0,
+                                    "x": 7.4764
+                                },
+                                {
+                                    "duration": 15,
+                                    "y": 0.976,
+                                    "tweenEasing": 0,
+                                    "x": 7.4764
+                                },
+                                {
+                                    "duration": 30,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 30,
+                                    "y": -0.8976,
+                                    "tweenEasing": 0,
+                                    "x": 0.0028
+                                },
+                                {
+                                    "duration": 30,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 30,
+                                    "y": -0.8976,
+                                    "tweenEasing": 0,
+                                    "x": 0.0028
+                                },
+                                {
+                                    "duration": 0
+                                }
+                            ],
+                            "scaleFrame": [
+                                {
+                                    "duration": 30,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 30,
+                                    "y": 1.05,
+                                    "tweenEasing": 0,
+                                    "x": 1.05
+                                },
+                                {
+                                    "duration": 15,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 15,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 30,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 30,
+                                    "y": 1.05,
+                                    "tweenEasing": 0,
+                                    "x": 1.05
+                                },
+                                {
+                                    "duration": 30,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 30,
+                                    "y": 1.05,
+                                    "tweenEasing": 0,
+                                    "x": 1.05
+                                },
+                                {
+                                    "duration": 0
+                                }
+                            ]
+                        },
+                        {
+                            "rotateFrame": [
+                                {
+                                    "duration": 30,
+                                    "tweenEasing": 0,
+                                    "rotate": -12.8545
+                                },
+                                {
+                                    "duration": 30,
+                                    "tweenEasing": 0,
+                                    "rotate": 0.0957
+                                },
+                                {
+                                    "duration": 31,
+                                    "tweenEasing": 0,
+                                    "rotate": -12.8545
+                                },
+                                {
+                                    "duration": 29,
+                                    "tweenEasing": 0,
+                                    "rotate": 0.0957
+                                },
+                                {
+                                    "duration": 100,
+                                    "rotate": -12.8545
+                                }
+                            ],
+                            "name": "hand-l",
+                            "translateFrame": [
+                                {
+                                    "duration": 60,
+                                    "y": -1.61,
+                                    "tweenEasing": 0,
+                                    "x": 0.0048
+                                },
+                                {
+                                    "duration": 60,
+                                    "y": -1.61,
+                                    "tweenEasing": 0,
+                                    "x": 0.0048
+                                },
+                                {
+                                    "duration": 100,
+                                    "y": -1.61,
+                                    "x": 0.0048
+                                }
+                            ],
+                            "scaleFrame": [
+                                {
+                                    "duration": 60,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 60,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 100
+                                }
+                            ]
+                        },
+                        {
+                            "rotateFrame": [
+                                {
+                                    "duration": 30,
+                                    "tweenEasing": 0,
+                                    "rotate": 8.0053
+                                },
+                                {
+                                    "duration": 30,
+                                    "tweenEasing": 0,
+                                    "rotate": 3.7023
+                                },
+                                {
+                                    "duration": 15,
+                                    "tweenEasing": 0,
+                                    "rotate": 8.0053
+                                },
+                                {
+                                    "duration": 9,
+                                    "tweenEasing": 0,
+                                    "rotate": -33.8374
+                                },
+                                {
+                                    "duration": 16,
+                                    "tweenEasing": 0,
+                                    "rotate": -33.8374
+                                },
+                                {
+                                    "duration": 30,
+                                    "tweenEasing": 0,
+                                    "rotate": -38.4177
+                                },
+                                {
+                                    "duration": 30,
+                                    "tweenEasing": 0,
+                                    "rotate": -44.4822
+                                },
+                                {
+                                    "duration": 30,
+                                    "tweenEasing": 0,
+                                    "rotate": -38.4177
+                                },
+                                {
+                                    "duration": 30,
+                                    "tweenEasing": 0,
+                                    "rotate": -44.4822
+                                },
+                                {
+                                    "duration": 0,
+                                    "rotate": -38.4177
+                                }
+                            ],
+                            "name": "hand-r",
+                            "translateFrame": [
+                                {
+                                    "duration": 60,
+                                    "y": 2.7196,
+                                    "tweenEasing": 0,
+                                    "x": -0.0084
+                                },
+                                {
+                                    "duration": 40,
+                                    "y": 2.7196,
+                                    "tweenEasing": 0,
+                                    "x": -0.0084
+                                },
+                                {
+                                    "duration": 30,
+                                    "y": 2.7252,
+                                    "tweenEasing": 0,
+                                    "x": 1.8972
+                                },
+                                {
+                                    "duration": 30,
+                                    "y": 2.7252,
+                                    "tweenEasing": 0,
+                                    "x": 1.8972
+                                },
+                                {
+                                    "duration": 30,
+                                    "y": 2.7252,
+                                    "tweenEasing": 0,
+                                    "x": 1.8972
+                                },
+                                {
+                                    "duration": 30,
+                                    "y": 2.7252,
+                                    "tweenEasing": 0,
+                                    "x": 1.8972
+                                },
+                                {
+                                    "duration": 0,
+                                    "y": 2.7252,
+                                    "x": 1.8972
+                                }
+                            ],
+                            "scaleFrame": [
+                                {
+                                    "duration": 60,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 15,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 9,
+                                    "tweenEasing": 0,
+                                    "x": 1.25
+                                },
+                                {
+                                    "duration": 16,
+                                    "tweenEasing": 0,
+                                    "x": 1.1
+                                },
+                                {
+                                    "duration": 30,
+                                    "tweenEasing": 0,
+                                    "x": 0.9
+                                },
+                                {
+                                    "duration": 30,
+                                    "tweenEasing": 0,
+                                    "x": 0.9
+                                },
+                                {
+                                    "duration": 30,
+                                    "tweenEasing": 0,
+                                    "x": 0.9
+                                },
+                                {
+                                    "duration": 30,
+                                    "tweenEasing": 0,
+                                    "x": 0.9
+                                },
+                                {
+                                    "duration": 0,
+                                    "x": 0.9
+                                }
+                            ]
+                        },
+                        {
+                            "rotateFrame": [
+                                {
+                                    "duration": 60,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 15,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 10,
+                                    "tweenEasing": 0,
+                                    "rotate": -4.0814
+                                },
+                                {
+                                    "duration": 15,
+                                    "tweenEasing": 0,
+                                    "rotate": -4.0814
+                                },
+                                {
+                                    "duration": 120
+                                }
+                            ],
+                            "name": "head",
+                            "translateFrame": [
+                                {
+                                    "duration": 60,
+                                    "y": 0.0024,
+                                    "tweenEasing": 0,
+                                    "x": 0.8332
+                                },
+                                {
+                                    "duration": 15,
+                                    "y": 0.0024,
+                                    "tweenEasing": 0,
+                                    "x": 0.8332
+                                },
+                                {
+                                    "duration": 10,
+                                    "y": -4.9896,
+                                    "tweenEasing": 0,
+                                    "x": 1.228
+                                },
+                                {
+                                    "duration": 15,
+                                    "y": -4.9896,
+                                    "tweenEasing": 0,
+                                    "x": 1.228
+                                },
+                                {
+                                    "duration": 120,
+                                    "y": 0.0024,
+                                    "x": 0.8332
+                                }
+                            ],
+                            "scaleFrame": [
+                                {
+                                    "duration": 60,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 40,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 120
+                                }
+                            ]
+                        },
+                        {
+                            "rotateFrame": [
+                                {
+                                    "duration": 220
+                                }
+                            ],
+                            "name": "hair",
+                            "translateFrame": [
+                                {
+                                    "duration": 220
+                                }
+                            ],
+                            "scaleFrame": [
+                                {
+                                    "duration": 220
+                                }
+                            ]
+                        },
+                        {
+                            "rotateFrame": [
+                                {
+                                    "duration": 60
+                                },
+                                {
+                                    "duration": 160,
+                                    "rotate": 0.6734
+                                }
+                            ],
+                            "name": "item",
+                            "translateFrame": [],
+                            "scaleFrame": [
+                                {
+                                    "duration": 10,
+                                    "y": 0.3,
+                                    "tweenEasing": 0,
+                                    "x": 0.3
+                                },
+                                {
+                                    "duration": 110,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 100
+                                }
+                            ]
+                        },
+                        {
+                            "rotateFrame": [
+                                {
+                                    "duration": 75
+                                },
+                                {
+                                    "duration": 5,
+                                    "tweenEasing": 0,
+                                    "rotate": -5.823
+                                },
+                                {
+                                    "duration": 20,
+                                    "tweenEasing": 0,
+                                    "rotate": -11.2485
+                                },
+                                {
+                                    "duration": 30,
+                                    "tweenEasing": 0,
+                                    "rotate": 1.9416
+                                },
+                                {
+                                    "duration": 30,
+                                    "tweenEasing": 0,
+                                    "rotate": 8.3417
+                                },
+                                {
+                                    "duration": 30,
+                                    "tweenEasing": 0,
+                                    "rotate": 1.9416
+                                },
+                                {
+                                    "duration": 30,
+                                    "tweenEasing": 0,
+                                    "rotate": 8.3417
+                                },
+                                {
+                                    "duration": 0,
+                                    "rotate": 1.9416
+                                }
+                            ],
+                            "name": "flower",
+                            "translateFrame": [
+                                {
+                                    "duration": 75,
+                                    "y": -1.31,
+                                    "tweenEasing": 0,
+                                    "x": -11.7908
+                                },
+                                {
+                                    "duration": 5,
+                                    "y": -1.31,
+                                    "tweenEasing": 0,
+                                    "x": -11.7908
+                                },
+                                {
+                                    "duration": 20,
+                                    "y": -2.5012,
+                                    "tweenEasing": 0,
+                                    "x": -12.982
+                                },
+                                {
+                                    "duration": 30,
+                                    "y": -13.8504,
+                                    "tweenEasing": 0,
+                                    "x": -23.5264
+                                },
+                                {
+                                    "duration": 30,
+                                    "y": -13.8504,
+                                    "tweenEasing": 0,
+                                    "x": -23.5264
+                                },
+                                {
+                                    "duration": 30,
+                                    "y": -13.8504,
+                                    "tweenEasing": 0,
+                                    "x": -23.5264
+                                },
+                                {
+                                    "duration": 30,
+                                    "y": -13.8504,
+                                    "tweenEasing": 0,
+                                    "x": -23.5264
+                                },
+                                {
+                                    "duration": 0,
+                                    "y": -13.8504,
+                                    "x": -23.5264
+                                }
+                            ],
+                            "scaleFrame": [
+                                {
+                                    "duration": 75
+                                },
+                                {
+                                    "duration": 5,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 20,
+                                    "tweenEasing": 0,
+                                    "x": 1.05
+                                },
+                                {
+                                    "duration": 30,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 30,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 30,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 30,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 0
+                                }
+                            ]
+                        },
+                        {
+                            "rotateFrame": [],
+                            "name": "heart",
+                            "translateFrame": [
+                                {
+                                    "duration": 100
+                                },
+                                {
+                                    "duration": 30,
+                                    "y": 16.4256,
+                                    "tweenEasing": 0,
+                                    "x": 15.0096
+                                },
+                                {
+                                    "duration": 30,
+                                    "y": 16.4256,
+                                    "tweenEasing": 0,
+                                    "x": 15.0096
+                                },
+                                {
+                                    "duration": 30,
+                                    "y": 16.4256,
+                                    "tweenEasing": 0,
+                                    "x": 15.0096
+                                },
+                                {
+                                    "duration": 30,
+                                    "y": 16.4256,
+                                    "tweenEasing": 0,
+                                    "x": 15.0096
+                                },
+                                {
+                                    "duration": 0,
+                                    "y": 16.4256,
+                                    "x": 15.0096
+                                }
+                            ],
+                            "scaleFrame": [
+                                {
+                                    "duration": 100
+                                },
+                                {
+                                    "duration": 15,
+                                    "y": 0.2,
+                                    "tweenEasing": 0,
+                                    "x": 0.2
+                                },
+                                {
+                                    "duration": 15,
+                                    "y": 1.2,
+                                    "tweenEasing": 0,
+                                    "x": 1.2
+                                },
+                                {
+                                    "duration": 15,
+                                    "y": 0.8,
+                                    "tweenEasing": 0,
+                                    "x": 0.8
+                                },
+                                {
+                                    "duration": 15,
+                                    "y": 1.2,
+                                    "tweenEasing": 0,
+                                    "x": 1.2
+                                },
+                                {
+                                    "duration": 15,
+                                    "y": 0.8,
+                                    "tweenEasing": 0,
+                                    "x": 0.8
+                                },
+                                {
+                                    "duration": 15,
+                                    "y": 1.2,
+                                    "tweenEasing": 0,
+                                    "x": 1.2
+                                },
+                                {
+                                    "duration": 15,
+                                    "y": 0.8,
+                                    "tweenEasing": 0,
+                                    "x": 0.8
+                                },
+                                {
+                                    "duration": 15,
+                                    "y": 1.2,
+                                    "tweenEasing": 0,
+                                    "x": 1.2
+                                },
+                                {
+                                    "duration": 0,
+                                    "y": 0.8,
+                                    "x": 0.8
+                                }
+                            ]
+                        }
+                    ],
+                    "slot": [
+                        {
+                            "colorFrame": [],
+                            "displayFrame": [],
+                            "name": "leg-l"
+                        },
+                        {
+                            "colorFrame": [],
+                            "displayFrame": [],
+                            "name": "leg-r"
+                        },
+                        {
+                            "colorFrame": [],
+                            "displayFrame": [],
+                            "name": "hand-l"
+                        },
+                        {
+                            "colorFrame": [],
+                            "displayFrame": [],
+                            "name": "hand-r"
+                        },
+                        {
+                            "colorFrame": [],
+                            "displayFrame": [],
+                            "name": "body-down"
+                        },
+                        {
+                            "colorFrame": [],
+                            "displayFrame": [
+                                {
+                                    "value": -1,
+                                    "duration": 220
+                                }
+                            ],
+                            "name": "head-down"
+                        },
+                        {
+                            "colorFrame": [],
+                            "displayFrame": [
+                                {
+                                    "duration": 100
+                                },
+                                {
+                                    "value": -1,
+                                    "duration": 120
+                                }
+                            ],
+                            "name": "head-side"
+                        },
+                        {
+                            "colorFrame": [],
+                            "displayFrame": [
+                                {
+                                    "value": -1,
+                                    "duration": 220
+                                }
+                            ],
+                            "name": "hair-down"
+                        },
+                        {
+                            "colorFrame": [],
+                            "displayFrame": [
+                                {
+                                    "value": -1,
+                                    "duration": 220
+                                }
+                            ],
+                            "name": "hair-up"
+                        },
+                        {
+                            "colorFrame": [],
+                            "displayFrame": [
+                                {
+                                    "duration": 220
+                                }
+                            ],
+                            "name": "hair-side"
+                        },
+                        {
+                            "colorFrame": [],
+                            "displayFrame": [],
+                            "name": "body-side"
+                        },
+                        {
+                            "colorFrame": [],
+                            "displayFrame": [],
+                            "name": "body-up"
+                        },
+                        {
+                            "colorFrame": [],
+                            "displayFrame": [
+                                {
+                                    "value": -1,
+                                    "duration": 75
+                                },
+                                {
+                                    "duration": 145
+                                }
+                            ],
+                            "name": "flower"
+                        },
+                        {
+                            "colorFrame": [],
+                            "displayFrame": [
+                                {
+                                    "value": -1,
+                                    "duration": 100
+                                },
+                                {
+                                    "duration": 120
+                                }
+                            ],
+                            "name": "head-smile"
+                        },
+                        {
+                            "colorFrame": [
+                                {
+                                    "duration": 100
+                                },
+                                {
+                                    "duration": 15,
+                                    "color": {
+                                        "aM": 8
+                                    },
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 15,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 15,
+                                    "color": {
+                                        "aM": 69
+                                    },
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 15,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 15,
+                                    "color": {
+                                        "aM": 69
+                                    },
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 15,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 15,
+                                    "color": {
+                                        "aM": 69
+                                    },
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 15,
+                                    "tweenEasing": 0
+                                },
+                                {
+                                    "duration": 0,
+                                    "color": {
+                                        "aM": 69
+                                    }
+                                }
+                            ],
+                            "displayFrame": [
+                                {
+                                    "value": -1,
+                                    "duration": 100
+                                },
+                                {
+                                    "duration": 15
+                                },
+                                {
+                                    "duration": 15
+                                },
+                                {
+                                    "duration": 15
+                                },
+                                {
+                                    "duration": 15
+                                },
+                                {
+                                    "duration": 15
+                                },
+                                {
+                                    "duration": 15
+                                },
+                                {
+                                    "duration": 15
+                                },
+                                {
+                                    "duration": 15
+                                },
+                                {
+                                    "duration": 0
+                                }
+                            ],
+                            "name": "heart"
+                        }
+                    ],
+                    "ffd": [],
+                    "ik": [],
+                    "playTimes": 0,
+                    "name": "pickflower"
+                }
+            ],
+            "ik": [],
+            "name": "normal1",
+            "frameRate": 40,
+            "slot": [
+                {
+                    "color": {},
+                    "name": "leg-l",
+                    "parent": "leg-l"
+                },
+                {
+                    "z": 1,
+                    "color": {},
+                    "name": "leg-r",
+                    "parent": "leg-r"
+                },
+                {
+                    "z": 2,
+                    "color": {},
+                    "name": "hand-l",
+                    "parent": "hand-l"
+                },
+                {
+                    "z": 3,
+                    "color": {},
+                    "name": "hand-r",
+                    "parent": "hand-r"
+                },
+                {
+                    "z": 4,
+                    "color": {},
+                    "name": "body-down",
+                    "parent": "body"
+                },
+                {
+                    "z": 5,
+                    "color": {},
+                    "name": "body-up",
+                    "parent": "body"
+                },
+                {
+                    "z": 6,
+                    "color": {},
+                    "name": "body-side",
+                    "parent": "body"
+                },
+                {
+                    "z": 7,
+                    "color": {},
+                    "name": "head-down",
+                    "parent": "head"
+                },
+                {
+                    "z": 8,
+                    "color": {},
+                    "name": "head-side",
+                    "parent": "head"
+                },
+                {
+                    "z": 9,
+                    "color": {},
+                    "name": "head-smile",
+                    "parent": "head"
+                },
+                {
+                    "z": 10,
+                    "color": {},
+                    "name": "hair-down",
+                    "parent": "hair"
+                },
+                {
+                    "z": 11,
+                    "color": {},
+                    "name": "hair-up",
+                    "parent": "hair"
+                },
+                {
+                    "z": 12,
+                    "color": {},
+                    "name": "hair-side",
+                    "parent": "hair"
+                },
+                {
+                    "z": 13,
+                    "color": {},
+                    "name": "flower",
+                    "parent": "flower"
+                },
+                {
+                    "z": 14,
+                    "color": {},
+                    "name": "heart",
+                    "parent": "heart"
+                }
+            ]
+        }
+    ],
+    "name": "webanimation",
+    "version": "5.5"
+}
