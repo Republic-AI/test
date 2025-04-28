@@ -1,6 +1,8 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
-import { Loader2 } from 'lucide-react';
+import { Loader2, LogOut } from 'lucide-react';
+import GoogleLoginButton from './GoogleLoginButton';
+import AuthError from './AuthError';
 
 interface UserInfo {
   userId: string;
@@ -14,7 +16,7 @@ interface UserInfoPanelProps {
   className?: string;
   isSignedIn?: boolean;
   userInfo?: UserInfo | null;
-  onLogin?: () => void;
+  onLogin?: (userInfo: UserInfo) => void;
 }
 
 const UserInfoPanel: React.FC<UserInfoPanelProps> = ({ 
@@ -24,14 +26,31 @@ const UserInfoPanel: React.FC<UserInfoPanelProps> = ({
   onLogin
 }) => {
   const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
 
-  const handleLogin = () => {
-    setLoading(true);
-    // Simulate login delay
-    setTimeout(() => {
-      setLoading(false);
-      onLogin?.();
-    }, 500);
+  const handleGoogleLoginSuccess = (userInfo: UserInfo) => {
+    setLoading(false);
+    setError(null);
+    onLogin?.(userInfo);
+  };
+
+  const handleGoogleLoginError = (error: any) => {
+    setLoading(false);
+    console.error('Google login failed:', error);
+    setError(error.error_description || '登录失败，请稍后再试');
+  };
+
+  const handleLogout = () => {
+    // 清除本地存储
+    localStorage.removeItem('userInfo');
+    localStorage.removeItem('isSignedIn');
+    
+    // 刷新页面以重置所有状态
+    window.location.reload();
+  };
+
+  const handleRetry = () => {
+    setError(null);
   };
 
   return (
@@ -88,15 +107,28 @@ const UserInfoPanel: React.FC<UserInfoPanelProps> = ({
                 <span className="text-amber-700 text-sm font-medium">Earn More →</span>
               </button>
             </div>
+            
+            {/* 登出按钮 */}
+            <button 
+              onClick={handleLogout}
+              className="mt-3 flex items-center justify-center gap-2 p-2 rounded-lg text-red-600 hover:bg-red-50 transition-colors"
+            >
+              <LogOut size={16} />
+              <span>Sign Out</span>
+            </button>
           </div>
         </div>
       ) : (
-        <button
-          className="w-full p-3 rounded-lg bg-primary text-primary-foreground font-medium text-lg hover:bg-primary/90 transition-colors"
-          onClick={handleLogin}
-        >
-          Sign In
-        </button>
+        <>
+          {error ? (
+            <AuthError error={error} onRetry={handleRetry} />
+          ) : (
+            <GoogleLoginButton
+              onSuccess={handleGoogleLoginSuccess}
+              onError={handleGoogleLoginError}
+            />
+          )}
+        </>
       )}
     </div>
   );

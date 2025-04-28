@@ -102,22 +102,10 @@ const Scene: React.FC = () => {
     }
   };
 
-  const handleLogin = () => {
-    const mockUserInfo = {
-      userId: "JohnDoe",
-      id: "123456",
-      location: "New York",
-      avatar: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
-      points: 100
-    };
-
-    // Save to localStorage
-    localStorage.setItem('userInfo', JSON.stringify(mockUserInfo));
-    localStorage.setItem('isSignedIn', 'true');
-    
-    // Update state
+  const handleLogin = (userInfo: UserInfo) => {
+    // 更新状态
     setIsSignedIn(true);
-    setUserInfo(mockUserInfo);
+    setUserInfo(userInfo);
     
     toast({
       title: "Welcome back!",
