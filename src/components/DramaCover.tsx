@@ -1,5 +1,6 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
+import { useCocos } from './CocosEmbed';
 
 interface DramaCoverProps {
   coverImage: string;
@@ -20,6 +21,14 @@ const DramaCover: React.FC<DramaCoverProps> = ({
   jumpTo,
   className 
 }) => {
+  const { navigateToScene } = useCocos();
+
+  const handleClick = () => {
+    // 同时执行原始 onJumpTo 函数和发送导航事件
+    onJumpTo(jumpTo);
+    navigateToScene(jumpTo);
+  };
+
   return (
     <div 
       className={cn(
@@ -27,7 +36,7 @@ const DramaCover: React.FC<DramaCoverProps> = ({
         "animate-fade-in shadow-lg",
         className
       )}
-      onClick={() => onJumpTo(jumpTo)}
+      onClick={handleClick}
     >
       {coverVideo ? (
         <video 

@@ -35,7 +35,7 @@ const UserInfoPanel: React.FC<UserInfoPanelProps> = ({
   };
 
   const handleGoogleLoginError = (error: any) => {
-    setLoading(false);
+      setLoading(false);
     console.error('Google login failed:', error);
     setError(error.error_description || '登录失败，请稍后再试');
   };

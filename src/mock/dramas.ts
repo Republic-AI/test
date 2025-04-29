@@ -9,7 +9,7 @@ export const MOCK_DRAMAS: Record<string, TabContent> = {
       description: 'A heartwarming tale of love and friendship on a beautiful countryside ranch. Follow Lily and Mark as they navigate life, love, and the challenges of ranch living.',
       coverImageUrl: 'https://images.unsplash.com/photo-1500673922987-e212871fec22',
       coverVideoUrl: '/videos/ranch-preview.mp4',
-      jumpTo: 'ranch_main_scene',
+      jumpTo: 'room01',
       characters: [
         {
           id: 'lily',
@@ -17,7 +17,7 @@ export const MOCK_DRAMAS: Record<string, TabContent> = {
           job: 'Ranch Owner',
           description: 'Inherited her grandfather\'s ranch and is determined to make it successful while dealing with her feelings for childhood friend Mark.',
           imageUrl: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158',
-          jumpTo: 'lily_scene',
+          jumpTo: '10016',
           tags: ['Determined', 'Passionate']
         },
         {
@@ -26,7 +26,7 @@ export const MOCK_DRAMAS: Record<string, TabContent> = {
           job: 'Ranch Hand',
           description: 'A skilled cowboy with a mysterious past who returned to help his childhood friend Lily manage the ranch.',
           imageUrl: 'https://images.unsplash.com/photo-1649972904349-6e44c42644a7',
-          jumpTo: 'mark_scene',
+          jumpTo: '10017',
           tags: ['Mysterious', 'Skilled']
         },
         {
@@ -35,7 +35,7 @@ export const MOCK_DRAMAS: Record<string, TabContent> = {
           job: 'Veterinarian',
           description: 'The local vet who visits the ranch regularly and has hidden feelings for one of the ranch hands.',
           imageUrl: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158',
-          jumpTo: 'emma_scene',
+          jumpTo: '10018',
           tags: ['Caring', 'Professional']
         },
         {
@@ -44,7 +44,7 @@ export const MOCK_DRAMAS: Record<string, TabContent> = {
           job: 'Neighboring Rancher',
           description: 'Owner of the competing ranch who has his eyes set on both Lily\'s land and her heart.',
           imageUrl: 'https://images.unsplash.com/photo-1649972904349-6e44c42644a7',
-          jumpTo: 'jake_scene',
+          jumpTo: '10020',
           tags: ['Ambitious', 'Competitive']
         },
         {
@@ -53,7 +53,7 @@ export const MOCK_DRAMAS: Record<string, TabContent> = {
           job: 'Chef',
           description: 'The ranch\'s talented chef whose cuisine brings everyone together at the end of each day.',
           imageUrl: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158',
-          jumpTo: 'sophie_scene',
+          jumpTo: '10021',
           tags: ['Creative', 'Nurturing']
         }
       ]

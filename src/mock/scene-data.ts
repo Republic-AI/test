@@ -3,14 +3,14 @@ import { CharacterHistory, AIPost, VoteHistory, TweetChoiceOption, TweetComment 
 export const MOCK_SCENE_CHARACTER_HISTORY: CharacterHistory[] = [
     {
     roomId: 'scene_A1',
-      id: 'char1',
+      id: '10016',
       name: 'Emily',
       description: 'A vibrant AI character with a passion for storytelling',
       imageUrl: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Emily'
     },
     {
     roomId: 'scene_A1',
-      id: 'char2',
+      id: '10017',
       name: 'Jack',
       description: 'A wise AI assistant with deep knowledge',
       imageUrl: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Jack'

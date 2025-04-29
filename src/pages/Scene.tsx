@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import Sidebar from '@/components/Sidebar';
-import CocosEmbed from '@/components/CocosEmbed';
+import CocosEmbed, { useCocos } from '@/components/CocosEmbed';
 import SceneThreadFeed from '@/components/SceneThreadFeed';
 import VoteHistoryPanel from '@/components/VoteHistoryPanel';
 import { CharacterHistory, AIPost, VoteHistory } from '@/types/drama';
@@ -31,6 +31,7 @@ const Scene: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+  const { sendMessageToGame } = useCocos();
 
   // Check login status on component mount
   useEffect(() => {
@@ -140,6 +141,18 @@ const Scene: React.FC = () => {
 
   const handleTagSelect = (tagId: string) => {
     navigate(`/?tagId=${tagId}`);
+  };
+
+  // 示例：更新场景
+  const handleUpdateScene = () => {
+    sendMessageToGame({
+      type: 'UPDATE_SCENE',
+      data: {
+        sceneId: '1',
+        name: 'Test Scene',
+        elements: []
+      }
+    });
   };
 
   return (

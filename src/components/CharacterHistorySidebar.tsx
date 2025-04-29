@@ -2,6 +2,7 @@ import React from 'react';
 import { CharacterHistory } from '@/types/drama';
 import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
+import { useCocos } from './CocosEmbed';
 
 interface CharacterHistorySidebarProps {
   characters: CharacterHistory[];
@@ -13,9 +14,14 @@ const CharacterHistorySidebar: React.FC<CharacterHistorySidebarProps> = ({
   className
 }) => {
   const navigate = useNavigate();
+  const { navigateToScene } = useCocos();
 
   const handleCharacterClick = (jumpToSceneId: string) => {
+    // 页面导航
     navigate(`/scene?sceneId=${jumpToSceneId}`);
+    
+    // 同时向 iframe 发送导航事件
+    navigateToScene(jumpToSceneId);
   };
 
   return (
@@ -34,10 +40,16 @@ const CharacterHistorySidebar: React.FC<CharacterHistorySidebarProps> = ({
 
       {/* Navigation */}
       <div className="space-y-3 mb-6 -mt-4">
-        <button className="w-full flex items-center space-x-3 px-4 py-3 rounded-xl bg-[#E6E0FF] hover:bg-[#E6E0FF]/90 transition-colors">
+        <button 
+          className="w-full flex items-center space-x-3 px-4 py-3 rounded-xl bg-[#E6E0FF] hover:bg-[#E6E0FF]/90 transition-colors"
+          onClick={() => navigateToScene("MainMenu")}
+        >
           <span className="text-[#6B4EFF] font-semibold text-lg">Discover Stories</span>
         </button>
-        <button className="w-full flex items-center space-x-3 px-4 py-3 rounded-xl bg-[#F3F3F3] hover:bg-[#EBEBEB] transition-colors">
+        <button 
+          className="w-full flex items-center space-x-3 px-4 py-3 rounded-xl bg-[#F3F3F3] hover:bg-[#EBEBEB] transition-colors"
+          onClick={() => navigateToScene("Level1")}
+        >
           <span className="text-[#999999] font-semibold text-lg">Search</span>
         </button>
       </div>

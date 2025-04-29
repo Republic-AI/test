@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useCocos } from './CocosEmbed';
 
 interface Character {
   id: string;
@@ -38,6 +39,14 @@ const CharacterCard: React.FC<{
   onJumpTo,
   className,
 }) => {
+  const { navigateToScene } = useCocos();
+
+  const handleClick = () => {
+    // 同时执行原始 onJumpTo 函数和发送导航事件
+    onJumpTo(jumpTo);
+    navigateToScene(jumpTo);
+  };
+
   return (
     <div
       className={cn(
@@ -45,7 +54,7 @@ const CharacterCard: React.FC<{
         "hover:scale-[1.02] hover:shadow-lg cursor-pointer transition-all duration-300",
         className
       )}
-      onClick={() => onJumpTo(jumpTo)}
+      onClick={handleClick}
     >
       {/* Image Section */}
       <div className="h-[180px] w-full overflow-hidden">
