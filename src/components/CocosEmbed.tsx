@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, createContext, useContext } from 'react';
+import React, { useEffect, useState, createContext, useContext } from 'react';
 import { cn } from '@/lib/utils';
 
 // 创建上下文
@@ -15,7 +15,7 @@ interface CocosContextType {
 const CocosContext = createContext<CocosContextType | null>(null);
 
 // 全局状态，确保 iframe 一直存在
-const iframeRef = React.createRef<HTMLIFrameElement>();
+export const iframeRef = React.createRef<HTMLIFrameElement>();
 let isGlobalInitialized = false;
 let globalSetShowIframe: ((show: boolean) => void) | null = null;
 
