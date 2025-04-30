@@ -9,7 +9,7 @@ export const MOCK_DRAMAS: Record<string, TabContent> = {
       description: 'A heartwarming tale of love and friendship on a beautiful countryside ranch. Follow Lily and Mark as they navigate life, love, and the challenges of ranch living.',
       coverImageUrl: 'https://images.unsplash.com/photo-1500673922987-e212871fec22',
       coverVideoUrl: '/videos/ranch-preview.mp4',
-      jumpTo: 'room01',
+      jumpTo: '4',
       characters: [
         {
           id: 'lily',
@@ -66,7 +66,7 @@ export const MOCK_DRAMAS: Record<string, TabContent> = {
       description: 'Experience the glittering world of K-pop through the eyes of Min-ji, a talented trainee navigating fame, friendship, and first love in the competitive entertainment industry.',
       coverImageUrl: 'https://images.unsplash.com/photo-1470813740244-df37b8c1edcb',
       coverVideoUrl: '/videos/idol-preview.mp4',
-      jumpTo: 'idol_main_scene',
+      jumpTo: '3',
       characters: [
         {
           id: 'minji',
@@ -74,7 +74,7 @@ export const MOCK_DRAMAS: Record<string, TabContent> = {
           job: 'Trainee Idol',
           description: 'A passionate dancer with dreams of debuting in a top idol group while dealing with intense competition.',
           imageUrl: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158',
-          jumpTo: 'minji_scene',
+          jumpTo: '10022',
           tags: ['UnfilteredStoryteller', 'GenuineConnector']
         },
         {
@@ -83,7 +83,8 @@ export const MOCK_DRAMAS: Record<string, TabContent> = {
           job: 'Lead Vocalist',
           description: 'The company\'s star trainee known for his angelic voice and kind personality who takes an interest in Min-ji.',
           imageUrl: 'https://images.unsplash.com/photo-1649972904349-6e44c42644a7',
-          jumpTo: 'jiwoo_scene'
+          jumpTo: '10023',
+          tags: ['Talent', 'Kindness']
         },
         {
           id: 'hyunjin',
@@ -91,7 +92,8 @@ export const MOCK_DRAMAS: Record<string, TabContent> = {
           job: 'Rival Trainee',
           description: 'Min-ji\'s biggest competition who will do anything to secure her spot in the debut group.',
           imageUrl: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158',
-          jumpTo: 'hyunjin_scene'
+          jumpTo: '10024',
+          tags: ['Competitive', 'Ambitious']
         },
         {
           id: 'seojoon',
@@ -99,7 +101,8 @@ export const MOCK_DRAMAS: Record<string, TabContent> = {
           job: 'Producer',
           description: 'A young musical genius producer who sees Min-ji\'s potential beyond the typical idol image.',
           imageUrl: 'https://images.unsplash.com/photo-1649972904349-6e44c42644a7',
-          jumpTo: 'seojoon_scene'
+          jumpTo: '10025',
+          tags: ['Creative', 'Visionary']
         }
       ]
     }

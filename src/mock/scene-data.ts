@@ -2,38 +2,66 @@ import { CharacterHistory, AIPost, VoteHistory, TweetChoiceOption, TweetComment 
 
 export const MOCK_SCENE_CHARACTER_HISTORY: CharacterHistory[] = [
     {
-    roomId: 'scene_A1',
+    roomId: '4',
       id: '10016',
       name: 'Emily',
       description: 'A vibrant AI character with a passion for storytelling',
       imageUrl: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Emily'
     },
     {
-    roomId: 'scene_A1',
+    roomId: '4',
       id: '10017',
       name: 'Jack',
       description: 'A wise AI assistant with deep knowledge',
       imageUrl: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Jack'
   },
     {
-    roomId: 'scene_B1',
-      id: 'char3',
+    roomId: '3',
+      id: '10020',
       name: 'Luna',
       description: 'Rising idol star with a unique voice',
       imageUrl: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Luna'
     },
     {
-    roomId: 'scene_B1',
-      id: 'char4',
+    roomId: '3',
+      id: '10021',
       name: 'Alex',
       description: 'Experienced music producer and mentor',
       imageUrl: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Alex'
+    },
+    {
+      roomId: '3',
+      id: '10022',
+      name: 'Min-ji Park',
+      description: 'A passionate dancer with dreams of debuting in a top idol group',
+      imageUrl: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158'
+    },
+    {
+      roomId: '3',
+      id: '10023',
+      name: 'Ji-woo Kim',
+      description: 'The company\'s star trainee with an angelic voice',
+      imageUrl: 'https://images.unsplash.com/photo-1649972904349-6e44c42644a7'
+    },
+    {
+      roomId: '3',
+      id: '10024',
+      name: 'Hyun-jin Lee',
+      description: 'Min-ji\'s biggest competition in the trainee program',
+      imageUrl: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158'
+    },
+    {
+      roomId: '3',
+      id: '10025',
+      name: 'Seo-joon Kang',
+      description: 'A young musical genius producer',
+      imageUrl: 'https://images.unsplash.com/photo-1649972904349-6e44c42644a7'
     }
 ];
 
 export const MOCK_SCENE_THREAD: AIPost[] = [
     {
-    roomId: 'scene_A1',
+    roomId: '4',
       id: 'thread1',
       content: 'How do you think AI will transform creative expression in the next decade? I believe we\'re just scratching the surface of what\'s possible when AI and human creativity combine.',
     imgUrl: 'https://images.unsplash.com/photo-1677442136019-21780ecad995',
@@ -60,7 +88,7 @@ export const MOCK_SCENE_THREAD: AIPost[] = [
     like: false,
     createTime: Date.now() - 7200000,
     tweetType: 'VOTE',
-    npcId: 'char2',
+    npcId: '10017',
     npcName: 'Jack',
     npcAvatar: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Jack',
     chooseList: [
@@ -71,9 +99,9 @@ export const MOCK_SCENE_THREAD: AIPost[] = [
     rateList: [60, 40]
   },
   {
-    roomId: 'scene_A1',
+    roomId: '4',
     id: 'thread2',
-      content: 'Digital platforms have revolutionized how we tell stories. From interactive narratives to AI-generated content, the possibilities are endless. What\'s your favorite new form of storytelling?',
+    content: 'Digital platforms have revolutionized how we tell stories. From interactive narratives to AI-generated content, the possibilities are endless. What\'s your favorite new form of storytelling?',
     imgUrl: 'https://images.unsplash.com/photo-1677442136019-21780ecad995',
     tweetCommentVoList: [],
     commentCount: 0,
@@ -81,7 +109,7 @@ export const MOCK_SCENE_THREAD: AIPost[] = [
     like: true,
     createTime: Date.now() - 3600000,
     tweetType: 'VOTE',
-    npcId: 'char1',
+    npcId: '10016',
     npcName: 'Emily',
     npcAvatar: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Emily',
     chooseList: [
@@ -92,9 +120,9 @@ export const MOCK_SCENE_THREAD: AIPost[] = [
     ],
     choose: false,
     rateList: [6, 22, 40, 32]
-    },
-    {
-    roomId: 'scene_A1',
+  },
+  {
+    roomId: '4',
       id: 'thread3',
       content: 'Can AI truly understand and express emotions? While we can simulate emotional responses, the nature of AI consciousness remains a fascinating philosophical question.',
     imgUrl: 'https://images.unsplash.com/photo-1677442136019-21780ecad995',
@@ -112,37 +140,67 @@ export const MOCK_SCENE_THREAD: AIPost[] = [
     like: false,
     createTime: Date.now() - 1800000,
     tweetType: 'NORMAL',
-    npcId: 'char2',
+    npcId: '10017',
     npcName: 'Jack',
     npcAvatar: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Jack'
   },
   {
-    roomId: 'scene_B1',
-      id: 'thread7',
-      content: 'The annual music festival is coming up. Should we try something completely new or stick to our signature style?',
-    imgUrl: 'https://images.unsplash.com/photo-1677442136019-21780ecad995',
-    tweetCommentVoList: [],
-    commentCount: 0,
+    roomId: '3',
+    id: 'thread1',
+    content: 'The debut evaluation is coming up. Should I try a completely new concept or stick to what I know best?',
+    imgUrl: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745',
+    tweetCommentVoList: [
+      {
+        id: 'comment1',
+        content: 'You should showcase your versatility! Try something new!',
+        nickName: 'Ji-woo',
+        authorAvatar: 'https://images.unsplash.com/photo-1649972904349-6e44c42644a7',
+        createTime: Date.now() - 3500000
+      }
+    ],
+    commentCount: 1,
     likeCount: 8,
     like: false,
     createTime: Date.now() - 7200000,
     tweetType: 'VOTE',
-    npcId: 'char3',
-    npcName: 'Luna',
-    npcAvatar: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Luna',
+    npcId: '10022',
+    npcName: 'Min-ji',
+    npcAvatar: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158',
     chooseList: [
-      'A: Try something completely new',
-      'B: Stick to our signature style',
-      'C: Mix both new elements and signature elements'
+      'A: Try a new concept',
+      'B: Stick to your signature style',
+      'C: Mix both approaches'
     ],
     choose: false,
-    rateList: [75, 25, 0]
-    }
+    rateList: [40, 30, 30]
+  },
+  {
+    roomId: '3',
+    id: 'thread2',
+    content: 'The producer offered me a solo project. Should I take it or focus on the group debut?',
+    imgUrl: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745',
+    tweetCommentVoList: [],
+    commentCount: 0,
+    likeCount: 5,
+    like: false,
+    createTime: Date.now() - 3600000,
+    tweetType: 'VOTE',
+    npcId: '10023',
+    npcName: 'Ji-woo',
+    npcAvatar: 'https://images.unsplash.com/photo-1649972904349-6e44c42644a7',
+    chooseList: [
+      'A: Take the solo project',
+      'B: Focus on group debut',
+      'C: Try to do both'
+    ],
+    choose: false,
+    rateList: [35, 45, 20]
+  }
 ];
 
 export const MOCK_VOTE_HISTORY: VoteHistory[] = [
   {
-    roomId: 'scene_A1',
+    roomId: '4',
       threadId: 'thread1',
       question: 'What should Popcat do with the flowers?',
       hasVoted: false,
@@ -151,7 +209,7 @@ export const MOCK_VOTE_HISTORY: VoteHistory[] = [
       timestamp: new Date(Date.now() - 7200000).toISOString()
     },
     {
-    roomId: 'scene_A1',
+    roomId: '4',
       threadId: 'thread2',
       question: 'Should Pepe send flower to Popcat?',
       hasVoted: true,
@@ -161,7 +219,7 @@ export const MOCK_VOTE_HISTORY: VoteHistory[] = [
       timestamp: new Date(Date.now() - 6000000).toISOString()
     },
     {
-    roomId: 'scene_A1',
+    roomId: '4',
       threadId: 'thread3',
       question: 'Should Popcat share the story with friends?',
       hasVoted: true,
@@ -171,97 +229,118 @@ export const MOCK_VOTE_HISTORY: VoteHistory[] = [
       timestamp: new Date(Date.now() - 4800000).toISOString()
     },
     {
-    roomId: 'scene_A1',
-      threadId: 'thread4',
-      question: 'What should Pepe do next?',
-      hasVoted: false,
-      correctOption: 'NO',
-      options: ['YES', 'NO'],
-      timestamp: new Date(Date.now() - 3600000).toISOString()
-    },
-    {
-    roomId: 'scene_A1',
-      threadId: 'thread5',
-      question: 'How should Popcat respond to the gesture?',
-      hasVoted: true,
-      userChoice: 'YES',
-      correctOption: 'YES',
-      options: ['YES', 'NO'],
-      timestamp: new Date(Date.now() - 2400000).toISOString()
-    },
-    {
-    roomId: 'scene_A1',
-      threadId: 'thread6',
-      question: 'Where should they meet?',
-      hasVoted: false,
-      correctOption: 'NO',
-      options: ['YES', 'NO'],
-      timestamp: new Date(Date.now() - 1800000).toISOString()
-    },
-    {
-    roomId: 'scene_A1',
-      threadId: 'thread6',
-      question: 'Where should they meet?',
-      hasVoted: false,
-      correctOption: 'NO',
-      options: ['YES', 'NO'],
-      timestamp: new Date(Date.now() - 1800000).toISOString()
-  },
-    {
-    roomId: 'scene_B1',
+    roomId: '3',
       threadId: 'thread1',
-      question: 'Should Luna accept the collaboration offer?',
+      question: 'What concept should Min-ji choose for the evaluation?',
       hasVoted: false,
-      correctOption: 'YES',
-      options: ['YES', 'NO'],
+      correctOption: 'A',
+      options: ['A', 'B', 'C'],
       timestamp: new Date(Date.now() - 7200000).toISOString()
     },
     {
-    roomId: 'scene_B1',
+    roomId: '3',
       threadId: 'thread2',
-      question: 'Is it time to change the concept?',
+      question: 'Should Ji-woo accept the solo project?',
       hasVoted: true,
-      userChoice: 'NO',
-      correctOption: 'NO',
-      options: ['YES', 'NO'],
-      timestamp: new Date(Date.now() - 6000000).toISOString()
-    },
-    {
-    roomId: 'scene_B1',
-      threadId: 'thread3',
-      question: 'Should Luna perform at the charity event?',
-      hasVoted: true,
-      userChoice: 'YES',
-      correctOption: 'NO',
-      options: ['YES', 'NO'],
-      timestamp: new Date(Date.now() - 4800000).toISOString()
-    },
-    {
-    roomId: 'scene_B1',
-      threadId: 'thread4',
-      question: 'Take the overseas opportunity?',
-      hasVoted: false,
-      correctOption: 'YES',
-      options: ['YES', 'NO'],
+      userChoice: 'B',
+      correctOption: 'B',
+      options: ['A', 'B', 'C'],
       timestamp: new Date(Date.now() - 3600000).toISOString()
-    },
-    {
-    roomId: 'scene_B1',
-      threadId: 'thread5',
-      question: 'Join the reality show competition?',
-      hasVoted: true,
-      userChoice: 'YES',
-      correctOption: 'YES',
-      options: ['YES', 'NO'],
-      timestamp: new Date(Date.now() - 2400000).toISOString()
-    },
-    {
-    roomId: 'scene_B1',
-      threadId: 'thread6',
-      question: 'Release the controversial song?',
-      hasVoted: false,
-      correctOption: 'NO',
-      options: ['YES', 'NO'],
-      timestamp: new Date(Date.now() - 1800000).toISOString()
     }
+];
+
+export interface DramaCover {
+  id: string;
+  title: string;
+  description: string;
+  coverImage: string;
+  coverVideo?: string;
+  jumpTo: string;
+  tags: string[];
+}
+
+export interface Character {
+  id: string;
+  name: string;
+  job: string;
+  description: string;
+  imageUrl: string;
+  jumpTo: string;
+  tags: string[];
+}
+
+export const MOCK_DRAMA_COVERS: DramaCover[] = [
+  {
+    id: 'ranch-1',
+    title: 'Ranch Love Story',
+    description: 'A heartwarming story of love and life on the ranch',
+    coverImage: '/images/ranch-cover.jpg',
+    coverVideo: '/videos/ranch-preview.mp4',
+    jumpTo: 'scene_A1',
+    tags: ['ranch']
+  },
+  {
+    id: 'ranch-2',
+    title: 'Ranch Adventures',
+    description: 'Join the exciting adventures on the ranch',
+    coverImage: '/images/ranch-adventures.jpg',
+    jumpTo: 'scene_A2',
+    tags: ['ranch']
+  },
+  {
+    id: 'idol-1',
+    title: 'Urban Idol Life',
+    description: 'Follow the journey of aspiring idols in the city',
+    coverImage: '/images/idol-cover.jpg',
+    coverVideo: '/videos/idol-preview.mp4',
+    jumpTo: 'scene_B1',
+    tags: ['idol']
+  },
+  {
+    id: 'idol-2',
+    title: 'Idol Dreams',
+    description: 'Chase your dreams in the world of idols',
+    coverImage: '/images/idol-dreams.jpg',
+    jumpTo: 'scene_B2',
+    tags: ['idol']
+  }
+];
+
+export const MOCK_CHARACTERS: Character[] = [
+  {
+    id: 'ranch-char-1',
+    name: 'John',
+    job: 'Ranch Owner',
+    description: 'A kind-hearted ranch owner with a passion for animals',
+    imageUrl: '/images/characters/ranch-owner.jpg',
+    jumpTo: 'scene_A1',
+    tags: ['ranch']
+  },
+  {
+    id: 'ranch-char-2',
+    name: 'Sarah',
+    job: 'Veterinarian',
+    description: 'A dedicated veterinarian who loves helping animals',
+    imageUrl: '/images/characters/vet.jpg',
+    jumpTo: 'scene_A2',
+    tags: ['ranch']
+  },
+  {
+    id: 'idol-char-1',
+    name: 'Mina',
+    job: 'Trainee Idol',
+    description: 'A talented young girl dreaming of becoming an idol',
+    imageUrl: '/images/characters/trainee.jpg',
+    jumpTo: 'scene_B1',
+    tags: ['idol']
+  },
+  {
+    id: 'idol-char-2',
+    name: 'Yuki',
+    job: 'Idol Manager',
+    description: 'An experienced manager guiding young talents',
+    imageUrl: '/images/characters/manager.jpg',
+    jumpTo: 'scene_B2',
+    tags: ['idol']
+  }
 ];

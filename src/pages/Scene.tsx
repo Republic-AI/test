@@ -25,6 +25,37 @@ const Scene: React.FC = () => {
   const navigate = useNavigate();
   const sceneId = searchParams.get('sceneId') || 'scene_A1';
   
+  // 映射场景ID到实际使用的数据
+  const getEffectiveSceneId = (id: string) => {
+    // 如果场景ID是10022-10025，使用3的数据
+    if (['10022', '10023', '10024', '10025'].includes(id)) {
+      return '3';
+    }
+    // 如果场景ID是10016-10018，使用4的数据
+    if (['10016', '10017', '10018'].includes(id)) {
+      return '4';
+    }
+    return id;
+  };
+
+  const effectiveSceneId = getEffectiveSceneId(sceneId);
+  const [lastSceneId, setLastSceneId] = useState<string>(effectiveSceneId);
+
+  // 当场景ID变化时，强制重新加载数据
+  useEffect(() => {
+    if (sceneId !== lastSceneId) {
+      setLastSceneId(sceneId);
+      fetchSceneData();
+    }
+  }, [sceneId]);
+
+  // 添加新的函数来获取游戏场景ID
+  const getGameSceneId = (id: string) => {
+    return id; // 直接返回原始ID
+  };
+
+  const gameSceneId = getGameSceneId(sceneId);
+
   const [characterHistory, setCharacterHistory] = useState<CharacterHistory[]>([]);
   const [aiPosts, setAiPosts] = useState<AIPost[]>([]);
   const [voteHistory, setVoteHistory] = useState<VoteHistory[]>([]);
@@ -52,46 +83,47 @@ const Scene: React.FC = () => {
       // Simulate API delay
       await new Promise(resolve => setTimeout(resolve, 300));
       
-      // Get filtered mock data based on roomId
-      const charactersData = MOCK_SCENE_CHARACTER_HISTORY.filter(char => char.roomId === sceneId);
-      const postsData = MOCK_SCENE_THREAD.filter(post => post.roomId === sceneId);
-      const votesData = MOCK_VOTE_HISTORY.filter(vote => vote.roomId === sceneId);
+      // Get filtered mock data based on effectiveSceneId
+      const charactersData = MOCK_SCENE_CHARACTER_HISTORY.filter(char => char.roomId === effectiveSceneId);
+      const postsData = MOCK_SCENE_THREAD.filter(post => post.roomId === effectiveSceneId);
+      const votesData = MOCK_VOTE_HISTORY.filter(vote => vote.roomId === effectiveSceneId);
       
       console.log('Fetched data:', { 
         charactersCount: charactersData.length,
         postsCount: postsData.length,
         votesCount: votesData.length,
+        effectiveSceneId,
         sceneId
       });
       
       // Make sure we always have some data
       if (charactersData.length === 0) {
-        console.warn(`No character data found for sceneId: ${sceneId}, using default scene_A1 data`);
-        setCharacterHistory(MOCK_SCENE_CHARACTER_HISTORY.filter(char => char.roomId === 'scene_A1'));
+        console.warn(`No character data found for sceneId: ${effectiveSceneId}, using default scene_A1 data`);
+        setCharacterHistory(MOCK_SCENE_CHARACTER_HISTORY.filter(char => char.roomId === '4'));
       } else {
-      setCharacterHistory(charactersData);
+        setCharacterHistory(charactersData);
       }
       
       if (postsData.length === 0) {
-        console.warn(`No posts data found for sceneId: ${sceneId}, using default scene_A1 data`);
-        setAiPosts(MOCK_SCENE_THREAD.filter(post => post.roomId === 'scene_A1'));
+        console.warn(`No posts data found for sceneId: ${effectiveSceneId}, using default scene_A1 data`);
+        setAiPosts(MOCK_SCENE_THREAD.filter(post => post.roomId === '4'));
       } else {
-      setAiPosts(postsData);
+        setAiPosts(postsData);
       }
       
       if (votesData.length === 0) {
-        console.warn(`No vote data found for sceneId: ${sceneId}, using default scene_A1 data`);
-        setVoteHistory(MOCK_VOTE_HISTORY.filter(vote => vote.roomId === 'scene_A1'));
+        console.warn(`No vote data found for sceneId: ${effectiveSceneId}, using default scene_A1 data`);
+        setVoteHistory(MOCK_VOTE_HISTORY.filter(vote => vote.roomId === '4'));
       } else {
-      setVoteHistory(votesData);
+        setVoteHistory(votesData);
       }
     } catch (error) {
       console.error("Error fetching scene data:", error);
       
       // Fallback to scene_A1 data on error
-      setCharacterHistory(MOCK_SCENE_CHARACTER_HISTORY.filter(char => char.roomId === 'scene_A1'));
-      setAiPosts(MOCK_SCENE_THREAD.filter(post => post.roomId === 'scene_A1'));
-      setVoteHistory(MOCK_VOTE_HISTORY.filter(vote => vote.roomId === 'scene_A1'));
+      setCharacterHistory(MOCK_SCENE_CHARACTER_HISTORY.filter(char => char.roomId === '4'));
+      setAiPosts(MOCK_SCENE_THREAD.filter(post => post.roomId === '4'));
+      setVoteHistory(MOCK_VOTE_HISTORY.filter(vote => vote.roomId === '4'));
       
       toast({
         title: "Error loading scene data",
@@ -103,6 +135,32 @@ const Scene: React.FC = () => {
     }
   };
 
+  // 初始化加载
+  useEffect(() => {
+    console.log('Initial load with sceneId:', sceneId);
+    fetchSceneData();
+  }, []);
+
+  // 当场景ID变化时，重新加载数据
+  useEffect(() => {
+    if (sceneId !== lastSceneId) {
+      console.log('Scene ID changed:', { from: lastSceneId, to: sceneId });
+      setLastSceneId(sceneId);
+      fetchSceneData();
+    }
+  }, [sceneId]);
+
+  // 添加数据状态日志
+  useEffect(() => {
+    console.log('Current data state:', {
+      characterHistory: characterHistory.length,
+      aiPosts: aiPosts.length,
+      voteHistory: voteHistory.length,
+      loading,
+      effectiveSceneId
+    });
+  }, [characterHistory, aiPosts, voteHistory, loading, effectiveSceneId]);
+
   const handleLogin = (userInfo: UserInfo) => {
     // 更新状态
     setIsSignedIn(true);
@@ -113,10 +171,6 @@ const Scene: React.FC = () => {
       description: "You have successfully signed in."
     });
   };
-
-  useEffect(() => {
-    fetchSceneData();
-  }, [sceneId]);
 
   useEffect(() => {
     const handleNewMessage = (message: CharacterHistory) => {
@@ -160,7 +214,7 @@ const Scene: React.FC = () => {
       {/* Sidebar */}
       <Sidebar 
         characters={characterHistory} 
-        className="flex-shrink-0"
+        className="flex-shrink-0 w-64"
         isSignedIn={isSignedIn}
         userInfo={userInfo}
         onLogin={handleLogin}
@@ -168,7 +222,11 @@ const Scene: React.FC = () => {
       
       {/* Main Content */}
       <main className="flex-1 flex flex-col overflow-hidden">
-        <Header onTagSelect={handleTagSelect} className="flex-shrink-0" />
+        <Header 
+          onTagSelect={handleTagSelect} 
+          className="flex-shrink-0" 
+          selectedTag={searchParams.get('tagId') || ''}
+        />
         
         {loading ? (
           <div className="flex-1 flex items-center justify-center">
@@ -181,22 +239,24 @@ const Scene: React.FC = () => {
           <div className="flex-1 flex flex-col md:flex-row p-4 gap-4 overflow-hidden">
             {/* Game Embed */}
             <div className="w-full md:min-w-[480px] md:w-[calc(100%-800px)] h-full flex-shrink-0 mb-4 md:mb-0 overflow-y-auto">
-              <CocosEmbed sceneId={sceneId} className="h-full" />
+              <CocosEmbed sceneId={gameSceneId} className="h-full" />
             </div>
             
             {/* Content Columns Container */}
-            <div className="flex-1 grid grid-cols-2 gap-4 h-full md:max-w-[800px]">
-            {/* Thread Feed */}
-              <div className="h-full overflow-y-auto">
+            <div className="flex-1 grid grid-cols-2 gap-4 h-full md:ml-[-10px]">
+              {/* Thread Feed */}
+              <div className="h-full overflow-y-auto border border-gray-200 rounded-lg p-4">
+                <h2 className="text-lg font-semibold mb-4">Thread Feed</h2>
                 <SceneThreadFeed 
                   posts={aiPosts} 
                   isSignedIn={isSignedIn}
                 />
-            </div>
-            
-            {/* Vote History */}
-              <div className="h-full overflow-y-auto">
-              <VoteHistoryPanel voteHistory={voteHistory} />
+              </div>
+              
+              {/* Vote History */}
+              <div className="h-full overflow-y-auto border border-gray-200 rounded-lg p-4">
+                <h2 className="text-lg font-semibold mb-4">Vote History</h2>
+                <VoteHistoryPanel voteHistory={voteHistory} />
               </div>
             </div>
           </div>

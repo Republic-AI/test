@@ -7,6 +7,7 @@ import CharacterList from '@/components/CharacterList';
 import { TabContent } from '@/types/drama';
 import { MOCK_DRAMAS } from '@/mock/dramas';
 import { toast } from '@/components/ui/use-toast';
+import { MOCK_DRAMA_COVERS, MOCK_CHARACTERS } from '@/mock/scene-data';
 
 interface UserInfo {
   userId: string;
@@ -21,7 +22,7 @@ const Index = () => {
   const tagIdParam = searchParams.get('tagId');
   const navigate = useNavigate();
   
-  const [selectedTagId, setSelectedTagId] = useState<string>(tagIdParam || 'ranch');
+  const [selectedTag, setSelectedTag] = useState<string>(tagIdParam || 'ranch');
   const [currentContent, setCurrentContent] = useState<TabContent | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
@@ -74,17 +75,25 @@ const Index = () => {
   };
 
   useEffect(() => {
-    fetchTabContent(selectedTagId);
-  }, [selectedTagId]);
+    fetchTabContent(selectedTag);
+  }, [selectedTag]);
 
   const handleTagSelect = (tagId: string) => {
-    setSelectedTagId(tagId);
-    navigate(`/?tagId=${tagId}`);
+    setSelectedTag(tagId);
   };
 
   const handleJumpTo = (sceneId: string) => {
     navigate(`/scene?sceneId=${sceneId}`);
   };
+
+  // 根据选中的 tag 过滤内容
+  const filteredDramaCovers = MOCK_DRAMA_COVERS.filter(
+    cover => cover.tags.includes(selectedTag)
+  );
+
+  const filteredCharacters = MOCK_CHARACTERS.filter(
+    character => character.tags.includes(selectedTag)
+  );
 
   return (
     <div className="h-screen flex overflow-hidden">
@@ -99,7 +108,10 @@ const Index = () => {
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col overflow-hidden">
-        <Header onTagSelect={handleTagSelect} className="flex-shrink-0" />
+        <Header 
+          onTagSelect={handleTagSelect} 
+          selectedTag={selectedTag}
+        />
         
         <div className="flex-1 overflow-y-auto">
           {loading ? (

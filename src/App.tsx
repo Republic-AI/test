@@ -18,33 +18,33 @@ const App: React.FC = () => {
     <>
       <CocosEmbed>
         <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
-          <QueryClientProvider client={queryClient}>
-            <TooltipProvider>
-              <Toaster />
-              <Sonner />
-              <BrowserRouter>
-                <Routes>
+  <QueryClientProvider client={queryClient}>
+    <TooltipProvider>
+      <Toaster />
+      <Sonner />
+      <BrowserRouter>
+        <Routes>
                   {/* LoadingScreen as initial route */}
                   <Route path="/" element={<LoadingScreen />} />
                   
                   {/* Main app routes */}
                   <Route path="/home" element={<Index />} />
-                  <Route path="/scene" element={<Scene />} />
+          <Route path="/scene" element={<Scene />} />
                   
                   {/* Redirect old routes */}
                   <Route path="/index" element={<Navigate replace to="/home" />} />
                   
                   {/* Catch-all route */}
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </BrowserRouter>
-            </TooltipProvider>
-          </QueryClientProvider>
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </TooltipProvider>
+  </QueryClientProvider>
         </GoogleOAuthProvider>
       </CocosEmbed>
       <GlobalIframe />
     </>
-  );
+);
 };
 
 export default App;

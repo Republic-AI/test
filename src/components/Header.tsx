@@ -28,27 +28,16 @@ const MOCK_TAGS: Tag[] = [
 
 interface HeaderProps {
   onTagSelect: (tagId: string) => void;
+  selectedTag: string;
   className?: string;
 }
 
-const Header: React.FC<HeaderProps> = ({ onTagSelect, className }) => {
+const Header: React.FC<HeaderProps> = ({ onTagSelect, selectedTag, className }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [selectedTag, setSelectedTag] = useState<string>(MOCK_TAGS[0].id);
   const [tags] = useState<Tag[]>(MOCK_TAGS);
 
-  // Set the selected tag based on URL params when component mounts
-  useEffect(() => {
-    const urlParams = new URLSearchParams(location.search);
-    const tagId = urlParams.get('tagId');
-    
-    if (tagId) {
-      setSelectedTag(tagId);
-    }
-  }, [location.search]);
-
   const handleTagClick = (tagId: string) => {
-    setSelectedTag(tagId);
     onTagSelect(tagId);
   };
 
@@ -59,7 +48,7 @@ const Header: React.FC<HeaderProps> = ({ onTagSelect, className }) => {
   return (
     <header className={cn("bg-background border-b", className)}>
       <div className="w-full">
-        {location.pathname === '/' && (
+        {location.pathname === '/home' && (
           <>
             <div className="relative w-full h-[250px] overflow-hidden">
               <img
@@ -76,20 +65,20 @@ const Header: React.FC<HeaderProps> = ({ onTagSelect, className }) => {
               </div>
               <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background" />
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <DragonBonesAnimation
-                className="w-[800px] h-[00px] ml-[700px] mt-[-50px]"
-                skePath="/animations/painting/painting_ske.json"
-                texJsonPath="/animations/painting/painting_tex.json"
-                texPngPath="/animations/painting/painting_tex.png"
-                animationName="paint"
-              />
-              <DragonBonesAnimation
-                className="w-[-800px] h-[100px] ml-[900px] -mt-20"
-                skePath="/animations/pickflower/pickflower_ske.json"
-                texJsonPath="/animations/pickflower/pickflower_tex.json"
-                texPngPath="/animations/pickflower/pickflower_tex.png"
-                animationName="pickflower"
-              />
+                <DragonBonesAnimation
+                  className="w-[800px] h-[00px] ml-[700px] mt-[-50px]"
+                  skePath="/animations/painting/painting_ske.json"
+                  texJsonPath="/animations/painting/painting_tex.json"
+                  texPngPath="/animations/painting/painting_tex.png"
+                  animationName="paint"
+                />
+                <DragonBonesAnimation
+                  className="w-[-800px] h-[100px] ml-[900px] -mt-20"
+                  skePath="/animations/pickflower/pickflower_ske.json"
+                  texJsonPath="/animations/pickflower/pickflower_tex.json"
+                  texPngPath="/animations/pickflower/pickflower_tex.png"
+                  animationName="pickflower"
+                />
               </div>
               <div className="absolute bottom-8 left-8">
                 <img
