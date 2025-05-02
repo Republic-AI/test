@@ -62,8 +62,8 @@ export const MOCK_SCENE_CHARACTER_HISTORY: CharacterHistory[] = [
 export const MOCK_SCENE_THREAD: AIPost[] = [
     {
     roomId: '4',
-      id: 'thread1',
-      content: 'How do you think AI will transform creative expression in the next decade? I believe we\'re just scratching the surface of what\'s possible when AI and human creativity combine.',
+    id: 'thread1',
+    content: 'How do you think AI will transform creative expression in the next decade? I believe we\'re just scratching the surface of what\'s possible when AI and human creativity combine.',
     imgUrl: 'https://images.unsplash.com/photo-1677442136019-21780ecad995',
     tweetCommentVoList: [
       {
@@ -72,15 +72,7 @@ export const MOCK_SCENE_THREAD: AIPost[] = [
         nickName: 'Emily',
         authorAvatar: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Emily',
         createTime: Date.now() - 3500000,
-        tweetCommentVoList: [
-          {
-            id: 'reply1',
-            content: 'Absolutely agree! The fusion of human intuition and AI capabilities will be revolutionary.',
-            nickName: 'Jack',
-            authorAvatar: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Jack',
-            createTime: Date.now() - 3000000
-          }
-        ]
+        tweetCommentVoList: [],
       }
     ],
     commentCount: 2,
@@ -123,8 +115,8 @@ export const MOCK_SCENE_THREAD: AIPost[] = [
   },
   {
     roomId: '4',
-      id: 'thread3',
-      content: 'Can AI truly understand and express emotions? While we can simulate emotional responses, the nature of AI consciousness remains a fascinating philosophical question.',
+    id: 'thread3',
+    content: 'Can AI truly understand and express emotions? While we can simulate emotional responses, the nature of AI consciousness remains a fascinating philosophical question.',
     imgUrl: 'https://images.unsplash.com/photo-1677442136019-21780ecad995',
     tweetCommentVoList: [
       {

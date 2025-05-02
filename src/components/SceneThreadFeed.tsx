@@ -9,9 +9,9 @@ interface SceneThreadFeedProps {
   posts: AIPost[];
   className?: string;
   isSignedIn?: boolean;
-  onVote?: (threadId: string | number, optionIndex: number) => void;
-  onLike?: (threadId: string | number) => void;
-  onComment?: (threadId: string | number, comment: string) => void;
+  onVote?: (threadId: number, optionIndex: number) => void;
+  onLike?: (threadId: number) => void;
+  onComment?: (threadId: number, comment: string) => void;
 }
 
 // 进度条颜色列表
@@ -32,10 +32,10 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
   onLike,
   onComment
 }) => {
-  const [expandedPosts, setExpandedPosts] = useState<Record<string | number, boolean>>({});
-  const [newComment, setNewComment] = useState<Record<string | number, string>>({});
-  const [chosenOptions, setChosenOptions] = useState<Record<string | number, number>>({});
-  const [localLikes, setLocalLikes] = useState<Record<string | number, boolean>>({});
+  const [expandedPosts, setExpandedPosts] = useState<Record<number, boolean>>({});
+  const [newComment, setNewComment] = useState<Record<number, string>>({});
+  const [chosenOptions, setChosenOptions] = useState<Record<number, number>>({});
+  const [localLikes, setLocalLikes] = useState<Record<number, boolean>>({});
 
   const handleVote = (post: AIPost, optionIndex: number) => {
     if (!isSignedIn) {
@@ -56,7 +56,7 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
 
     setChosenOptions(prev => ({
       ...prev,
-      [String(post.id)]: optionIndex
+      [post.id]: optionIndex
     }));
 
     onVote?.(post.id, optionIndex);
@@ -73,27 +73,27 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
 
     setLocalLikes(prev => ({
       ...prev,
-      [String(post.id)]: !post.like
+      [post.id]: !post.like
     }));
 
     onLike?.(post.id);
   };
 
-  const toggleExpand = (threadId: string | number) => {
+  const toggleExpand = (threadId: number) => {
     setExpandedPosts(prev => ({
       ...prev,
-      [String(threadId)]: !prev[String(threadId)]
+      [threadId]: !prev[threadId]
     }));
   };
 
-  const handleCommentChange = (threadId: string | number, value: string) => {
+  const handleCommentChange = (threadId: number, value: string) => {
     setNewComment(prev => ({
       ...prev,
-      [String(threadId)]: value
+      [threadId]: value
     }));
   };
 
-  const handleCommentSubmit = (threadId: string | number) => {
+  const handleCommentSubmit = (threadId: number) => {
     if (!isSignedIn) {
       toast({
         title: "Please sign in",
@@ -102,13 +102,13 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
       return;
     }
 
-    if (!newComment[String(threadId)]?.trim()) return;
+    if (!newComment[threadId]?.trim()) return;
 
-    onComment?.(threadId, newComment[String(threadId)]);
+    onComment?.(threadId, newComment[threadId]);
 
     setNewComment(prev => ({
       ...prev,
-      [String(threadId)]: ""
+      [threadId]: ""
     }));
   };
 
@@ -117,7 +117,7 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
   };
 
   const isPostLiked = (post: AIPost) => {
-    return localLikes[String(post.id)] !== undefined ? localLikes[String(post.id)] : post.like;
+    return localLikes[post.id] !== undefined ? localLikes[post.id] : post.like;
   };
 
   const parseOptionText = (optionText: string) => {
@@ -205,12 +205,22 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
                 />
               </div>
             )}
+
+            {post.videoUrl && (
+              <div className="mt-3 rounded-xl overflow-hidden">
+                <video
+                  src={post.videoUrl}
+                  className="w-full h-auto"
+                  controls
+                />
+              </div>
+            )}
             
-            {(post.tweetType === 'VOTE' || post.tweetType === 2) && post.chooseList && post.chooseList.length > 0 && (
+            {(post.tweetType === 2) && post.chooseList && post.chooseList.length > 0 && (
               <div className="mt-4">
                 <div className="space-y-2">
                   <h3 className="text-base font-medium text-gray-700 mb-[-6px]">Voting (single choice)</h3>
-                  {post.choose || chosenOptions[String(post.id)] !== undefined
+                  {post.choose || chosenOptions[post.id] !== undefined
                     ? post.chooseList.map((option, index) => {
                         const rate = post.rateList?.[index] || 0;
                         const { letter, content } = parseOptionText(option);
@@ -285,7 +295,7 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
                 className="flex items-center space-x-1 text-gray-500 hover:text-gray-700 ml-auto"
                 onClick={() => toggleExpand(post.id)}
               >
-                {expandedPosts[String(post.id)] ? (
+                {expandedPosts[post.id] ? (
                   <>
                     <span className="text-sm">Fold</span>
                     <ChevronUp size={20} />
@@ -299,13 +309,13 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
               </button>
             </div>
 
-            {expandedPosts[String(post.id)] && (
+            {expandedPosts[post.id] && (
               <div className="mt-4 pt-3 border-t border-gray-100">
                 {isSignedIn && (
                   <div className="flex items-center space-x-2 mb-4">
                     <input
                       type="text"
-                      value={newComment[String(post.id)] || ""}
+                      value={newComment[post.id] || ""}
                       onChange={(e) => handleCommentChange(post.id, e.target.value)}
                       placeholder="Write a comment..."
                       className="flex-1 px-3 py-2 text-sm rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20"
