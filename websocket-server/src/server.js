@@ -9,10 +9,8 @@ dotenv.config();
 // Command types
 const Commands = {
   LOGIN: 1,
-  GET_CHARACTERS: 2,
-  GET_RECENT_MESSAGES: 3,
-  GET_THREAD_FEED: 4,
-  VOTE_THREAD: 5
+  GET_SCENE_FEED: 3,
+  VOTE_THREAD: 4
 };
 
 // Load protobuf definitions
@@ -29,7 +27,25 @@ protobuf.load(path.join(__dirname, '../proto/messages.proto'))
 
 // WebSocket server configuration
 const PORT = process.env.WS_PORT || 8080;
-const wss = new WebSocket.Server({ port: PORT });
+const wss = new WebSocket.Server({ 
+  port: PORT,
+  // 允许跨域连接
+  perMessageDeflate: {
+    zlibDeflateOptions: {
+      chunkSize: 1024,
+      memLevel: 7,
+      level: 3
+    },
+    zlibInflateOptions: {
+      chunkSize: 10 * 1024
+    },
+    clientNoContextTakeover: true,
+    serverNoContextTakeover: true,
+    serverMaxWindowBits: 10,
+    concurrencyLimit: 10,
+    threshold: 1024
+  }
+});
 
 // Store connected clients
 const clients = new Set();
@@ -123,14 +139,8 @@ wss.on('connection', (ws) => {
         case Commands.LOGIN:
           handleLogin(ws, data.data);
           break;
-        case Commands.GET_CHARACTERS:
-          handleGetCharacters(ws);
-          break;
-        case Commands.GET_RECENT_MESSAGES:
-          handleGetRecentMessages(ws);
-          break;
-        case Commands.GET_THREAD_FEED:
-          handleGetThreadFeed(ws);
+        case Commands.GET_SCENE_FEED:
+          handleGetSceneFeed(ws);
           break;
         case Commands.VOTE_THREAD:
           handleVoteThread(ws, data.data);
@@ -167,31 +177,10 @@ function handleLogin(ws, data) {
   sendProtobufMessage(ws, 'LoginResponse', response);
 }
 
-// Handle get characters request
-function handleGetCharacters(ws) {
-  sendProtobufMessage(ws, 'CharacterListResponse', {
-    characters: mockData.characters.map(char => ({
-      id: char.id,
-      name: char.name,
-      description: char.description,
-      imageUrl: char.imageUrl,
-      job: char.job,
-      jumpTo: char.jumpTo,
-      tags: char.tags
-    }))
-  });
-}
-
-// Handle get recent messages request
-function handleGetRecentMessages(ws) {
-  sendProtobufMessage(ws, 'RecentMessageResponse', {
-    messages: mockData.messages
-  });
-}
-
-// Handle get thread feed request
-function handleGetThreadFeed(ws) {
-  sendProtobufMessage(ws, 'ThreadFeedResponse', {
+// Handle get scene feed request (合并最近消息和线程列表)
+function handleGetSceneFeed(ws) {
+  sendProtobufMessage(ws, 'SceneFeedResponse', {
+    messages: mockData.messages,
     threads: mockData.threads.map(thread => ({
       id: thread.id,
       content: thread.content,
@@ -228,7 +217,7 @@ function handleVoteThread(ws, data) {
     // Broadcast thread feed update to all clients
     clients.forEach(client => {
       if (client.readyState === WebSocket.OPEN) {
-        handleGetThreadFeed(client);
+        handleGetSceneFeed(client);
       }
     });
   } else {

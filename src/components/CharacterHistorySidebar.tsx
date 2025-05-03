@@ -24,6 +24,10 @@ const CharacterHistorySidebar: React.FC<CharacterHistorySidebarProps> = ({
     navigateToScene(jumpToSceneId);
   };
 
+  const handleLogoClick = () => {
+    navigate('/home');
+  };
+
   return (
     <aside className={cn(
       "w-[260px] flex flex-col h-screen bg-sidebar border-r border-sidebar-border p-4",
@@ -34,7 +38,8 @@ const CharacterHistorySidebar: React.FC<CharacterHistorySidebarProps> = ({
         <img 
           src="/logo.png" 
           alt="DraMai Logo" 
-          className="h-28 w-auto object-contain hover:scale-105 transition-transform duration-200"
+          className="h-28 w-auto object-contain hover:scale-105 transition-transform duration-200 cursor-pointer"
+          onClick={handleLogoClick}
         />
       </div>
 
@@ -58,9 +63,9 @@ const CharacterHistorySidebar: React.FC<CharacterHistorySidebarProps> = ({
       <div className="space-y-1.5 overflow-y-auto flex-1 bg-[#F6F6F6] p-2 rounded-2xl -mt-2">
         {characters.map((character) => (
           <div
-            key={character.id}
+            key={character.npcId}
             className="bg-white rounded-2xl py-2 px-3 cursor-pointer hover:bg-gray-50 transition-all shadow-sm min-h-[18px]"
-            onClick={() => handleCharacterClick(character.id)}
+            onClick={() => handleCharacterClick(character.npcId.toString())}
           >
             <div className="flex items-start space-x-2">
               <div className="h-12 w-12 rounded-full bg-gray-200 overflow-hidden flex-shrink-0 mt-3">

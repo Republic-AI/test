@@ -7,18 +7,16 @@ import { ChevronDown } from 'lucide-react';
 interface VoteHistoryPanelProps {
   voteHistory: VoteHistory[];
   className?: string;
-  onVote?: (threadId: string, choice: string) => void;
 }
 
 const VoteHistoryPanel: React.FC<VoteHistoryPanelProps> = ({
   voteHistory,
   className,
-  onVote
 }) => {
   return (
     <div className={cn("flex flex-col items-center space-y-2", className)}>
       {voteHistory.map((vote, index) => (
-        <React.Fragment key={`${vote.threadId}-${index}`}>
+        <React.Fragment key={`${vote.requestId}-${index}`}>
           {/* Question Box */}
           <div
             className={cn(
@@ -30,49 +28,46 @@ const VoteHistoryPanel: React.FC<VoteHistoryPanelProps> = ({
               "text-center text-sm leading-tight",
               vote.hasVoted ? "text-[#8B5E34]" : "text-[#E3B341]"
             )}>
-              {vote.question}
+              {vote.content}
             </p>
           </div>
 
-          {/* Vote Options - Only show for voted questions */}
-          {vote.hasVoted && (
-            <div className="w-full flex flex-col items-center">
-              <div className="flex items-end justify-center relative w-full max-w-md">
-                {vote.options.map((option) => {
-                  const isCorrect = option === vote.correctOption;
-                  const isUserChoice = option === vote.userChoice;
-                  
-                  return (
-                    <div 
-                      key={option} 
+          {/* Vote Options - Show for all questions */}
+          <div className="w-full flex flex-col items-center">
+            <div className="flex items-end justify-center relative w-full max-w-md">
+              {vote.options.map((option) => {
+                const isCorrect = option === vote.correctOption;
+                const isUserChoice = option === vote.userChoice;
+                
+                return (
+                  <div 
+                    key={option} 
+                    className={cn(
+                      "flex flex-col items-center",
+                      isCorrect ? "order-2" : option === "YES" ? "order-1" : "order-3",
+                      isCorrect ? "mx-20" : "mx-[-24px]"
+                    )}
+                  >
+                    {isUserChoice && (
+                      <p className="text-gray-500 text-xs mb-1">Your choice</p>
+                    )}
+                    <div
                       className={cn(
-                        "flex flex-col items-center",
-                        isCorrect ? "order-2" : option === "YES" ? "order-1" : "order-3",
-                        isCorrect ? "mx-20" : "mx-[-24px]"
+                        "px-3 py-1 rounded-md border-2 border-[#E3B341] text-xs leading-none",
+                        isUserChoice
+                          ? "bg-[#E3B341] text-[#8B5E34]"
+                          : "bg-transparent text-[#E3B341]"
                       )}
                     >
-                      {isUserChoice && (
-                        <p className="text-gray-500 text-xs mb-1">Your choice</p>
-                      )}
-                      <button
-                        className={cn(
-                          "px-3 py-1 rounded-md border-2 border-[#E3B341] text-xs leading-none",
-                          isUserChoice
-                            ? "bg-[#E3B341] text-[#8B5E34]"
-                            : "bg-transparent text-[#E3B341]"
-                        )}
-                        disabled={vote.hasVoted}
-                      >
-                        {option}
-                      </button>
+                      {option}
                     </div>
-                  );
-                })}
-              </div>
+                  </div>
+                );
+              })}
             </div>
-          )}
+          </div>
 
-          {/* Arrow - show after options if voted, or after question if not voted */}
+          {/* Arrow - show after options */}
           {index < voteHistory.length - 1 && (
             <div className="flex justify-center w-full py-1">
               <ChevronDown className="w-6 h-6 text-[#E3B341]" />

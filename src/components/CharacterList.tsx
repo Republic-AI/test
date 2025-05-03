@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 import { useCocos } from './CocosEmbed';
 
 interface Character {
-  id: string;
+  npcId: number;
   name: string;
   job: string;
   description: string;
@@ -139,7 +139,7 @@ const CharacterList: React.FC<CharacterListProps> = ({
       >
         {characters.map((character) => (
           <CharacterCard
-            key={character.id}
+            key={`${character.npcId}-${character.name}`}
             name={character.name}
             job={character.job}
             description={character.description}

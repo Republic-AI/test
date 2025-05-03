@@ -41,10 +41,6 @@ const Header: React.FC<HeaderProps> = ({ onTagSelect, selectedTag, className }) 
     onTagSelect(tagId);
   };
 
-  const handleLogoClick = () => {
-    navigate('/');
-  };
-
   return (
     <header className={cn("bg-background border-b", className)}>
       <div className="w-full">

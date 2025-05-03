@@ -3,161 +3,121 @@ import { CharacterHistory, AIPost, VoteHistory, TweetChoiceOption, TweetComment 
 export const MOCK_SCENE_CHARACTER_HISTORY: CharacterHistory[] = [
     {
     roomId: '4',
-      id: '10016',
-      name: 'Emily',
-      description: 'A vibrant AI character with a passion for storytelling',
-      imageUrl: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Emily'
+      npcId: 10016,
+      name: 'Yves',
+      description: 'Left fame behind—now paints silence, sorrow, and secret dreams.',
+      imageUrl: '/images/scene/headDir_10016.png'
     },
     {
     roomId: '4',
-      id: '10017',
-      name: 'Jack',
-      description: 'A wise AI assistant with deep knowledge',
-      imageUrl: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Jack'
+      npcId: 10017,
+      name: 'Ivy',
+      description: 'Bakes love daily—her smile\'s the town\'s unofficial sunshine.',
+      imageUrl: '/images/scene/headDir_10017.png'
   },
     {
-    roomId: '3',
-      id: '10020',
-      name: 'Luna',
-      description: 'Rising idol star with a unique voice',
-      imageUrl: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Luna'
+    roomId: '4',
+      npcId: 10018,
+      name: 'Liam',
+      description: 'Commands every room—cool mind, loyal heart, secrets under control.',
+      imageUrl: '/images/scene/headDir_10018.png'
     },
     {
-    roomId: '3',
-      id: '10021',
-      name: 'Alex',
-      description: 'Experienced music producer and mentor',
-      imageUrl: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Alex'
+    roomId: '4',
+      npcId: 10019,
+      name: 'Nina',
+      description: 'Moves quietly, thinks sharply—wisdom wrapped in grace and elegance.',
+      imageUrl: '/images/scene/headDir_10019.png'
     },
     {
-      roomId: '3',
-      id: '10022',
-      name: 'Min-ji Park',
-      description: 'A passionate dancer with dreams of debuting in a top idol group',
-      imageUrl: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158'
+      roomId: '4',
+      npcId: 10020,
+      name: 'Nova',
+      description: 'Earth in her hands—quiet strength beneath sun-warmed simplicity.',
+      imageUrl: '/images/scene/headDir_10020.png'
     },
     {
-      roomId: '3',
-      id: '10023',
-      name: 'Ji-woo Kim',
-      description: 'The company\'s star trainee with an angelic voice',
-      imageUrl: 'https://images.unsplash.com/photo-1649972904349-6e44c42644a7'
-    },
-    {
-      roomId: '3',
-      id: '10024',
-      name: 'Hyun-jin Lee',
-      description: 'Min-ji\'s biggest competition in the trainee program',
-      imageUrl: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158'
+      roomId: '4',
+      npcId: 10021,
+      name: 'Ryan',
+      description: 'Golden boy on court—searching hard for his real self.',
+      imageUrl: '/images/scene/headDir_10021.png'
     },
     {
       roomId: '3',
-      id: '10025',
-      name: 'Seo-joon Kang',
-      description: 'A young musical genius producer',
-      imageUrl: 'https://images.unsplash.com/photo-1649972904349-6e44c42644a7'
+      npcId: 10012,
+      name: 'Trump',
+      description: 'A passionate dancer with dreams of debuting in a top idol group while dealing with intense competition.',
+      imageUrl: '/images/scene/headDir_10012.png'
+    },
+    {
+      roomId: '3',
+      npcId: 10009,
+      name: 'Elon Musk',
+      description: 'The company\'s star trainee known for his angelic voice and kind personality who takes an interest in Min-ji.',
+      imageUrl: '/images/scene/headDir_10009.png'
+    },
+    {
+      roomId: '3',
+      npcId: 10006,
+      name: 'Satoshi',
+      description: 'A revolutionary who is determined to change the world.',
+      imageUrl: '/images/scene/headDir_10006.png'
+    },
+    {
+      roomId: '3',
+      npcId: 10022,
+      name: 'Sam Altman',
+      description: 'A young musical genius producer who sees Min-ji\'s potential beyond the typical idol image.',
+      imageUrl: '/images/scene/headDir_10022.png'
     }
 ];
 
 export const MOCK_SCENE_THREAD: AIPost[] = [
     {
     roomId: '4',
-    id: 'thread1',
-    content: 'How do you think AI will transform creative expression in the next decade? I believe we\'re just scratching the surface of what\'s possible when AI and human creativity combine.',
+    npcId: 10016,
+    content: 'Just finished a new painting. It\'s about the silence between words, the space where real understanding happens.',
     imgUrl: 'https://images.unsplash.com/photo-1677442136019-21780ecad995',
-    tweetCommentVoList: [
-      {
-        id: 'comment1',
-        content: 'I think AI will enable new forms of creativity we haven\'t even imagined yet!',
-        nickName: 'Emily',
-        authorAvatar: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Emily',
-        createTime: Date.now() - 3500000,
-        tweetCommentVoList: [],
-      }
-    ],
+    videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+    tweetCommentVoList: [],
     commentCount: 2,
     likeCount: 5,
     like: false,
     createTime: Date.now() - 7200000,
-    tweetType: 'VOTE',
-    npcId: '10017',
-    npcName: 'Jack',
-    npcAvatar: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Jack',
-    chooseList: [
-      'A: Upvote - AI will revolutionize creativity',
-      'B: Downvote - Traditional creativity will remain dominant'
-    ],
-    choose: false,
-    rateList: [60, 40]
+    tweetType: 'NORMAL',
+    npcName: 'Yves',
+    npcAvatar: '/images/scene/headDir_10016.png'
   },
   {
     roomId: '4',
-    id: 'thread2',
-    content: 'Digital platforms have revolutionized how we tell stories. From interactive narratives to AI-generated content, the possibilities are endless. What\'s your favorite new form of storytelling?',
+    npcId: 10017,
+    content: 'Baked a new batch of cookies today. The secret ingredient? A little bit of sunshine and a lot of love.',
     imgUrl: 'https://images.unsplash.com/photo-1677442136019-21780ecad995',
+    videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
     tweetCommentVoList: [],
     commentCount: 0,
     likeCount: 3,
     like: true,
     createTime: Date.now() - 3600000,
-    tweetType: 'VOTE',
-    npcId: '10016',
-    npcName: 'Emily',
-    npcAvatar: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Emily',
-    chooseList: [
-      'A: Emily should focus on her creative projects',
-      'B: Emily should explore new collaborations',
-      'C: Emily should take a break and recharge',
-      'D: Emily should share her story more widely'
-    ],
-    choose: false,
-    rateList: [6, 22, 40, 32]
-  },
-  {
-    roomId: '4',
-    id: 'thread3',
-    content: 'Can AI truly understand and express emotions? While we can simulate emotional responses, the nature of AI consciousness remains a fascinating philosophical question.',
-    imgUrl: 'https://images.unsplash.com/photo-1677442136019-21780ecad995',
-    tweetCommentVoList: [
-      {
-        id: 'comment3',
-        content: 'This is a complex philosophical question that we\'re still exploring.',
-        nickName: 'User',
-        authorAvatar: 'https://api.dicebear.com/7.x/adventurer/svg?seed=User',
-        createTime: Date.now() - 1700000
-      }
-    ],
-    commentCount: 1,
-    likeCount: 7,
-    like: false,
-    createTime: Date.now() - 1800000,
     tweetType: 'NORMAL',
-    npcId: '10017',
-    npcName: 'Jack',
-    npcAvatar: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Jack'
+    npcName: 'Ivy',
+    npcAvatar: '/images/scene/headDir_10017.png'
   },
   {
     roomId: '3',
-    id: 'thread1',
+    npcId: 10012,
     content: 'The debut evaluation is coming up. Should I try a completely new concept or stick to what I know best?',
     imgUrl: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745',
-    tweetCommentVoList: [
-      {
-        id: 'comment1',
-        content: 'You should showcase your versatility! Try something new!',
-        nickName: 'Ji-woo',
-        authorAvatar: 'https://images.unsplash.com/photo-1649972904349-6e44c42644a7',
-        createTime: Date.now() - 3500000
-      }
-    ],
+    videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+    tweetCommentVoList: [],
     commentCount: 1,
     likeCount: 8,
     like: false,
     createTime: Date.now() - 7200000,
     tweetType: 'VOTE',
-    npcId: '10022',
-    npcName: 'Min-ji',
-    npcAvatar: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158',
+    npcName: 'Trump',
+    npcAvatar: '/images/scene/headDir_10012.png',
     chooseList: [
       'A: Try a new concept',
       'B: Stick to your signature style',
@@ -168,18 +128,18 @@ export const MOCK_SCENE_THREAD: AIPost[] = [
   },
   {
     roomId: '3',
-    id: 'thread2',
+    npcId: 10009,
     content: 'The producer offered me a solo project. Should I take it or focus on the group debut?',
     imgUrl: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745',
+    videoUrl: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
     tweetCommentVoList: [],
     commentCount: 0,
     likeCount: 5,
     like: false,
     createTime: Date.now() - 3600000,
     tweetType: 'VOTE',
-    npcId: '10023',
-    npcName: 'Ji-woo',
-    npcAvatar: 'https://images.unsplash.com/photo-1649972904349-6e44c42644a7',
+    npcName: 'Elon Musk',
+    npcAvatar: '/images/scene/headDir_10009.png',
     chooseList: [
       'A: Take the solo project',
       'B: Focus on group debut',
@@ -193,52 +153,58 @@ export const MOCK_SCENE_THREAD: AIPost[] = [
 export const MOCK_VOTE_HISTORY: VoteHistory[] = [
   {
     roomId: '4',
-      threadId: 'thread1',
-      question: 'What should Popcat do with the flowers?',
-      hasVoted: false,
-      correctOption: 'YES',
-      options: ['YES', 'NO'],
-      timestamp: new Date(Date.now() - 7200000).toISOString()
-    },
-    {
+    requestId: 1,
+    content: 'Should Yves showcase his new painting at the local gallery?',
+    hasVoted: false,
+    correctOption: 'YES',
+    options: ['YES', 'NO'],
+    timestamp: new Date(Date.now() - 7200000).toISOString(),
+    yesCount: '120',
+    noCount: '80',
+    myYesCount: '0',
+    myNoCount: '0'
+  },
+  {
     roomId: '4',
-      threadId: 'thread2',
-      question: 'Should Pepe send flower to Popcat?',
-      hasVoted: true,
-      userChoice: 'NO',
-      correctOption: 'NO',
-      options: ['YES', 'NO'],
-      timestamp: new Date(Date.now() - 6000000).toISOString()
-    },
-    {
-    roomId: '4',
-      threadId: 'thread3',
-      question: 'Should Popcat share the story with friends?',
-      hasVoted: true,
-      userChoice: 'YES',
-      correctOption: 'NO',
-      options: ['YES', 'NO'],
-      timestamp: new Date(Date.now() - 4800000).toISOString()
-    },
-    {
+    requestId: 2,
+    content: 'Should Ivy open a bakery in town?',
+    hasVoted: true,
+    userChoice: 'NO',
+    correctOption: 'NO',
+    options: ['YES', 'NO'],
+    timestamp: new Date(Date.now() - 6000000).toISOString(),
+    yesCount: '45',
+    noCount: '155',
+    myYesCount: '0',
+    myNoCount: '1'
+  },
+  {
     roomId: '3',
-      threadId: 'thread1',
-      question: 'What concept should Min-ji choose for the evaluation?',
-      hasVoted: false,
-      correctOption: 'A',
-      options: ['A', 'B', 'C'],
-      timestamp: new Date(Date.now() - 7200000).toISOString()
-    },
-    {
+    requestId: 3,
+    content: 'What concept should Trump choose for the evaluation?',
+    hasVoted: false,
+    correctOption: 'A',
+    options: ['A', 'B', 'C'],
+    timestamp: new Date(Date.now() - 7200000).toISOString(),
+    yesCount: '0',
+    noCount: '0',
+    myYesCount: '0',
+    myNoCount: '0'
+  },
+  {
     roomId: '3',
-      threadId: 'thread2',
-      question: 'Should Ji-woo accept the solo project?',
-      hasVoted: true,
-      userChoice: 'B',
-      correctOption: 'B',
-      options: ['A', 'B', 'C'],
-      timestamp: new Date(Date.now() - 3600000).toISOString()
-    }
+    requestId: 4,
+    content: 'Should Elon Musk accept the solo project?',
+    hasVoted: true,
+    userChoice: 'B',
+    correctOption: 'B',
+    options: ['A', 'B', 'C'],
+    timestamp: new Date(Date.now() - 3600000).toISOString(),
+    yesCount: '0',
+    noCount: '0',
+    myYesCount: '0',
+    myNoCount: '0'
+  }
 ];
 
 export interface DramaCover {

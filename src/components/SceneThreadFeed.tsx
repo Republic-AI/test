@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { AIPost, TweetComment } from '@/types/drama';
 import { cn } from '@/lib/utils';
 import { toast } from '@/components/ui/use-toast';
-import { MessageSquare, Heart, ChevronDown, ChevronUp, Share2, Send } from 'lucide-react';
+import { MessageSquare, Heart, ChevronDown, ChevronUp, Share2, Send, Maximize, Volume2, Play, AlertTriangle, Loader2 } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 
 interface SceneThreadFeedProps {
   posts: AIPost[];
   className?: string;
   isSignedIn?: boolean;
-  onVote?: (threadId: number, optionIndex: number) => void;
-  onLike?: (threadId: number) => void;
-  onComment?: (threadId: number, comment: string) => void;
+  onVote?: (npcId: number, optionIndex: number) => void;
+  onLike?: (npcId: number) => void;
+  onComment?: (npcId: number, comment: string) => void;
 }
 
 // 进度条颜色列表
@@ -36,6 +36,10 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
   const [newComment, setNewComment] = useState<Record<number, string>>({});
   const [chosenOptions, setChosenOptions] = useState<Record<number, number>>({});
   const [localLikes, setLocalLikes] = useState<Record<number, boolean>>({});
+  const [playingVideos, setPlayingVideos] = useState<Record<number, boolean>>({});
+  const [videoLoading, setVideoLoading] = useState<Record<number, boolean>>({});
+  const [videoErrors, setVideoErrors] = useState<Record<number, string>>({});
+  const videoRefs = useRef<Record<number, HTMLVideoElement | null>>({});
 
   const handleVote = (post: AIPost, optionIndex: number) => {
     if (!isSignedIn) {
@@ -56,10 +60,10 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
 
     setChosenOptions(prev => ({
       ...prev,
-      [post.id]: optionIndex
+      [post.npcId]: optionIndex
     }));
 
-    onVote?.(post.id, optionIndex);
+    onVote?.(post.npcId, optionIndex);
   };
 
   const handleLike = (post: AIPost) => {
@@ -73,27 +77,27 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
 
     setLocalLikes(prev => ({
       ...prev,
-      [post.id]: !post.like
+      [post.npcId]: !post.like
     }));
 
-    onLike?.(post.id);
+    onLike?.(post.npcId);
   };
 
-  const toggleExpand = (threadId: number) => {
+  const toggleExpand = (npcId: number) => {
     setExpandedPosts(prev => ({
       ...prev,
-      [threadId]: !prev[threadId]
+      [npcId]: !prev[npcId]
     }));
   };
 
-  const handleCommentChange = (threadId: number, value: string) => {
+  const handleCommentChange = (npcId: number, value: string) => {
     setNewComment(prev => ({
       ...prev,
-      [threadId]: value
+      [npcId]: value
     }));
   };
 
-  const handleCommentSubmit = (threadId: number) => {
+  const handleCommentSubmit = (npcId: number) => {
     if (!isSignedIn) {
       toast({
         title: "Please sign in",
@@ -102,13 +106,13 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
       return;
     }
 
-    if (!newComment[threadId]?.trim()) return;
+    if (!newComment[npcId]?.trim()) return;
 
-    onComment?.(threadId, newComment[threadId]);
+    onComment?.(npcId, newComment[npcId]);
 
     setNewComment(prev => ({
       ...prev,
-      [threadId]: ""
+      [npcId]: ""
     }));
   };
 
@@ -117,7 +121,7 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
   };
 
   const isPostLiked = (post: AIPost) => {
-    return localLikes[post.id] !== undefined ? localLikes[post.id] : post.like;
+    return localLikes[post.npcId] !== undefined ? localLikes[post.npcId] : post.like;
   };
 
   const parseOptionText = (optionText: string) => {
@@ -167,11 +171,85 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
     </div>
   );
 
+  const toggleVideoPlayback = (postId: number, e: React.MouseEvent) => {
+    e.stopPropagation();
+    const videoElement = videoRefs.current[postId];
+    
+    if (!videoElement) return;
+    
+    if (videoElement.paused) {
+      videoElement.play().then(() => {
+        setPlayingVideos(prev => ({ ...prev, [postId]: true }));
+      }).catch(error => {
+        console.error("Error playing video:", error);
+        toast({
+          title: "Video playback error",
+          description: "Could not play the video"
+        });
+      });
+    } else {
+      videoElement.pause();
+      setPlayingVideos(prev => ({ ...prev, [postId]: false }));
+    }
+  };
+
+  const toggleFullscreen = (postId: number, e: React.MouseEvent) => {
+    e.stopPropagation();
+    const videoElement = videoRefs.current[postId];
+    
+    if (!videoElement) return;
+
+    if (document.fullscreenElement) {
+      document.exitFullscreen().catch(err => {
+        console.error("Error exiting fullscreen:", err);
+      });
+    } else {
+      videoElement.requestFullscreen().catch(err => {
+        console.error("Error requesting fullscreen:", err);
+        toast({
+          title: "Fullscreen error",
+          description: "Could not enter fullscreen mode"
+        });
+      });
+    }
+  };
+
+  const handleVideoError = (postId: number, e: React.SyntheticEvent<HTMLVideoElement>) => {
+    console.error("Video error:", e);
+    setVideoErrors(prev => ({ 
+      ...prev, 
+      [postId]: "Failed to load video" 
+    }));
+    setVideoLoading(prev => ({ ...prev, [postId]: false }));
+  };
+
+  const handleVideoLoadStart = (postId: number) => {
+    setVideoLoading(prev => ({ ...prev, [postId]: true }));
+    setVideoErrors(prev => ({ ...prev, [postId]: "" }));
+  };
+
+  const handleVideoLoadedData = (postId: number) => {
+    setVideoLoading(prev => ({ ...prev, [postId]: false }));
+  };
+
+  const retryVideoLoad = (postId: number, e: React.MouseEvent) => {
+    e.stopPropagation();
+    
+    const videoElement = videoRefs.current[postId];
+    if (!videoElement) return;
+    
+    setVideoErrors(prev => ({ ...prev, [postId]: "" }));
+    setVideoLoading(prev => ({ ...prev, [postId]: true }));
+    
+    // Force reload the video
+    videoElement.load();
+  };
+
   return (
     <div className={cn("w-full h-full flex flex-col", className)}>
-      <div className="space-y-2 overflow-y-auto flex-1 pr-2">
+      <div className="space-y-2 flex-1 pr-2">
         {posts.map((post) => (
-          <div key={post.id} className="bg-white rounded-2xl py-2 px-4 cursor-pointer hover:bg-gray-50 transition-all shadow-sm">
+          <div key={`${post.npcId}-${post.createTime}`} className="bg-white rounded-2xl py-2 px-4 cursor-pointer hover:bg-gray-50 transition-all shadow-sm">
             <div className="flex items-start space-x-3">
               <div className="h-12 w-12 rounded-full bg-gray-200 overflow-hidden flex-shrink-0 mt-3">
                 {post.npcAvatar && (
@@ -207,12 +285,71 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
             )}
 
             {post.videoUrl && (
-              <div className="mt-3 rounded-xl overflow-hidden">
+              <div className="mt-3 rounded-xl overflow-hidden relative group">
                 <video
+                  ref={el => { videoRefs.current[post.npcId] = el; }}
                   src={post.videoUrl}
-                  className="w-full h-auto"
+                  className="w-full h-auto object-cover"
                   controls
-                />
+                  controlsList="nodownload"
+                  preload="metadata"
+                  playsInline
+                  poster={post.imgUrl || undefined}
+                  onClick={(e) => e.stopPropagation()}
+                  onPlay={() => setPlayingVideos(prev => ({ ...prev, [post.npcId]: true }))}
+                  onPause={() => setPlayingVideos(prev => ({ ...prev, [post.npcId]: false }))}
+                  onEnded={() => setPlayingVideos(prev => ({ ...prev, [post.npcId]: false }))}
+                  onError={e => handleVideoError(post.npcId, e)}
+                  onLoadStart={() => handleVideoLoadStart(post.npcId)}
+                  onLoadedData={() => handleVideoLoadedData(post.npcId)}
+                >
+                  <source src={post.videoUrl} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+                
+                {videoLoading[post.npcId] && (
+                  <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
+                    <div className="flex flex-col items-center">
+                      <Loader2 size={32} className="text-white animate-spin" />
+                      <span className="text-white text-sm mt-2">Loading video...</span>
+                    </div>
+                  </div>
+                )}
+                
+                {videoErrors[post.npcId] && (
+                  <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                    <div className="flex flex-col items-center text-center p-4">
+                      <AlertTriangle size={32} className="text-red-500 mb-2" />
+                      <span className="text-white text-sm mb-3">{videoErrors[post.npcId]}</span>
+                      <button 
+                        className="px-4 py-2 bg-white text-black text-sm rounded-md hover:bg-gray-100" 
+                        onClick={(e) => retryVideoLoad(post.npcId, e)}
+                      >
+                        Retry
+                      </button>
+                    </div>
+                  </div>
+                )}
+                
+                {!playingVideos[post.npcId] && !videoLoading[post.npcId] && !videoErrors[post.npcId] && (
+                  <div 
+                    className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center cursor-pointer"
+                    onClick={(e) => toggleVideoPlayback(post.npcId, e)}
+                  >
+                    <div className="w-16 h-16 rounded-full bg-white bg-opacity-80 flex items-center justify-center">
+                      <Play size={28} className="text-gray-800 ml-1" />
+                    </div>
+                  </div>
+                )}
+                
+                <div className="absolute bottom-0 right-0 p-2">
+                  <button
+                    className="w-8 h-8 rounded-full bg-black bg-opacity-50 flex items-center justify-center text-white"
+                    onClick={(e) => toggleFullscreen(post.npcId, e)}
+                  >
+                    <Maximize size={16} />
+                  </button>
+                </div>
               </div>
             )}
             
@@ -220,7 +357,7 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
               <div className="mt-4">
                 <div className="space-y-2">
                   <h3 className="text-base font-medium text-gray-700 mb-[-6px]">Voting (single choice)</h3>
-                  {post.choose || chosenOptions[post.id] !== undefined
+                  {post.choose || chosenOptions[post.npcId] !== undefined
                     ? post.chooseList.map((option, index) => {
                         const rate = post.rateList?.[index] || 0;
                         const { letter, content } = parseOptionText(option);
@@ -271,57 +408,54 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
               </div>
             )}
 
-            <div className="flex items-center space-x-4 mt-4 pt-3 border-t border-gray-100">
+            <div className="flex items-center justify-between mt-2">
               <button 
                 className="flex items-center space-x-1 text-gray-500 hover:text-gray-700"
-                onClick={() => toggleExpand(post.id)}
+                onClick={() => toggleExpand(post.npcId)}
               >
                 <MessageSquare size={20} />
                 <span className="text-sm">{post.commentCount}</span>
               </button>
               
               <button 
-                className={cn(
-                  "flex items-center space-x-1",
-                  isPostLiked(post) ? "text-red-500" : "text-gray-500 hover:text-gray-700"
-                )}
+                className="flex items-center space-x-1 text-gray-500 hover:text-gray-700"
                 onClick={() => handleLike(post)}
               >
-                <Heart size={20} />
+                <Heart size={20} className={isPostLiked(post) ? "fill-red-500 text-red-500" : ""} />
                 <span className="text-sm">{post.likeCount}</span>
               </button>
 
               <button 
                 className="flex items-center space-x-1 text-gray-500 hover:text-gray-700 ml-auto"
-                onClick={() => toggleExpand(post.id)}
+                onClick={() => toggleExpand(post.npcId)}
               >
-                {expandedPosts[post.id] ? (
+                {expandedPosts[post.npcId] ? (
                   <>
-                    <span className="text-sm">Fold</span>
                     <ChevronUp size={20} />
+                    <span className="text-sm">Collapse</span>
                   </>
                 ) : (
                   <>
-                    <span className="text-sm">Expand</span>
                     <ChevronDown size={20} />
+                    <span className="text-sm">Expand</span>
                   </>
                 )}
               </button>
             </div>
 
-            {expandedPosts[post.id] && (
-              <div className="mt-4 pt-3 border-t border-gray-100">
+            {expandedPosts[post.npcId] && (
+              <div className="mt-4 space-y-4">
                 {isSignedIn && (
-                  <div className="flex items-center space-x-2 mb-4">
+                  <div className="flex items-center space-x-2">
                     <input
                       type="text"
-                      value={newComment[post.id] || ""}
-                      onChange={(e) => handleCommentChange(post.id, e.target.value)}
+                      value={newComment[post.npcId] || ""}
+                      onChange={(e) => handleCommentChange(post.npcId, e.target.value)}
                       placeholder="Write a comment..."
                       className="flex-1 px-3 py-2 text-sm rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20"
                     />
                     <button
-                      onClick={() => handleCommentSubmit(post.id)}
+                      onClick={() => handleCommentSubmit(post.npcId)}
                       className="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors"
                     >
                       <Send size={20} />

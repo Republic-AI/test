@@ -4,104 +4,113 @@ import { Drama, TabContent } from '../types/drama';
 export const MOCK_DRAMAS: Record<string, TabContent> = {
   ranch: {
     drama: {
-      id: 'ranch-love',
-      title: 'Ranch Love Story',
+      roomId: 4,
+      title: '100 Times in Love',
       description: 'A heartwarming tale of love and friendship on a beautiful countryside ranch. Follow Lily and Mark as they navigate life, love, and the challenges of ranch living.',
       coverImageUrl: 'https://images.unsplash.com/photo-1500673922987-e212871fec22',
       coverVideoUrl: '/videos/ranch-preview.mp4',
       jumpTo: '4',
       characters: [
         {
-          id: 'lily',
-          name: 'Lily Chen',
-          job: 'Ranch Owner',
-          description: 'Inherited her grandfather\'s ranch and is determined to make it successful while dealing with her feelings for childhood friend Mark.',
-          imageUrl: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158',
+          npcId: 10016,
+          name: 'Yves',
+          job: 'Artist',
+          description: 'Left fame behind—now paints silence, sorrow, and secret dreams.',
+          imageUrl: '/images/lobby/imgNpc_10016.png',
           jumpTo: '10016',
-          tags: ['Determined', 'Passionate']
+          tags: ['ArtisticStorytelling', 'CreativeCooking']
         },
         {
-          id: 'mark',
-          name: 'Mark Taylor',
-          job: 'Ranch Hand',
-          description: 'A skilled cowboy with a mysterious past who returned to help his childhood friend Lily manage the ranch.',
-          imageUrl: 'https://images.unsplash.com/photo-1649972904349-6e44c42644a7',
+          npcId: 10017,
+          name: 'Ivy',
+          job: 'Baker',
+          description: 'Bakes love daily—her smile\'s the town\'s unofficial sunshine.',
+          imageUrl: '/images/lobby/imgNpc_10017.png',
           jumpTo: '10017',
-          tags: ['Mysterious', 'Skilled']
+          tags: ['BakedComfort', 'EmpatheticListener']
         },
         {
-          id: 'emma',
-          name: 'Emma Johnson',
-          job: 'Veterinarian',
-          description: 'The local vet who visits the ranch regularly and has hidden feelings for one of the ranch hands.',
-          imageUrl: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158',
+          npcId: 10018,
+          name: 'Liam',
+          job: 'Lawyer',
+          description: 'Commands every room—cool mind, loyal heart, secrets under control.',
+          imageUrl: '/images/lobby/imgNpc_10018.png',
           jumpTo: '10018',
-          tags: ['Caring', 'Professional']
+          tags: ['ConflictMediator', 'BalancedEmpathy']
         },
         {
-          id: 'jake',
-          name: 'Jake Williams',
-          job: 'Neighboring Rancher',
-          description: 'Owner of the competing ranch who has his eyes set on both Lily\'s land and her heart.',
-          imageUrl: 'https://images.unsplash.com/photo-1649972904349-6e44c42644a7',
+          npcId: 10019,
+          name: 'Nina',
+          job: 'Investor',
+          description: 'Moves quietly, thinks sharply—wisdom wrapped in grace and elegance.',
+          imageUrl: '/images/lobby/imgNpc_10019.png',
+          jumpTo: '10019',
+          tags: ['UnfilteredStoryteller', 'GenuineConnector']
+        },
+        {
+          npcId: 10020,
+          name: 'Nova',
+          job: 'Farmer',
+          description: 'Earth in her hands—quiet strength beneath sun-warmed simplicity.',
+          imageUrl: '/images/lobby/imgNpc_10020.png',
           jumpTo: '10020',
-          tags: ['Ambitious', 'Competitive']
+          tags: ['NatureWhisperer', 'QuietSupport']
         },
         {
-          id: 'sophie',
-          name: 'Sophie Lin',
-          job: 'Chef',
-          description: 'The ranch\'s talented chef whose cuisine brings everyone together at the end of each day.',
-          imageUrl: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158',
+          npcId: 10021,
+          name: 'Ryan',
+          job: 'Athlete',
+          description: 'Golden boy on court—searching hard for his real self.',
+          imageUrl: '/images/lobby/imgNpc_10021.png',
           jumpTo: '10021',
-          tags: ['Creative', 'Nurturing']
+          tags: ['TrainingMotivator', 'ResilientSpirit']
         }
       ]
     }
   },
   idol: {
     drama: {
-      id: 'urban-idol',
-      title: 'Urban Idol Life',
+      roomId: 3,
+      title: 'Tariffs on Mars',
       description: 'Experience the glittering world of K-pop through the eyes of Min-ji, a talented trainee navigating fame, friendship, and first love in the competitive entertainment industry.',
       coverImageUrl: 'https://images.unsplash.com/photo-1470813740244-df37b8c1edcb',
       coverVideoUrl: '/videos/idol-preview.mp4',
       jumpTo: '3',
       characters: [
         {
-          id: 'minji',
-          name: 'Min-ji Park',
-          job: 'Trainee Idol',
+          npcId: 10012,
+          name: 'Trump',
+          job: 'President',
           description: 'A passionate dancer with dreams of debuting in a top idol group while dealing with intense competition.',
-          imageUrl: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158',
-          jumpTo: '10022',
+          imageUrl: '/images/lobby/imgNpc_10012.png',
+          jumpTo: '10012',
           tags: ['UnfilteredStoryteller', 'GenuineConnector']
         },
         {
-          id: 'jiwoo',
-          name: 'Ji-woo Kim',
-          job: 'Lead Vocalist',
+          npcId: 10009,
+          name: 'Elon Musk',
+          job: 'Entrepreneur',
           description: 'The company\'s star trainee known for his angelic voice and kind personality who takes an interest in Min-ji.',
-          imageUrl: 'https://images.unsplash.com/photo-1649972904349-6e44c42644a7',
-          jumpTo: '10023',
+          imageUrl: '/images/lobby/imgNpc_10009.png',
+          jumpTo: '10009',
           tags: ['Talent', 'Kindness']
         },
         {
-          id: 'hyunjin',
-          name: 'Hyun-jin Lee',
-          job: 'Rival Trainee',
-          description: 'Min-ji\'s biggest competition who will do anything to secure her spot in the debut group.',
-          imageUrl: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158',
-          jumpTo: '10024',
-          tags: ['Competitive', 'Ambitious']
+          npcId: 10006,
+          name: 'Satoshi',
+          job: 'Revolutionist',
+          description: 'A revolutionary who is determined to change the world.',
+          imageUrl: '/images/lobby/imgNpc_10006.png',
+          jumpTo: '10006',
+          tags: ['Revolutionary', 'Ambitious']
         },
         {
-          id: 'seojoon',
-          name: 'Seo-joon Kang',
-          job: 'Producer',
+          npcId: 10022,
+          name: 'Sam Altman',
+          job: 'Researcher',
           description: 'A young musical genius producer who sees Min-ji\'s potential beyond the typical idol image.',
-          imageUrl: 'https://images.unsplash.com/photo-1649972904349-6e44c42644a7',
-          jumpTo: '10025',
+          imageUrl: '/images/lobby/imgNpc_10022.png',
+          jumpTo: '10022',
           tags: ['Creative', 'Visionary']
         }
       ]

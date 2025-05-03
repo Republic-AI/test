@@ -27,14 +27,20 @@ const Scene: React.FC = () => {
   
   // 映射场景ID到实际使用的数据
   const getEffectiveSceneId = (id: string) => {
-    // 如果场景ID是10022-10025，使用3的数据
-    if (['10022', '10023', '10024', '10025'].includes(id)) {
-      return '3';
-    }
-    // 如果场景ID是10016-10018，使用4的数据
-    if (['10016', '10017', '10018'].includes(id)) {
+    // 根据 NPC ID 映射到对应的场景
+    const npcId = parseInt(id);
+    
+    // 牧场场景 (roomId: 4)
+    if ([10016, 10017, 10018, 10019, 10020, 10021].includes(npcId)) {
       return '4';
     }
+    
+    // 偶像场景 (roomId: 3)
+    if ([10012, 10009, 10006, 10022].includes(npcId)) {
+      return '3';
+    }
+    
+    // 默认返回原始ID
     return id;
   };
 
@@ -51,7 +57,19 @@ const Scene: React.FC = () => {
 
   // 添加新的函数来获取游戏场景ID
   const getGameSceneId = (id: string) => {
-    return id; // 直接返回原始ID
+    const npcId = parseInt(id);
+    
+    // 牧场场景的NPC
+    if ([10016, 10017, 10018, 10019, 10020, 10021].includes(npcId)) {
+      return '4';
+    }
+    
+    // 偶像场景的NPC
+    if ([10012, 10009, 10006, 10022].includes(npcId)) {
+      return '3';
+    }
+    
+    return id;
   };
 
   const gameSceneId = getGameSceneId(sceneId);
@@ -194,7 +212,39 @@ const Scene: React.FC = () => {
   }, []);
 
   const handleTagSelect = (tagId: string) => {
-    navigate(`/?tagId=${tagId}`);
+    // 根据tagId获取对应的场景ID
+    const getSceneIdFromTag = (tagId: string) => {
+      if (tagId === 'ranch') {
+        return '10016'; // 使用牧场场景的第一个NPC ID
+      } else if (tagId === 'idol') {
+        return '10012'; // 使用偶像场景的第一个NPC ID
+      }
+      return '10016'; // 默认返回牧场场景
+    };
+    
+    const targetSceneId = getSceneIdFromTag(tagId);
+    navigate(`/scene?sceneId=${targetSceneId}`);
+  };
+
+  const handleLogoClick = () => {
+    navigate('/home');
+  };
+
+  // 根据场景ID获取对应的tag
+  const getTagFromSceneId = (sceneId: string) => {
+    const npcId = parseInt(sceneId);
+    
+    // 牧场场景 (roomId: 4)
+    if ([10016, 10017, 10018, 10019, 10020, 10021].includes(npcId)) {
+      return 'ranch';
+    }
+    
+    // 偶像场景 (roomId: 3)
+    if ([10012, 10009, 10006, 10022].includes(npcId)) {
+      return 'idol';
+    }
+    
+    return 'ranch'; // 默认返回牧场场景
   };
 
   // 示例：更新场景
@@ -225,8 +275,19 @@ const Scene: React.FC = () => {
         <Header 
           onTagSelect={handleTagSelect} 
           className="flex-shrink-0" 
-          selectedTag={searchParams.get('tagId') || ''}
+          selectedTag={getTagFromSceneId(sceneId)}
+          onLogoClick={handleLogoClick}
         />
+        
+        {/* Test Button */}
+        <div className="absolute top-4 right-4 z-50">
+          <button
+            onClick={() => websocketService.testAllFeatures()}
+            className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+          >
+            Test WebSocket
+          </button>
+        </div>
         
         {loading ? (
           <div className="flex-1 flex items-center justify-center">

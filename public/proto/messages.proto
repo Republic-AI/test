@@ -19,42 +19,21 @@ message LoginResponse {
   string message = 3;
 }
 
-// 角色列表响应
-message CharacterListResponse {
-  repeated Character characters = 1;
+// 场景Feed响应
+message SceneFeedResponse {
+  int32 roomId = 1;
+  repeated Tweet tweetVoList = 2;
 }
 
-message Character {
-  string id = 1;
-  string name = 2;
-  string description = 3;
-  string imageUrl = 4;
-}
-
-// 最近消息响应
-message RecentMessageResponse {
-  repeated Message messages = 1;
-}
-
-message Message {
-  string id = 1;
+message Tweet {
+  int32 id = 1;
   string content = 2;
-  string characterId = 3;
-  string timestamp = 4;
-}
-
-// 主题Feed响应
-message ThreadFeedResponse {
-  repeated Thread threads = 1;
-}
-
-message Thread {
-  string id = 1;
-  string title = 2;
-  string content = 3;
-  string characterId = 4;
+  string author = 3;
+  string avatar = 4;
   string timestamp = 5;
   int32 voteCount = 6;
+  int32 commentCount = 7;
+  bool isLiked = 8;
 }
 
 // 投票请求

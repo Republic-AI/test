@@ -6,7 +6,7 @@ export interface Tag {
 }
 
 export interface Character {
-  id: string;
+  npcId: number;
   name: string;
   job: string;
   description: string;
@@ -16,7 +16,7 @@ export interface Character {
 }
 
 export interface Drama {
-  id: string;
+  roomId: number;
   title: string;
   description: string;
   coverImageUrl: string;
@@ -32,7 +32,7 @@ export interface TabContent {
 // Scene page related types
 export interface CharacterHistory {
   roomId: string;
-  id: string;
+  npcId: number;
   name: string;
   description: string;
   imageUrl: string;
@@ -62,16 +62,16 @@ export interface TweetChoiceOption {
 
 export interface AIPost {
   roomId: string | number;
-  id: string | number;
+  npcId: number;
   content: string;
   imgUrl?: string;
+  videoUrl?: string;
   tweetCommentVoList: TweetComment[];
   commentCount: number;
   likeCount: number;
   like: boolean;
   createTime: number; // 时间戳
   tweetType: string | number;
-  npcId: string | number;
   npcName?: string; // 可能不在数据中
   npcAvatar?: string; // 可能不在数据中
   chooseList?: string[]; // 改为字符串数组
@@ -81,13 +81,17 @@ export interface AIPost {
 
 export interface VoteHistory {
   roomId: string;
-  threadId: string;
-  question: string;
+  requestId: number;
+  content: string;
   hasVoted: boolean;
   userChoice?: string;
   correctOption: string;
   options: string[];
   timestamp: string;
+  yesCount: string;
+  noCount: string;
+  myYesCount: string;
+  myNoCount: string;
 }
 
 export interface SceneData {
