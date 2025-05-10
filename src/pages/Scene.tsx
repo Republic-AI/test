@@ -105,7 +105,11 @@ const Scene: React.FC = () => {
       const charactersData = MOCK_SCENE_CHARACTER_HISTORY.filter(char => char.roomId === effectiveSceneId);
       const postsData = MOCK_SCENE_THREAD.filter(post => post.roomId === effectiveSceneId);
       const votesData = MOCK_VOTE_HISTORY.filter(vote => vote.roomId === effectiveSceneId);
-      
+
+      const tweetData = websocketService.getSceneFeed(Number(effectiveSceneId));
+
+      console.log('Tweet Data:', tweetData);
+
       console.log('Fetched data:', { 
         charactersCount: charactersData.length,
         postsCount: postsData.length,
@@ -191,15 +195,20 @@ const Scene: React.FC = () => {
   };
 
   useEffect(() => {
-    const handleNewMessage = (message: CharacterHistory) => {
-      setCharacterHistory(prev => {
-        // Check if message already exists using id
-        const exists = prev.some(m => m.id === message.id);
-        if (exists) return prev;
+    // const handleNewMessage = (message: CharacterHistory) => {
+    //   setCharacterHistory(prev => {
+    //     // Check if message already exists using id
+    //     const exists = prev.some(m => m.id === message.id);
+    //     if (exists) return prev;
         
-        // Add new message to the beginning of the array
-        return [message, ...prev].slice(0, 10); // Keep only the 10 most recent messages
-      });
+    //     // Add new message to the beginning of the array
+    //     return [message, ...prev].slice(0, 10); // Keep only the 10 most recent messages
+    //   });
+    // };
+
+    const handleNewMessage = (message) => {
+      console.log('New message:', message);
+      setAiPosts(message.tweetVoList);
     };
 
     // Subscribe to WebSocket messages
@@ -259,6 +268,10 @@ const Scene: React.FC = () => {
     });
   };
 
+  function handleLike(tweetId: number): void {
+    websocketService.operateTweet(tweetId, 1, "", 0, 0);
+  }
+
   return (
     <div className="h-screen flex overflow-hidden">
       {/* Sidebar */}
@@ -311,6 +324,7 @@ const Scene: React.FC = () => {
                 <SceneThreadFeed 
                   posts={aiPosts} 
                   isSignedIn={isSignedIn}
+                  onLike={handleLike}
                 />
               </div>
               

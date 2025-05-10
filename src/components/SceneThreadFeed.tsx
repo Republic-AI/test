@@ -4,13 +4,14 @@ import { cn } from '@/lib/utils';
 import { toast } from '@/components/ui/use-toast';
 import { MessageSquare, Heart, ChevronDown, ChevronUp, Share2, Send, Maximize, Volume2, Play, AlertTriangle, Loader2 } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
+import { getNpcName, NpcName } from "@/config/npc";
 
 interface SceneThreadFeedProps {
   posts: AIPost[];
   className?: string;
   isSignedIn?: boolean;
   onVote?: (npcId: number, optionIndex: number) => void;
-  onLike?: (npcId: number) => void;
+  onLike?: (tweetId: number) => void;
   onComment?: (npcId: number, comment: string) => void;
 }
 
@@ -67,20 +68,20 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
   };
 
   const handleLike = (post: AIPost) => {
-    if (!isSignedIn) {
-      toast({
-        title: "Please sign in",
-        description: "You need to sign in to like posts"
-      });
-      return;
-    }
+    // if (!isSignedIn) {
+    //   toast({
+    //     title: "Please sign in",
+    //     description: "You need to sign in to like posts"
+    //   });
+    //   return;
+    // }
 
     setLocalLikes(prev => ({
       ...prev,
       [post.npcId]: !post.like
     }));
 
-    onLike?.(post.npcId);
+    onLike?.(post.id);
   };
 
   const toggleExpand = (npcId: number) => {
@@ -252,18 +253,26 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
           <div key={`${post.npcId}-${post.createTime}`} className="bg-white rounded-2xl py-2 px-4 cursor-pointer hover:bg-gray-50 transition-all shadow-sm">
             <div className="flex items-start space-x-3">
               <div className="h-12 w-12 rounded-full bg-gray-200 overflow-hidden flex-shrink-0 mt-3">
-                {post.npcAvatar && (
+                {/* {post.npcAvatar && (
                 <img
                     src={post.npcAvatar}
                     alt={`${post.npcName || 'NPC'} avatar`}
                   className="h-full w-full object-cover"
                 />
-                )}
+                )} */}
+                {
+                  <img
+                    src={`/images/scene/headDir_${post.npcId}.png`}
+                    alt={`${post.npcName || 'NPC'} avatar`}
+                    className="h-full w-full object-cover"
+                  />
+                }
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center space-x-2">
                   <span className="font-medium text-[#4A95E7] text-base capitalize">
-                    {post.npcName || `NPC-${post.npcId}`}
+                    {/* {post.npcName || `NPC-${post.npcId}`} */}
+                    {getNpcName(post.npcId)}
                   </span>
                   <span className="text-gray-400 text-sm">{formatTime(post.createTime)}</span>
                 </div>

@@ -45,7 +45,7 @@ export interface VoteOption {
 }
 
 export interface TweetComment {
-  id: string | number;
+  id: number;
   content: string;
   nickName: string;
   authorAvatar?: string; // 可能不需要
@@ -61,6 +61,7 @@ export interface TweetChoiceOption {
 }
 
 export interface AIPost {
+  id: number;
   roomId: string | number;
   npcId: number;
   content: string;

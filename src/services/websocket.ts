@@ -9,8 +9,8 @@ const ENV = {
 
 // WebSocket 服务器配置
 const WS_SERVERS = {
-  [ENV.TEST]: 'ws://localhost:8080',
-  [ENV.PROD]: 'wss://dramai.world/api/ws'
+  [ENV.TEST]: 'ws://localhost:8686',
+  [ENV.PROD]: 'ws://localhost:8686'
 };
 
 // 当前环境
@@ -21,7 +21,8 @@ export const Commands = {
   LOGIN: 10000,
   GET_SCENE_FEED: 10112,  // SceneThreadFeed
   VOTE_THREAD: 10119,  // VoteHistoryPanel
-  GET_CHARACTER_HISTORY: 10025  // CharacterHistorySidebar
+  GET_CHARACTER_HISTORY: 10025,  // CharacterHistorySidebar
+  OPERATE_TWEET: 10113,  // SceneThreadFeed
 };
 
 // 定义新的接口类型
@@ -283,8 +284,18 @@ class WebSocketService {
     this.send(Commands.LOGIN, loginData);
   }
 
-  getSceneFeed(roomId: number = 0) {
-    this.send(Commands.GET_SCENE_FEED, { roomId });
+  getSceneFeed(roomId: number = 0, page: number = 0, size: number = 100) {
+    this.send(Commands.GET_SCENE_FEED, { roomId , page, size });
+  }
+
+  operateTweet(tweetId: number, type: number, content: string, replyId: number, chooseIndex:  number) {
+    this.send(Commands.OPERATE_TWEET, {
+      tweetId,
+      type,
+      content,
+      replyId,
+      chooseIndex
+    });
   }
 
   voteThread(threadId: string, isUpvote: boolean) {
