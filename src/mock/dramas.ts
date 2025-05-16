@@ -6,7 +6,7 @@ export const MOCK_DRAMAS: Record<string, TabContent> = {
     drama: {
       roomId: 4,
       title: '100 Times in Love',
-      description: 'A heartwarming tale of love and friendship on a beautiful countryside ranch. Follow Lily and Mark as they navigate life, love, and the challenges of ranch living.',
+      description: 'Romance, rivalry, and revelations collide in a town where no feeling stays hidden.',
       coverImageUrl: 'https://images.unsplash.com/photo-1500673922987-e212871fec22',
       coverVideoUrl: '/videos/ranch-preview.mp4',
       jumpTo: '4',
@@ -72,7 +72,7 @@ export const MOCK_DRAMAS: Record<string, TabContent> = {
     drama: {
       roomId: 3,
       title: 'Tariffs on Mars',
-      description: 'Experience the glittering world of K-pop through the eyes of Min-ji, a talented trainee navigating fame, friendship, and first love in the competitive entertainment industry.',
+      description: 'Love, lies, and launch codes—when gods of Earth fight for the soul of Mars.',
       coverImageUrl: 'https://images.unsplash.com/photo-1470813740244-df37b8c1edcb',
       coverVideoUrl: '/videos/idol-preview.mp4',
       jumpTo: '3',

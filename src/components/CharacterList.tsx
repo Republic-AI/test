@@ -50,14 +50,14 @@ const CharacterCard: React.FC<{
   return (
     <div
       className={cn(
-        "w-[180px] h-[320px] flex flex-col justify-start rounded-xl overflow-hidden shadow-md bg-white dark:bg-gray-800",
+        "w-[180px] h-[350px] flex flex-col justify-start rounded-xl overflow-hidden shadow-md bg-white dark:bg-gray-800",
         "hover:scale-[1.02] hover:shadow-lg cursor-pointer transition-all duration-300",
         className
       )}
       onClick={handleClick}
     >
       {/* Image Section */}
-      <div className="h-[180px] w-full overflow-hidden">
+      <div className="h-[200px] w-full overflow-hidden">
         <img
           src={imageUrl}
           alt={`Character ${name}`}
@@ -66,12 +66,12 @@ const CharacterCard: React.FC<{
       </div>
 
       {/* Info Section */}
-      <div className="flex-1 flex flex-col p-3">
-        <h3 className="font-bold text-sm leading-tight">
-          {name} <span className="text-muted-foreground font-normal">/ {job}</span>
+      <div className="flex-1 flex flex-col p-2 pt-0">
+        <h3 className="font-bold text-xl leading-none">
+          {name} <span className="text-muted-foreground font-normal text-xl leading-[-12px]">/ {job}</span>
         </h3>
 
-        <p className="text-xs text-muted-foreground mt-1 mb-2 line-clamp-2 leading-snug">
+        <p className="text-sm text-gray-400 mt-0 mb-3 line-clamp-2 leading-[0.8]">
           {description}
         </p>
 
@@ -80,7 +80,7 @@ const CharacterCard: React.FC<{
           {tags.map((tag, index) => (
             <span
               key={index}
-              className="bg-gray-200/80 text-gray-600 text-xs px-3 py-1 rounded-md font-medium backdrop-blur-sm"
+              className="bg-gray-400/80 text-white text-xs px-3 py-1 rounded-md font-extralight backdrop-blur-sm"
             >
               #{tag}
             </span>

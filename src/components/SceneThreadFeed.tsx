@@ -253,13 +253,6 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
           <div key={`${post.npcId}-${post.createTime}`} className="bg-white rounded-2xl py-2 px-4 cursor-pointer hover:bg-gray-50 transition-all shadow-sm">
             <div className="flex items-start space-x-3">
               <div className="h-12 w-12 rounded-full bg-gray-200 overflow-hidden flex-shrink-0 mt-3">
-                {/* {post.npcAvatar && (
-                <img
-                    src={post.npcAvatar}
-                    alt={`${post.npcName || 'NPC'} avatar`}
-                  className="h-full w-full object-cover"
-                />
-                )} */}
                 {
                   <img
                     src={`/images/scene/headDir_${post.npcId}.png`}
@@ -271,7 +264,6 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
               <div className="flex-1 min-w-0">
                 <div className="flex items-center space-x-2">
                   <span className="font-medium text-[#4A95E7] text-base capitalize">
-                    {/* {post.npcName || `NPC-${post.npcId}`} */}
                     {getNpcName(post.npcId)}
                   </span>
                   <span className="text-gray-400 text-sm">{formatTime(post.createTime)}</span>
@@ -282,18 +274,7 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
               </div>
             </div>
             
-            {post.imgUrl && (
-              <div className="mt-3 rounded-xl overflow-hidden">
-                <img
-                  src={post.imgUrl}
-                  alt="Post image"
-                  className="w-full h-auto object-cover"
-                  loading="lazy"
-                />
-              </div>
-            )}
-
-            {post.videoUrl && (
+            {post.videoUrl ? (
               <div className="mt-3 rounded-xl overflow-hidden relative group">
                 <video
                   ref={el => { videoRefs.current[post.npcId] = el; }}
@@ -305,7 +286,6 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
                   playsInline
                   poster={post.imgUrl || undefined}
                   onClick={(e) => e.stopPropagation()}
-                  onPlay={() => setPlayingVideos(prev => ({ ...prev, [post.npcId]: true }))}
                   onPause={() => setPlayingVideos(prev => ({ ...prev, [post.npcId]: false }))}
                   onEnded={() => setPlayingVideos(prev => ({ ...prev, [post.npcId]: false }))}
                   onError={e => handleVideoError(post.npcId, e)}
@@ -342,7 +322,7 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
                 
                 {!playingVideos[post.npcId] && !videoLoading[post.npcId] && !videoErrors[post.npcId] && (
                   <div 
-                    className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center cursor-pointer"
+                    className="absolute inset-0 flex items-center justify-center cursor-pointer"
                     onClick={(e) => toggleVideoPlayback(post.npcId, e)}
                   >
                     <div className="w-16 h-16 rounded-full bg-white bg-opacity-80 flex items-center justify-center">
@@ -360,60 +340,14 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
                   </button>
                 </div>
               </div>
-            )}
-            
-            {(post.tweetType === 2) && post.chooseList && post.chooseList.length > 0 && (
-              <div className="mt-4">
-                <div className="space-y-2">
-                  <h3 className="text-base font-medium text-gray-700 mb-[-6px]">Voting (single choice)</h3>
-                  {post.choose || chosenOptions[post.npcId] !== undefined
-                    ? post.chooseList.map((option, index) => {
-                        const rate = post.rateList?.[index] || 0;
-                        const { letter, content } = parseOptionText(option);
-                        
-                        return (
-                          <div
-                            key={`option-${index}`}
-                            className="w-full border border-gray-300 rounded-xl overflow-hidden flex items-center h-10 bg-white"
-                          >
-                            <div
-                              className={`h-full ${BAR_COLORS[index % BAR_COLORS.length]} flex items-center pl-3 transition-all duration-300`}
-                              style={{ 
-                                width: `${rate}%`, 
-                                minWidth: rate > 0 ? '2.5rem' : 0 
-                              }}
-                            >
-                              <span className="font-bold text-gray-700 text-sm select-none">
-                                {Math.round(rate)}%
-                              </span>
-                            </div>
-                            
-                            {/* 空白部分填充，同时显示选项内容 */}
-                            <div className="flex-1 h-full flex items-center px-3">
-                              {letter && <span className="font-bold mr-2">{letter}:</span>}
-                              <span>{content}</span>
-                            </div>
-                          </div>
-                        );
-                      })
-                    : post.chooseList.map((option, index) => {
-                        const { letter, content } = parseOptionText(option);
-                        
-                        return (
-                    <button
-                            key={`option-${index}`}
-                            onClick={() => handleVote(post, index)}
-                      className={cn(
-                              "w-full h-10 px-4 text-sm rounded-xl border border-gray-300 bg-white transition-all text-left flex items-center mb-1 hover:bg-gray-50",
-                              "text-gray-700"
-                      )}
-                    >
-                            {letter && <span className="font-bold mr-2">{letter}:</span>}
-                            <span>{content}</span>
-                    </button>
-                        );
-                      })}
-                </div>
+            ) : post.imgUrl && (
+              <div className="mt-3 rounded-xl overflow-hidden">
+                <img
+                  src={post.imgUrl}
+                  alt="Post image"
+                  className="w-full h-auto object-cover"
+                  loading="lazy"
+                />
               </div>
             )}
 
@@ -441,7 +375,6 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
                 {expandedPosts[post.npcId] ? (
                   <>
                     <ChevronUp size={20} />
-                    <span className="text-sm">Collapse</span>
                   </>
                 ) : (
                   <>
@@ -472,7 +405,6 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
                   </div>
                 )}
 
-                {/* 评论部分 */}
                 {post.tweetCommentVoList.map(comment => renderComment(comment))}
               </div>
             )}

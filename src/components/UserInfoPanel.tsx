@@ -28,6 +28,11 @@ const UserInfoPanel: React.FC<UserInfoPanelProps> = ({
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
 
+  // 添加处理ID显示的函数
+  const formatUserId = (id: string) => {
+    return id.length > 10 ? `${id.substring(0, 10)}...` : id;
+  };
+
   const handleGoogleLoginSuccess = (userInfo: UserInfo) => {
     setLoading(false);
     setError(null);
@@ -63,43 +68,42 @@ const UserInfoPanel: React.FC<UserInfoPanelProps> = ({
         <div className="bg-white rounded-2xl p-4 shadow-sm">
           <div className="flex flex-col">
             {/* 用户基本信息 */}
-            <div className="flex items-center gap-3 mb-4">
-              <div className="h-12 w-12 rounded-xl bg-drama-lavender overflow-hidden ring-2 ring-purple-100 flex-shrink-0">
-                <img
-                  src={userInfo.avatar}
-                  alt="User avatar"
-                  className="h-full w-full object-cover"
-                />
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between">
-                  <div className="font-bold text-lg text-gray-800">{userInfo.userId}</div>
-                  <div className="px-2 py-1 bg-purple-50 rounded-lg">
-                    <span className="text-xs text-purple-600 font-medium">ID: {userInfo.id}</span>
+            <div className="flex flex-col gap-3 mb-4">
+              <div className="flex items-start gap-3">
+                <div className="h-12 w-12 rounded-xl bg-drama-lavender overflow-hidden ring-2 ring-purple-100 flex-shrink-0">
+                  <img
+                    src={userInfo.avatar}
+                    alt="User avatar"
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="font-bold text-lg text-gray-800 -mt-3">{userInfo.userId}</div>
+                  <div className="text-sm text-gray-500 mt-0.5">
+                    <div>📍 {userInfo.location}</div>
                   </div>
                 </div>
-                <div className="text-sm text-gray-500 mt-0.5">
-                  📍 {userInfo.location}
-                </div>
+              </div>
+              <div className="px-2 py-0.5 bg-purple-50 rounded-lg inline-block">
+                <span className="text-xs text-purple-600 font-medium">ID: {userInfo.id}</span>
               </div>
             </div>
 
             {/* Premium 卡片 */}
             <div className="bg-gradient-to-r from-amber-50 to-purple-50 rounded-xl p-3.5 border border-amber-100/50 mb-3">
               <div className="flex items-center space-x-2 mb-2">
-                <div className="text-amber-700 font-bold">DraMai Premium</div>
+                <div className="text-amber-700 font-bold text-sm">DraMai Premium</div>
                 <div className="px-2 py-0.5 bg-amber-100 rounded-full">
                   <span className="text-xs text-amber-700">Active</span>
                 </div>
               </div>
-              <div className="text-amber-600 text-sm">Long Memory With Unlimited Command/Vote</div>
             </div>
 
             {/* 积分卡片 */}
             <div className="bg-white rounded-xl p-3 border border-gray-100 flex items-center justify-between">
               <div className="flex items-center space-x-3">
                 <div className="h-8 w-8 rounded-lg bg-amber-50 flex items-center justify-center">
-                  <img src="/star.png" alt="Star" className="w-5 h-5" />
+                  <img src="/icons/imgMoneyIcon.png" alt="Money Icon" className="w-10 h-8" />
                 </div>
                 <span className="text-amber-700 font-bold text-lg">{userInfo.points}</span>
               </div>
@@ -113,8 +117,8 @@ const UserInfoPanel: React.FC<UserInfoPanelProps> = ({
               onClick={handleLogout}
               className="mt-3 flex items-center justify-center gap-2 p-2 rounded-lg text-red-600 hover:bg-red-50 transition-colors"
             >
-              <LogOut size={16} />
-              <span>Sign Out</span>
+              <LogOut size={18} />
+              <span className="text-base">Sign Out</span>
             </button>
           </div>
         </div>

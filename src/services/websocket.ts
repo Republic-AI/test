@@ -9,8 +9,8 @@ const ENV = {
 
 // WebSocket 服务器配置
 const WS_SERVERS = {
-  [ENV.TEST]: 'ws://localhost:8686',
-  [ENV.PROD]: 'ws://localhost:8686'
+  [ENV.TEST]: 'wss://dramai.world/api/ws',
+  [ENV.PROD]: 'wss://dramai.world/api/ws'
 };
 
 // 当前环境

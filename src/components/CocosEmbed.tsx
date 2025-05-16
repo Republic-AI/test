@@ -49,7 +49,7 @@ export const GlobalIframe: React.FC = () => {
     <iframe
       ref={iframeRef}
       src="https://dramai.world/webframe/"
-      className={`fixed left-[300px] top-[100px] w-[470px] h-[750px] border-0 transition-opacity duration-300 ${
+      className={`fixed left-[300px] top-[100px] w-[486px] h-[864px] border-0 transition-opacity duration-300 ${
         showIframe ? 'opacity-100' : 'opacity-0 pointer-events-none'
       }`}
       style={{ 

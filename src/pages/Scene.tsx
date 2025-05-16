@@ -277,7 +277,7 @@ const Scene: React.FC = () => {
       {/* Sidebar */}
       <Sidebar 
         characters={characterHistory} 
-        className="flex-shrink-0 w-64"
+        className="flex-shrink-0"
         isSignedIn={isSignedIn}
         userInfo={userInfo}
         onLogin={handleLogin}
@@ -312,15 +312,14 @@ const Scene: React.FC = () => {
         ) : (
           <div className="flex-1 flex flex-col md:flex-row p-4 gap-4 overflow-hidden">
             {/* Game Embed */}
-            <div className="w-full md:min-w-[480px] md:w-[calc(100%-800px)] h-full flex-shrink-0 mb-4 md:mb-0 overflow-y-auto">
+            <div className="w-full md:w-[510px] h-full flex-shrink-0 mb-4 md:mb-0 overflow-y-auto">
               <CocosEmbed sceneId={gameSceneId} className="h-full" />
             </div>
             
             {/* Content Columns Container */}
-            <div className="flex-1 grid grid-cols-2 gap-4 h-full md:ml-[-10px]">
+            <div className="flex-1 flex gap-4 h-full">
               {/* Thread Feed */}
-              <div className="h-full overflow-y-auto border border-gray-200 rounded-lg p-4">
-                <h2 className="text-lg font-semibold mb-4">Thread Feed</h2>
+              <div className="flex-1 h-full overflow-y-auto border border-gray-200 rounded-lg p-4">
                 <SceneThreadFeed 
                   posts={aiPosts} 
                   isSignedIn={isSignedIn}
@@ -329,8 +328,7 @@ const Scene: React.FC = () => {
               </div>
               
               {/* Vote History */}
-              <div className="h-full overflow-y-auto border border-gray-200 rounded-lg p-4">
-                <h2 className="text-lg font-semibold mb-4">Vote History</h2>
+              <div className="flex-1 h-full overflow-y-auto border border-gray-200 rounded-lg p-4">
                 <VoteHistoryPanel voteHistory={voteHistory} />
               </div>
             </div>

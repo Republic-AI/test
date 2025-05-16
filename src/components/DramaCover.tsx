@@ -70,12 +70,12 @@ const DramaCover: React.FC<DramaCoverProps> = ({
       
       {/* Content */}
       <div className="absolute bottom-0 left-0 p-6 w-full">
-        <button className="mb-4 px-4 py-2 rounded-lg bg-white/20 backdrop-blur-sm text-white border border-white/30 hover:bg-white/30 transition-all transform group-hover:translate-y-0 translate-y-8 opacity-0 group-hover:opacity-100 duration-300">
+        <button className="mb-3 px-6 py-2.5 rounded-lg bg-white/20 backdrop-blur-sm text-white border border-white/30 hover:bg-white/30 transition-all transform group-hover:translate-y-0 translate-y-8 opacity-0 group-hover:opacity-100 duration-300 text-base font-medium">
           Start Watching
         </button>
         
         <h2 className="text-white text-3xl font-serif font-bold text-shadow mb-0">{title}</h2>
-        <p className="text-white/90 text-shadow-base max-w-2xl line-clamp-2 leading-tight mt-2">{description}</p>
+        <p className="text-white/80 text-shadow-base text-sm max-w-2xl line-clamp-2 font-light leading-none mt-0">{description}</p>
       </div>
     </div>
   );

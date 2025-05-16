@@ -30,12 +30,22 @@ interface HeaderProps {
   onTagSelect: (tagId: string) => void;
   selectedTag: string;
   className?: string;
+  onLogoClick?: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ onTagSelect, selectedTag, className }) => {
+const Header: React.FC<HeaderProps> = ({ onTagSelect, selectedTag, className, onLogoClick }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [tags] = useState<Tag[]>(MOCK_TAGS);
+  const [key, setKey] = useState(0); // 添加 key 状态来强制重新渲染
+
+  // 监听路由变化
+  useEffect(() => {
+    if (location.pathname === '/home') {
+      // 当路由变为 /home 时，更新 key 以强制重新渲染动画
+      setKey(prev => prev + 1);
+    }
+  }, [location.pathname]);
 
   const handleTagClick = (tagId: string) => {
     onTagSelect(tagId);
@@ -60,7 +70,7 @@ const Header: React.FC<HeaderProps> = ({ onTagSelect, selectedTag, className }) 
                 />
               </div>
               <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background" />
-              <div className="absolute inset-0 flex flex-col items-center justify-center">
+              <div className="absolute inset-0 flex flex-col items-center justify-center" key={key}>
                 <DragonBonesAnimation
                   className="w-[800px] h-[00px] ml-[700px] mt-[-50px]"
                   skePath="/animations/painting/painting_ske.json"
@@ -87,10 +97,10 @@ const Header: React.FC<HeaderProps> = ({ onTagSelect, selectedTag, className }) 
           </>
         )}
         <div className={cn(
-          "flex items-end justify-start px-4 bg-background",
+          "flex items-end justify-between px-4 bg-background",
           location.pathname === '/' ? "-mt-5" : "mt-0"
         )}>
-          <div className="flex gap-6 w-full">
+          <div className="flex gap-6">
             {tags.map((tag) => (
               <button
                 key={tag.id}
@@ -107,6 +117,13 @@ const Header: React.FC<HeaderProps> = ({ onTagSelect, selectedTag, className }) 
                 />
               </button>
             ))}
+          </div>
+          <div className="flex items-end">
+            <img
+              src="/icons/live-now.png"
+              alt="Live Now"
+              className="h-11 w-auto object-contain mb-5"
+            />
           </div>
         </div>
       </div>
