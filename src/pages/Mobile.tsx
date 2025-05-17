@@ -40,7 +40,7 @@ const Mobile: React.FC = () => {
         <img
           src="/icons/app.png"
           alt="App Icon"
-          className="w-32 h-32 object-contain mb-6"
+          className="w-24 h-24 object-contain mb-6"
         />
         <div className="w-24 h-[1px] bg-gray-300 mb-4"></div>
         <div className="flex gap-4">
