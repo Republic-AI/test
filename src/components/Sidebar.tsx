@@ -3,6 +3,7 @@ import { cn } from '@/lib/utils';
 import { CharacterHistory } from '@/types/drama';
 import CharacterHistorySidebar from './CharacterHistorySidebar';
 import UserInfoPanel from './UserInfoPanel';
+import SocialMediaIcons from './SocialMediaIcons';
 import { useLocation } from 'react-router-dom';
 
 interface UserInfo {
@@ -56,6 +57,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             userInfo={userInfo}
             onLogin={onLogin}
           />
+          <SocialMediaIcons />
         </div>
       </div>
     </aside>

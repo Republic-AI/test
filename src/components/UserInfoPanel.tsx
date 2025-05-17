@@ -85,12 +85,12 @@ const UserInfoPanel: React.FC<UserInfoPanelProps> = ({
                 </div>
               </div>
               <div className="px-2 py-0.5 bg-purple-50 rounded-lg inline-block">
-                <span className="text-xs text-purple-600 font-medium">ID: {userInfo.id}</span>
+                <span className="text-xs text-gray-400 font-medium">ID: {userInfo.id}</span>
               </div>
             </div>
 
             {/* Premium 卡片 */}
-            <div className="bg-gradient-to-r from-amber-50 to-purple-50 rounded-xl p-3.5 border border-amber-100/50 mb-3">
+            <div className="bg-gradient-to-r from-amber-50 to-purple-50 rounded-xl p-2.5 border border-amber-100/50 mb-3">
               <div className="flex items-center space-x-2 mb-2">
                 <div className="text-amber-700 font-bold text-sm">DraMai Premium</div>
                 <div className="px-2 py-0.5 bg-amber-100 rounded-full">
@@ -115,7 +115,7 @@ const UserInfoPanel: React.FC<UserInfoPanelProps> = ({
             {/* 登出按钮 */}
             <button 
               onClick={handleLogout}
-              className="mt-3 flex items-center justify-center gap-2 p-2 rounded-lg text-red-600 hover:bg-red-50 transition-colors"
+              className="mt-1 flex items-center justify-center gap-2 p-0 rounded-lg text-red-600 hover:bg-red-50 transition-colors"
             >
               <LogOut size={18} />
               <span className="text-base">Sign Out</span>

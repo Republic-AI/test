@@ -34,13 +34,14 @@ const CharacterHistorySidebar: React.FC<CharacterHistorySidebarProps> = ({
       className
     )}>
       {/* Logo */}
-      <div className="flex justify-center mb-2 -mt-8">
+      <div className="flex items-center justify-center mb-5 -mt-8 relative">
         <img 
           src="/logo.png" 
           alt="DraMai Logo" 
           className="h-28 w-auto object-contain hover:scale-105 transition-transform duration-200 cursor-pointer"
           onClick={handleLogoClick}
         />
+        <span className="text-base text-gray-400 font-medium absolute right-2 top-1/2 -translate-y-[-32px] translate-x-1/2">.BETA</span>
       </div>
 
       {/* Navigation */}

@@ -86,7 +86,7 @@ const Header: React.FC<HeaderProps> = ({ onTagSelect, selectedTag, className, on
                   animationName="pickflower"
                 />
               </div>
-              <div className="absolute bottom-8 left-8">
+              <div className="absolute bottom-3 left-8">
                 <img
                   src="/images/title.png"
                   alt="Live Stream AI Story"

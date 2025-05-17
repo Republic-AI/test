@@ -292,16 +292,6 @@ const Scene: React.FC = () => {
           onLogoClick={handleLogoClick}
         />
         
-        {/* Test Button */}
-        <div className="absolute top-4 right-4 z-50">
-          <button
-            onClick={() => websocketService.testAllFeatures()}
-            className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
-          >
-            Test WebSocket
-          </button>
-        </div>
-        
         {loading ? (
           <div className="flex-1 flex items-center justify-center">
             <div className="text-center">
