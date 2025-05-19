@@ -36,19 +36,24 @@ const SocialMediaIcons: React.FC<SocialMediaIconsProps> = ({ className }) => {
       </div>
       
       {/* Legal Links */}
-      <div className="flex items-center justify-center gap-6 mt-1 mb-[-12px] text-xs">
-        <a
-          href="/privacy-policy"
-          className="text-gray-400 hover:text-gray-600 transition-colors"
-        >
-          Privacy Policy
-        </a>
-        <a
-          href="/terms-of-service"
-          className="text-gray-400 hover:text-gray-600 transition-colors"
-        >
-          Terms of Service
-        </a>
+      <div className="flex flex-col items-center justify-center gap-[-100px] mt-0 mb-[-13px] text-[15px]">
+        <div className="flex items-center justify-center gap-6">
+          <a
+            href="/privacy-policy"
+            className="text-gray-400 hover:text-gray-600 transition-colors"
+          >
+            Privacy Policy
+          </a>
+          <a
+            href="/terms-of-service"
+            className="text-gray-400 hover:text-gray-600 transition-colors"
+          >
+            Terms of Service
+          </a>
+        </div>
+        <div className="text-gray-400 mt-[-5px]">
+          Copyright © 2025 Cuboid.AI, Inc. All rights reserved
+        </div>
       </div>
     </div>
   );

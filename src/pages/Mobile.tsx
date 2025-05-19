@@ -40,7 +40,7 @@ const Mobile: React.FC = () => {
         <img
           src="/icons/app.png"
           alt="App Icon"
-          className="w-24 h-24 object-contain mb-6"
+          className="w-24 h-24 object-contain mb-6 rounded-2xl shadow-lg"
         />
         <div className="w-24 h-[1px] bg-gray-300 mb-4"></div>
         <div className="flex gap-4">
@@ -78,12 +78,33 @@ const Mobile: React.FC = () => {
       </main>
 
       {/* Title at bottom left */}
-      <div className="fixed bottom-6 left-6 z-10">
+      <div className="fixed bottom-12 left-6 z-10">
         <img
           src="/images/title.png"
           alt="Live Stream AI Story"
           className="h-[100px] w-auto"
         />
+      </div>
+
+      {/* Legal Links and Copyright */}
+      <div className="fixed bottom-2 right-6 z-10 flex flex-col items-end gap-0 text-[15px]">
+        <div className="flex items-center justify-center gap-6">
+          <a
+            href="/privacy-policy"
+            className="text-gray-400 hover:text-gray-600 transition-colors"
+          >
+            Privacy Policy
+          </a>
+          <a
+            href="/terms-of-service"
+            className="text-gray-400 hover:text-gray-600 transition-colors"
+          >
+            Terms of Service
+          </a>
+        </div>
+        <div className="text-gray-400 mt-[-5px]">
+          Copyright © 2025 Cuboid.AI, Inc. All rights reserved
+        </div>
       </div>
     </div>
   );
