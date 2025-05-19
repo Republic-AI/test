@@ -2,6 +2,7 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 import { Loader2, LogOut } from 'lucide-react';
 import GoogleLoginButton from './GoogleLoginButton';
+import AppleLoginButton from './AppleLoginButton';
 import AuthError from './AuthError';
 
 interface UserInfo {
@@ -78,7 +79,7 @@ const UserInfoPanel: React.FC<UserInfoPanelProps> = ({
                   />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="font-bold text-lg text-gray-800 -mt-3">{userInfo.userId}</div>
+                  <div className="font-bold text-lg text-gray-800 -mt-3 truncate">{userInfo.userId}</div>
                   <div className="text-sm text-gray-500 mt-0.5">
                     <div>📍 {userInfo.location}</div>
                   </div>
@@ -127,10 +128,16 @@ const UserInfoPanel: React.FC<UserInfoPanelProps> = ({
           {error ? (
             <AuthError error={error} onRetry={handleRetry} />
           ) : (
-            <GoogleLoginButton
-              onSuccess={handleGoogleLoginSuccess}
-              onError={handleGoogleLoginError}
-            />
+            <div className="space-y-3">
+              <GoogleLoginButton
+                onSuccess={handleGoogleLoginSuccess}
+                onError={handleGoogleLoginError}
+              />
+              <AppleLoginButton
+                onSuccess={handleGoogleLoginSuccess}
+                onError={handleGoogleLoginError}
+              />
+            </div>
           )}
         </>
       )}
