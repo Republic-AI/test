@@ -1,6 +1,7 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 import { Loader2, LogOut } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import GoogleLoginButton from './GoogleLoginButton';
 import AppleLoginButton from './AppleLoginButton';
 import AuthError from './AuthError';
@@ -26,6 +27,7 @@ const UserInfoPanel: React.FC<UserInfoPanelProps> = ({
   userInfo = null,
   onLogin
 }) => {
+  const navigate = useNavigate();
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
 
@@ -51,8 +53,8 @@ const UserInfoPanel: React.FC<UserInfoPanelProps> = ({
     localStorage.removeItem('userInfo');
     localStorage.removeItem('isSignedIn');
     
-    // 跳转到首页
-    window.location.href = '/home';
+    // 使用 React Router 的 navigate 进行跳转
+    navigate('/home');
   };
 
   const handleRetry = () => {

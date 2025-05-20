@@ -23,7 +23,7 @@ interface UserInfo {
 const Scene: React.FC = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const sceneId = searchParams.get('sceneId') || 'scene_A1';
+  const sceneId = searchParams.get('sceneId') || 'MainMenu';
   
   // 映射场景ID到实际使用的数据
   const getEffectiveSceneId = (id: string) => {
@@ -80,7 +80,7 @@ const Scene: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [isSignedIn, setIsSignedIn] = useState<boolean>(false);
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
-  const { sendMessageToGame } = useCocos();
+  const { sendMessageToGame, navigateToScene } = useCocos();
 
   // Check login status on component mount
   useEffect(() => {
@@ -220,40 +220,31 @@ const Scene: React.FC = () => {
     };
   }, []);
 
+  // 根据 sceneId 获取对应的 tag
+  const getTagFromSceneId = (sceneId: string): string => {
+    // 这里可以根据实际场景ID映射到对应的tag
+    if (sceneId === '4') return 'ranch';
+    if (sceneId === '3') return 'idol';
+    return 'ranch'; // 默认返回 ranch
+  };
+
+  // 处理 tag 选择
   const handleTagSelect = (tagId: string) => {
-    // 根据tagId获取对应的场景ID
-    const getSceneIdFromTag = (tagId: string) => {
-      if (tagId === 'ranch') {
-        return '10016'; // 使用牧场场景的第一个NPC ID
-      } else if (tagId === 'idol') {
-        return '10012'; // 使用偶像场景的第一个NPC ID
-      }
-      return '10016'; // 默认返回牧场场景
-    };
+    // 根据 tag 导航到对应的 sceneId
+    let targetSceneId = 'MainMenu';
+    if (tagId === 'ranch') {
+      targetSceneId = '4';
+    } else if (tagId === 'idol') {
+      targetSceneId = '3';
+    }
     
-    const targetSceneId = getSceneIdFromTag(tagId);
+    // 更新 URL 并导航到新场景
     navigate(`/scene?sceneId=${targetSceneId}`);
+    navigateToScene(targetSceneId);
   };
 
   const handleLogoClick = () => {
     navigate('/home');
-  };
-
-  // 根据场景ID获取对应的tag
-  const getTagFromSceneId = (sceneId: string) => {
-    const npcId = parseInt(sceneId);
-    
-    // 牧场场景 (roomId: 4)
-    if ([10016, 10017, 10018, 10019, 10020, 10021].includes(npcId)) {
-      return 'ranch';
-    }
-    
-    // 偶像场景 (roomId: 3)
-    if ([10012, 10009, 10006, 10022].includes(npcId)) {
-      return 'idol';
-    }
-    
-    return 'ranch'; // 默认返回牧场场景
   };
 
   // 示例：更新场景

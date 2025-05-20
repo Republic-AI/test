@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Dialog,
   DialogContent,
@@ -14,10 +15,12 @@ interface SignInModalProps {
 }
 
 const SignInModal: React.FC<SignInModalProps> = ({ isOpen, onClose }) => {
+  const navigate = useNavigate();
+
   const handleSuccess = () => {
     onClose();
-    // 直接跳转到 /home，不显示启动画面
-    window.location.replace('/home');
+    // 使用 React Router 的 navigate 进行跳转
+    navigate('/home');
   };
 
   return (
