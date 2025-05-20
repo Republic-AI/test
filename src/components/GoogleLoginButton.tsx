@@ -48,8 +48,7 @@ const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({
       console.error('Login Failed:', error);
       onError?.(error);
     },
-    flow: 'implicit',
-    ux_mode: 'popup',
+    flow: 'implicit'
   });
 
   return (

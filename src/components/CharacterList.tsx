@@ -1,7 +1,8 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useCocos } from './CocosEmbed';
+import SignInModal from './SignInModal';
 
 interface Character {
   npcId: number;
@@ -40,54 +41,65 @@ const CharacterCard: React.FC<{
   className,
 }) => {
   const { navigateToScene } = useCocos();
+  const [showSignInModal, setShowSignInModal] = useState(false);
 
   const handleClick = () => {
-    // 同时执行原始 onJumpTo 函数和发送导航事件
-    onJumpTo(jumpTo);
-    navigateToScene(jumpTo);
+    const isSignedIn = localStorage.getItem('isSignedIn') === 'true';
+    if (isSignedIn) {
+      onJumpTo(jumpTo);
+      navigateToScene(jumpTo);
+    } else {
+      setShowSignInModal(true);
+    }
   };
 
   return (
-    <div
-      className={cn(
-        "w-[180px] h-[350px] flex flex-col justify-start rounded-xl overflow-hidden shadow-md bg-white dark:bg-gray-800",
-        "hover:scale-[1.02] hover:shadow-lg cursor-pointer transition-all duration-300",
-        className
-      )}
-      onClick={handleClick}
-    >
-      {/* Image Section */}
-      <div className="h-[200px] w-full overflow-hidden">
-        <img
-          src={imageUrl}
-          alt={`Character ${name}`}
-          className="h-full w-full object-cover transition-transform duration-700 hover:scale-110"
-        />
-      </div>
+    <>
+      <div
+        className={cn(
+          "w-[180px] h-[350px] flex flex-col justify-start rounded-xl overflow-hidden shadow-md bg-white dark:bg-gray-800",
+          "hover:scale-[1.02] hover:shadow-lg cursor-pointer transition-all duration-300",
+          className
+        )}
+        onClick={handleClick}
+      >
+        {/* Image Section */}
+        <div className="h-[200px] w-full overflow-hidden">
+          <img
+            src={imageUrl}
+            alt={`Character ${name}`}
+            className="h-full w-full object-cover transition-transform duration-700 hover:scale-110"
+          />
+        </div>
 
-      {/* Info Section */}
-      <div className="flex-1 flex flex-col p-2 pt-0">
-        <h3 className="font-bold text-xl leading-none">
-          {name} <span className="text-muted-foreground font-normal text-xl leading-[-12px]">/ {job}</span>
-        </h3>
+        {/* Info Section */}
+        <div className="flex-1 flex flex-col p-2 pt-0">
+          <h3 className="font-bold text-xl leading-none">
+            {name} <span className="text-muted-foreground font-normal text-xl leading-[-12px]">/ {job}</span>
+          </h3>
 
-        <p className="text-sm text-gray-400 mt-0 mb-3 line-clamp-2 leading-[0.8]">
-          {description}
-        </p>
+          <p className="text-sm text-gray-400 mt-0 mb-3 line-clamp-2 leading-[0.8]">
+            {description}
+          </p>
 
-        {/* Tags */}
-        <div className="flex flex-wrap gap-1 mt-auto">
-          {tags.map((tag, index) => (
-            <span
-              key={index}
-              className="bg-gray-400/80 text-white text-xs px-3 py-1 rounded-md font-extralight backdrop-blur-sm"
-            >
-              #{tag}
-            </span>
-          ))}
+          {/* Tags */}
+          <div className="flex flex-wrap gap-1 mt-auto">
+            {tags.map((tag, index) => (
+              <span
+                key={index}
+                className="bg-gray-400/80 text-white text-xs px-3 py-1 rounded-md font-extralight backdrop-blur-sm"
+              >
+                #{tag}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+      <SignInModal 
+        isOpen={showSignInModal} 
+        onClose={() => setShowSignInModal(false)} 
+      />
+    </>
   );
 };
 

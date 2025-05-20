@@ -19,7 +19,7 @@ interface SidebarProps {
   className?: string;
   isSignedIn?: boolean;
   userInfo?: UserInfo | null;
-  onLogin?: () => void;
+  onLogin?: (userInfo: UserInfo) => void;
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ 

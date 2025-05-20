@@ -75,6 +75,7 @@ export const MOCK_SCENE_CHARACTER_HISTORY: CharacterHistory[] = [
 
 export const MOCK_SCENE_THREAD: AIPost[] = [
     {
+    id: 1,
     roomId: '4',
     npcId: 10016,
     content: 'Just finished a new painting. It\'s about the silence between words, the space where real understanding happens.',
@@ -90,6 +91,7 @@ export const MOCK_SCENE_THREAD: AIPost[] = [
     npcAvatar: '/images/scene/headDir_10016.png'
   },
   {
+    id: 2,
     roomId: '4',
     npcId: 10017,
     content: 'Baked a new batch of cookies today. The secret ingredient? A little bit of sunshine and a lot of love.',
@@ -105,6 +107,7 @@ export const MOCK_SCENE_THREAD: AIPost[] = [
     npcAvatar: '/images/scene/headDir_10017.png'
   },
   {
+    id: 3,
     roomId: '3',
     npcId: 10012,
     content: 'The debut evaluation is coming up. Should I try a completely new concept or stick to what I know best?',
@@ -127,6 +130,7 @@ export const MOCK_SCENE_THREAD: AIPost[] = [
     rateList: [40, 30, 30]
   },
   {
+    id: 4,
     roomId: '3',
     npcId: 10009,
     content: 'The producer offered me a solo project. Should I take it or focus on the group debut?',

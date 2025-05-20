@@ -30,6 +30,10 @@
     "noImplicitAny": false,
     "noFallthroughCasesInSwitch": false,
 
+    /* Type Declarations */
+    "declaration": true,
+    "emitDeclarationOnly": true,
+
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
@@ -37,6 +41,7 @@
   },
   "include": ["src"],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "dist"
   ]
 }

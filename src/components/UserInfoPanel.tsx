@@ -51,8 +51,8 @@ const UserInfoPanel: React.FC<UserInfoPanelProps> = ({
     localStorage.removeItem('userInfo');
     localStorage.removeItem('isSignedIn');
     
-    // 刷新页面以重置所有状态
-    window.location.reload();
+    // 跳转到首页
+    window.location.href = '/home';
   };
 
   const handleRetry = () => {

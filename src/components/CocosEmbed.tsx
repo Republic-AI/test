@@ -65,9 +65,10 @@ export const GlobalIframe: React.FC = () => {
 interface CocosEmbedProps {
   className?: string;
   children?: React.ReactNode;
+  sceneId?: string;
 }
 
-const CocosEmbed: React.FC<CocosEmbedProps> = ({ className, children }) => {
+const CocosEmbed: React.FC<CocosEmbedProps> = ({ className, children, sceneId }) => {
   const [isConnected, setIsConnected] = useState(false);
   const [lastMessage, setLastMessage] = useState<string>('');
   const [messageLog, setMessageLog] = useState<string[]>([]);
