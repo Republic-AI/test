@@ -1,6 +1,7 @@
 import React from 'react';
 import { useGoogleLogin } from '@react-oauth/google';
 import { cn } from '@/lib/utils';
+import { websocketService } from '@/services/websocket';
 
 interface GoogleLoginButtonProps {
   className?: string;
@@ -23,7 +24,19 @@ const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({
       })
         .then((res) => res.json())
         .then((data) => {
-          // 处理用户信息
+          // 构造Google用户对象，模拟原有的getBasicProfile()方法
+          const googleUser = {
+            getBasicProfile: () => ({
+              getEmail: () => data.email,
+              getName: () => data.name,
+              getId: () => data.sub
+            })
+          };
+          
+          // 调用WebSocket的Google登录方法
+          websocketService.googleLogin(googleUser);
+          
+          // 处理用户信息用于UI显示
           const userInfo = {
             userId: data.email,
             id: data.sub,
@@ -32,7 +45,14 @@ const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({
             points: 0
           };
           
-          // 保存到 localStorage
+          console.log('Google login user info:', {
+            email: data.email,
+            name: data.name,
+            picture: data.picture,
+            userInfo
+          });
+          
+          // 保存到 localStorage（用于UI状态）
           localStorage.setItem('userInfo', JSON.stringify(userInfo));
           localStorage.setItem('isSignedIn', 'true');
           
@@ -45,6 +65,15 @@ const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({
         });
     },
     onError: (error) => {
+      // 忽略COOP相关的错误，这些通常不影响实际功能
+      if (error && typeof error === 'object' && 'error' in error) {
+        const errorMessage = error.error || '';
+        if (errorMessage.includes('Cross-Origin-Opener-Policy') || 
+            errorMessage.includes('window.closed')) {
+          console.warn('COOP warning (可以忽略):', error);
+          return; // 不调用onError回调，避免显示错误给用户
+        }
+      }
       console.error('Login Failed:', error);
       onError?.(error);
     },

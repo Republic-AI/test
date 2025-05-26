@@ -73,6 +73,10 @@ export const GlobalIframe: React.FC = () => {
           borderRadius: '8px 8px 8px 8px'
         }}
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        referrerPolicy="no-referrer"
+        sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+        loading="lazy"
+        title="Game Embed"
       />
       <button
         onClick={toggleMute}
