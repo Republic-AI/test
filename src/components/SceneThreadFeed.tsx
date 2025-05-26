@@ -10,9 +10,10 @@ interface SceneThreadFeedProps {
   posts: AIPost[];
   className?: string;
   isSignedIn?: boolean;
-  onVote?: (npcId: number, optionIndex: number) => void;
+  loading?: boolean;
+  onVote?: (tweetId: number, optionIndex: number) => void;
   onLike?: (tweetId: number) => void;
-  onComment?: (npcId: number, comment: string) => void;
+  onComment?: (tweetId: number, comment: string) => void;
 }
 
 // 进度条颜色列表
@@ -29,6 +30,7 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
   posts,
   className,
   isSignedIn = false,
+  loading = false,
   onVote,
   onLike,
   onComment
@@ -61,10 +63,10 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
 
     setChosenOptions(prev => ({
       ...prev,
-      [post.npcId]: optionIndex
+      [post.id]: optionIndex
     }));
 
-    onVote?.(post.npcId, optionIndex);
+    onVote?.(post.id, optionIndex);
   };
 
   const handleLike = (post: AIPost) => {
@@ -78,27 +80,27 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
 
     setLocalLikes(prev => ({
       ...prev,
-      [post.npcId]: !post.like
+      [post.id]: !post.like
     }));
 
     onLike?.(post.id);
   };
 
-  const toggleExpand = (npcId: number) => {
+  const toggleExpand = (postId: number) => {
     setExpandedPosts(prev => ({
       ...prev,
-      [npcId]: !prev[npcId]
+      [postId]: !prev[postId]
     }));
   };
 
-  const handleCommentChange = (npcId: number, value: string) => {
+  const handleCommentChange = (postId: number, value: string) => {
     setNewComment(prev => ({
       ...prev,
-      [npcId]: value
+      [postId]: value
     }));
   };
 
-  const handleCommentSubmit = (npcId: number) => {
+  const handleCommentSubmit = (post: AIPost) => {
     if (!isSignedIn) {
       toast({
         title: "Please sign in",
@@ -107,13 +109,19 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
       return;
     }
 
-    if (!newComment[npcId]?.trim()) return;
+    if (!newComment[post.id]?.trim()) return;
 
-    onComment?.(npcId, newComment[npcId]);
+    // 移除本地评论计数更新，改为依赖服务器端数据同步
+    // setLocalCommentCounts(prev => ({
+    //   ...prev,
+    //   [post.id]: (prev[post.id] || 0) + 1
+    // }));
+
+    onComment?.(post.id, newComment[post.id]);
 
     setNewComment(prev => ({
       ...prev,
-      [npcId]: ""
+      [post.id]: ""
     }));
   };
 
@@ -122,7 +130,7 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
   };
 
   const isPostLiked = (post: AIPost) => {
-    return localLikes[post.npcId] !== undefined ? localLikes[post.npcId] : post.like;
+    return localLikes[post.id] !== undefined ? localLikes[post.id] : post.like;
   };
 
   const parseOptionText = (optionText: string) => {
@@ -248,169 +256,186 @@ const SceneThreadFeed: React.FC<SceneThreadFeedProps> = ({
 
   return (
     <div className={cn("w-full h-full flex flex-col", className)}>
-      <div className="space-y-2 flex-1 pr-2">
-        {posts.map((post) => (
-          <div key={`${post.npcId}-${post.createTime}`} className="bg-white rounded-2xl py-2 px-4 cursor-pointer hover:bg-gray-50 transition-all shadow-sm">
-            <div className="flex items-start space-x-3">
-              <div className="h-12 w-12 rounded-full bg-gray-200 overflow-hidden flex-shrink-0 mt-3">
-                {
-                  <img
-                    src={`/images/scene/headDir_${post.npcId}.png`}
-                    alt={`${post.npcName || 'NPC'} avatar`}
-                    className="h-full w-full object-cover"
-                  />
-                }
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center space-x-2">
-                  <span className="font-medium text-[#4A95E7] text-base capitalize">
-                    {getNpcName(post.npcId)}
-                  </span>
-                  <span className="text-gray-400 text-sm">{formatTime(post.createTime)}</span>
-                </div>
-                <p className="text-gray-600 text-sm mt-0.3 line-clamp-2 leading-[0.8]">
-                  {post.content}
-                </p>
-              </div>
-            </div>
-            
-            {post.videoUrl ? (
-              <div className="mt-3 rounded-xl overflow-hidden relative group">
-                <video
-                  ref={el => { videoRefs.current[post.npcId] = el; }}
-                  src={post.videoUrl}
-                  className="w-full h-auto object-cover"
-                  controls
-                  controlsList="nodownload"
-                  preload="metadata"
-                  playsInline
-                  poster={post.imgUrl || undefined}
-                  onClick={(e) => e.stopPropagation()}
-                  onPause={() => setPlayingVideos(prev => ({ ...prev, [post.npcId]: false }))}
-                  onEnded={() => setPlayingVideos(prev => ({ ...prev, [post.npcId]: false }))}
-                  onError={e => handleVideoError(post.npcId, e)}
-                  onLoadStart={() => handleVideoLoadStart(post.npcId)}
-                  onLoadedData={() => handleVideoLoadedData(post.npcId)}
-                >
-                  <source src={post.videoUrl} type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-                
-                {videoLoading[post.npcId] && (
-                  <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
-                    <div className="flex flex-col items-center">
-                      <Loader2 size={32} className="text-white animate-spin" />
-                      <span className="text-white text-sm mt-2">Loading video...</span>
-                    </div>
-                  </div>
-                )}
-                
-                {videoErrors[post.npcId] && (
-                  <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                    <div className="flex flex-col items-center text-center p-4">
-                      <AlertTriangle size={32} className="text-red-500 mb-2" />
-                      <span className="text-white text-sm mb-3">{videoErrors[post.npcId]}</span>
-                      <button 
-                        className="px-4 py-2 bg-white text-black text-sm rounded-md hover:bg-gray-100" 
-                        onClick={(e) => retryVideoLoad(post.npcId, e)}
-                      >
-                        Retry
-                      </button>
-                    </div>
-                  </div>
-                )}
-                
-                {!playingVideos[post.npcId] && !videoLoading[post.npcId] && !videoErrors[post.npcId] && (
-                  <div 
-                    className="absolute inset-0 flex items-center justify-center cursor-pointer"
-                    onClick={(e) => toggleVideoPlayback(post.npcId, e)}
-                  >
-                    <div className="w-16 h-16 rounded-full bg-white bg-opacity-80 flex items-center justify-center">
-                      <Play size={28} className="text-gray-800 ml-1" />
-                    </div>
-                  </div>
-                )}
-                
-                <div className="absolute bottom-0 right-0 p-2">
-                  <button
-                    className="w-8 h-8 rounded-full bg-black bg-opacity-50 flex items-center justify-center text-white"
-                    onClick={(e) => toggleFullscreen(post.npcId, e)}
-                  >
-                    <Maximize size={16} />
-                  </button>
-                </div>
-              </div>
-            ) : post.imgUrl && (
-              <div className="mt-3 rounded-xl overflow-hidden">
-                <img
-                  src={post.imgUrl}
-                  alt="Post image"
-                  className="w-full h-auto object-cover"
-                  loading="lazy"
-                />
-              </div>
-            )}
-
-            <div className="flex items-center justify-between mt-2">
-              <button 
-                className="flex items-center space-x-1 text-gray-500 hover:text-gray-700"
-                onClick={() => toggleExpand(post.npcId)}
-              >
-                <MessageSquare size={20} />
-                <span className="text-sm">{post.commentCount}</span>
-              </button>
-              
-              <button 
-                className="flex items-center space-x-1 text-gray-500 hover:text-gray-700"
-                onClick={() => handleLike(post)}
-              >
-                <Heart size={20} className={isPostLiked(post) ? "fill-red-500 text-red-500" : ""} />
-                <span className="text-sm">{post.likeCount}</span>
-              </button>
-
-              <button 
-                className="flex items-center space-x-1 text-gray-500 hover:text-gray-700 ml-auto"
-                onClick={() => toggleExpand(post.npcId)}
-              >
-                {expandedPosts[post.npcId] ? (
-                  <>
-                    <ChevronUp size={20} />
-                  </>
-                ) : (
-                  <>
-                    <ChevronDown size={20} />
-                    <span className="text-sm">Expand</span>
-                  </>
-                )}
-              </button>
-            </div>
-
-            {expandedPosts[post.npcId] && (
-              <div className="mt-4 space-y-4">
-                {isSignedIn && (
-                  <div className="flex items-center space-x-2">
-                    <input
-                      type="text"
-                      value={newComment[post.npcId] || ""}
-                      onChange={(e) => handleCommentChange(post.npcId, e.target.value)}
-                      placeholder="Write a comment..."
-                      className="flex-1 px-3 py-2 text-sm rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20"
+      {loading ? (
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full mx-auto mb-4"></div>
+            <p className="text-muted-foreground">Loading posts...</p>
+          </div>
+        </div>
+      ) : posts.length === 0 ? (
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-center text-gray-500">
+            <MessageSquare size={48} className="mx-auto mb-4 text-gray-300" />
+            <p className="text-lg mb-2">No posts yet</p>
+            <p className="text-sm">Be the first to start a conversation!</p>
+          </div>
+        </div>
+      ) : (
+        <div className="space-y-2 flex-1 pr-2">
+          {posts.map((post) => (
+            <div key={post.id} className="bg-white rounded-2xl py-2 px-4 cursor-pointer hover:bg-gray-50 transition-all shadow-sm">
+              <div className="flex items-start space-x-3">
+                <div className="h-12 w-12 rounded-full bg-gray-200 overflow-hidden flex-shrink-0 mt-3">
+                  {
+                    <img
+                      src={`/images/scene/headDir_${post.npcId}.png`}
+                      alt={`${post.npcName || 'NPC'} avatar`}
+                      className="h-full w-full object-cover"
                     />
-                    <button
-                      onClick={() => handleCommentSubmit(post.npcId)}
-                      className="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors"
+                  }
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center space-x-2">
+                    <span className="font-medium text-[#4A95E7] text-base capitalize">
+                      {getNpcName(post.npcId)}
+                    </span>
+                    <span className="text-gray-400 text-sm">{formatTime(post.createTime)}</span>
+                  </div>
+                  <p className="text-gray-600 text-sm mt-0.3 line-clamp-2 leading-[0.8]">
+                    {post.content}
+                  </p>
+                </div>
+              </div>
+              
+              {post.videoUrl ? (
+                <div className="mt-3 rounded-xl overflow-hidden relative group">
+                  <video
+                    ref={el => { videoRefs.current[post.id] = el; }}
+                    src={post.videoUrl}
+                    className="w-full h-auto object-cover"
+                    controls
+                    controlsList="nodownload"
+                    preload="metadata"
+                    playsInline
+                    poster={post.imgUrl || undefined}
+                    onClick={(e) => e.stopPropagation()}
+                    onPause={() => setPlayingVideos(prev => ({ ...prev, [post.id]: false }))}
+                    onEnded={() => setPlayingVideos(prev => ({ ...prev, [post.id]: false }))}
+                    onError={e => handleVideoError(post.id, e)}
+                    onLoadStart={() => handleVideoLoadStart(post.id)}
+                    onLoadedData={() => handleVideoLoadedData(post.id)}
+                  >
+                    <source src={post.videoUrl} type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                  
+                  {videoLoading[post.id] && (
+                    <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
+                      <div className="flex flex-col items-center">
+                        <Loader2 size={32} className="text-white animate-spin" />
+                        <span className="text-white text-sm mt-2">Loading video...</span>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {videoErrors[post.id] && (
+                    <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                      <div className="flex flex-col items-center text-center p-4">
+                        <AlertTriangle size={32} className="text-red-500 mb-2" />
+                        <span className="text-white text-sm mb-3">{videoErrors[post.id]}</span>
+                        <button 
+                          className="px-4 py-2 bg-white text-black text-sm rounded-md hover:bg-gray-100" 
+                          onClick={(e) => retryVideoLoad(post.id, e)}
+                        >
+                          Retry
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {!playingVideos[post.id] && !videoLoading[post.id] && !videoErrors[post.id] && (
+                    <div 
+                      className="absolute inset-0 flex items-center justify-center cursor-pointer"
+                      onClick={(e) => toggleVideoPlayback(post.id, e)}
                     >
-                      <Send size={20} />
+                      <div className="w-16 h-16 rounded-full bg-white bg-opacity-80 flex items-center justify-center">
+                        <Play size={28} className="text-gray-800 ml-1" />
+                      </div>
+                    </div>
+                  )}
+                  
+                  <div className="absolute bottom-0 right-0 p-2">
+                    <button
+                      className="w-8 h-8 rounded-full bg-black bg-opacity-50 flex items-center justify-center text-white"
+                      onClick={(e) => toggleFullscreen(post.id, e)}
+                    >
+                      <Maximize size={16} />
                     </button>
                   </div>
-                )}
+                </div>
+              ) : post.imgUrl && (
+                <div className="mt-3 rounded-xl overflow-hidden">
+                  <img
+                    src={post.imgUrl}
+                    alt="Post image"
+                    className="w-full h-auto object-cover"
+                    loading="lazy"
+                  />
+                </div>
+              )}
 
-                {post.tweetCommentVoList.map(comment => renderComment(comment))}
+              <div className="flex items-center justify-between mt-2">
+                <button 
+                  className="flex items-center space-x-1 text-gray-500 hover:text-gray-700"
+                  onClick={() => toggleExpand(post.id)}
+                >
+                  <MessageSquare size={20} />
+                  <span className="text-sm">{post.commentCount}</span>
+                </button>
+                
+                <button 
+                  className="flex items-center space-x-1 text-gray-500 hover:text-gray-700"
+                  onClick={() => handleLike(post)}
+                >
+                  <Heart size={20} className={isPostLiked(post) ? "fill-red-500 text-red-500" : ""} />
+                  <span className="text-sm">{post.likeCount}</span>
+                </button>
+
+                <button 
+                  className="flex items-center space-x-1 text-gray-500 hover:text-gray-700 ml-auto"
+                  onClick={() => toggleExpand(post.id)}
+                >
+                  {expandedPosts[post.id] ? (
+                    <>
+                      <ChevronUp size={20} />
+                    </>
+                  ) : (
+                    <>
+                      <ChevronDown size={20} />
+                      <span className="text-sm">Expand</span>
+                    </>
+                  )}
+                </button>
               </div>
-            )}
-          </div>
-        ))}
-      </div>
+
+              {expandedPosts[post.id] && (
+                <div className="mt-4 space-y-4">
+                  {isSignedIn && (
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="text"
+                        value={newComment[post.id] || ""}
+                        onChange={(e) => handleCommentChange(post.id, e.target.value)}
+                        placeholder="Write a comment..."
+                        className="flex-1 px-3 py-2 text-sm rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20"
+                      />
+                      <button
+                        onClick={() => handleCommentSubmit(post)}
+                        className="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors"
+                      >
+                        <Send size={20} />
+                      </button>
+                    </div>
+                  )}
+
+                  {post.tweetCommentVoList.map(comment => renderComment(comment))}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

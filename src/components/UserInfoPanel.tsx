@@ -19,6 +19,7 @@ interface UserInfoPanelProps {
   isSignedIn?: boolean;
   userInfo?: UserInfo | null;
   onLogin?: (userInfo: UserInfo) => void;
+  onLogout?: () => void;
   isFolded?: boolean;
   onFoldChange?: (folded: boolean) => void;
 }
@@ -28,17 +29,37 @@ const UserInfoPanel: React.FC<UserInfoPanelProps> = ({
   isSignedIn = false,
   userInfo = null,
   onLogin,
+  onLogout,
   isFolded = false,
   onFoldChange
 }) => {
   const navigate = useNavigate();
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
+  const [avatarError, setAvatarError] = React.useState(false);
+  const [avatarLoading, setAvatarLoading] = React.useState(true);
 
   // 添加处理ID显示的函数
   const formatUserId = (id: string) => {
     return id.length > 10 ? `${id.substring(0, 10)}...` : id;
   };
+
+  // 处理头像加载错误
+  const handleAvatarError = () => {
+    setAvatarError(true);
+    setAvatarLoading(false);
+  };
+
+  // 处理头像加载成功
+  const handleAvatarLoad = () => {
+    setAvatarLoading(false);
+  };
+
+  // 重置头像错误状态当userInfo变化时
+  React.useEffect(() => {
+    setAvatarError(false);
+    setAvatarLoading(true);
+  }, [userInfo?.avatar]);
 
   const handleGoogleLoginSuccess = (userInfo: UserInfo) => {
     setLoading(false);
@@ -49,13 +70,14 @@ const UserInfoPanel: React.FC<UserInfoPanelProps> = ({
   const handleGoogleLoginError = (error: any) => {
     setLoading(false);
     console.error('Google login failed:', error);
-    setError(error.error_description || '登录失败，请稍后再试');
+    setError(error.error_description || 'Login failed, please try again later');
   };
 
   const handleLogout = () => {
     localStorage.removeItem('userInfo');
     localStorage.removeItem('isSignedIn');
     navigate('/home');
+    onLogout?.();
   };
 
   const handleRetry = () => {
@@ -85,7 +107,7 @@ const UserInfoPanel: React.FC<UserInfoPanelProps> = ({
 
       <div className={cn(
         "transition-all duration-300 ease-in-out",
-        isFolded ? "h-16 overflow-hidden" : "h-auto"
+        isFolded && isSignedIn && userInfo ? "h-16 overflow-hidden" : "h-auto"
       )}>
         {loading ? (
           <div className="flex justify-center py-4">
@@ -98,11 +120,25 @@ const UserInfoPanel: React.FC<UserInfoPanelProps> = ({
               <div className="flex flex-col gap-3 mb-4">
                 <div className="flex items-start gap-3">
                   <div className="h-12 w-12 rounded-xl bg-drama-lavender overflow-hidden ring-2 ring-purple-100 flex-shrink-0">
-                    <img
-                      src={userInfo.avatar}
-                      alt="User avatar"
-                      className="h-full w-full object-cover"
-                    />
+                    {!avatarError && userInfo.avatar ? (
+                      <img
+                        src={userInfo.avatar}
+                        alt="User avatar"
+                        className="h-full w-full object-cover"
+                        onError={handleAvatarError}
+                        onLoad={handleAvatarLoad}
+                      />
+                    ) : (
+                      <div className="h-full w-full bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center">
+                        {avatarLoading && userInfo.avatar && !avatarError ? (
+                          <div className="animate-spin h-6 w-6 border-2 border-white border-t-transparent rounded-full"></div>
+                        ) : (
+                          <span className="text-white font-bold text-lg">
+                            {userInfo.userId.charAt(0).toUpperCase()}
+                          </span>
+                        )}
+                      </div>
+                    )}
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="font-bold text-lg text-gray-800 -mt-3 truncate">{userInfo.userId}</div>
