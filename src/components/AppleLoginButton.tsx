@@ -9,7 +9,7 @@ const APPLE_CONFIG = {
   clientId: 'world.dramai.dramai', // 您的Bundle ID
   keyId: 'M4Q94M576A',             // 您的Key ID
   // 私钥，实际使用时建议从环境变量获取
-  privateKey: ``,
+
   
   // 登录设置
   scope: 'name email',              // 请求的权限范围
