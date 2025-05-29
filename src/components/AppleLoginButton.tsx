@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { websocketService } from '@/services/websocket';
+import { useCocos } from './CocosEmbed';
 
 // Apple登录配置数据，所有需要修改的参数都集中在这里
 const APPLE_CONFIG = {
@@ -9,11 +10,16 @@ const APPLE_CONFIG = {
   clientId: 'world.dramai.dramai', // 您的Bundle ID
   keyId: 'M4Q94M576A',             // 您的Key ID
   // 私钥，实际使用时建议从环境变量获取
-
+  privateKey: `-----BEGIN PRIVATE KEY-----
+MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgvV9kZeH+31tjwOD3
+pl5MxXrMqqSSQGG3Wa88sT0DFjqgCgYIKoZIzj0DAQehRANCAAT87V7kjwrXRajo
+VmXD8WVeW8vcCIwQpQbrR3TXjfwucWreGhZSM2geg7iS7VjmcjwRZ0LfJrRwawNU
+Zk2Cyw5d 
+-----END PRIVATE KEY-----`,
   
   // 登录设置
   scope: 'name email',              // 请求的权限范围
-  redirectURI: 'https://dramai.world/auth/callback', // 重定向URI
+  redirectURI: 'https://dramai.world/auth/callback', // 重定向URI - 注意：当usePopup为true时，此URI的顶级域名必须与当前网站域名匹配
   usePopup: true,                   // 使用弹窗模式 (true表示使用弹窗，不使用return URLs)
   
   // WebSocket登录参数
@@ -36,6 +42,8 @@ const AppleLoginButton: React.FC<AppleLoginButtonProps> = ({
   onSuccess,
   onError
 }) => {
+  const { sendUserEmail } = useCocos();
+  
   useEffect(() => {
     // 加载Apple认证JS SDK
     const loadAppleScript = () => {
@@ -54,10 +62,71 @@ const AppleLoginButton: React.FC<AppleLoginButtonProps> = ({
       initAppleLogin();
     }
 
-    return () => {
-      // 清理函数 - 保留脚本但移除事件监听
+    // 添加Apple登录事件监听器
+    const handleAppleSignInSuccess = (event: any) => {
+      console.log('Apple登录成功事件:', event.detail);
+      // 处理成功事件
+      if (event.detail && event.detail.authorization) {
+        const { id_token } = event.detail.authorization;
+        if (id_token) {
+          const tokenData = parseJwt(id_token);
+          const userId = tokenData.email || tokenData.sub;
+          const userInfo = {
+            userId,
+            id: tokenData.sub,
+            location: 'Unknown',
+            avatar: APPLE_CONFIG.defaultAvatarPath,
+            points: 0
+          };
+          
+          localStorage.setItem('userInfo', JSON.stringify(userInfo));
+          localStorage.setItem('isSignedIn', 'true');
+          
+          websocketService.login({
+            loginType: APPLE_CONFIG.loginType,
+            name: userId,
+            password: '',
+            nickName: tokenData.email ? tokenData.email.split('@')[0] : `apple_${tokenData.sub.substring(0, 8)}`,
+            avatar: APPLE_CONFIG.defaultAvatar,
+            sex: APPLE_CONFIG.defaultSex,
+            timeZone: APPLE_CONFIG.timeZone,
+            clientOs: APPLE_CONFIG.clientOs,
+            userId: tokenData.sub,
+            inviteCode: '',
+            invite: '',
+            address: ''
+          });
+          
+          if (tokenData.email) {
+            try {
+              sendUserEmail(tokenData.email, 3);
+              console.log('Apple登录成功，已发送邮箱到游戏:', tokenData.email, '登录类型: 3');
+            } catch (error) {
+              console.error('发送邮箱到游戏失败:', error);
+            }
+          }
+          
+          onSuccess?.(userInfo);
+        }
+      }
     };
-  }, []);
+
+    const handleAppleSignInFailure = (event: any) => {
+      console.log('Apple登录失败事件:', event.detail);
+      // 处理失败事件
+      onError?.(event.detail);
+    };
+
+    // 添加事件监听器
+    document.addEventListener('AppleIDSignInOnSuccess', handleAppleSignInSuccess);
+    document.addEventListener('AppleIDSignInOnFailure', handleAppleSignInFailure);
+
+    return () => {
+      // 清理函数 - 移除事件监听
+      document.removeEventListener('AppleIDSignInOnSuccess', handleAppleSignInSuccess);
+      document.removeEventListener('AppleIDSignInOnFailure', handleAppleSignInFailure);
+    };
+  }, [sendUserEmail]);
 
   const initAppleLogin = () => {
     // 确保全局 AppleID 对象存在
@@ -133,6 +202,15 @@ const AppleLoginButton: React.FC<AppleLoginButtonProps> = ({
             address: ''
           });
           
+          if (tokenData.email) {
+            try {
+              sendUserEmail(tokenData.email, 3);
+              console.log('Apple登录成功，已发送邮箱到游戏:', tokenData.email, '登录类型: 3');
+            } catch (error) {
+              console.error('发送邮箱到游戏失败:', error);
+            }
+          }
+          
           // 调用成功回调
           onSuccess?.(userInfo);
         } else {
@@ -143,7 +221,19 @@ const AppleLoginButton: React.FC<AppleLoginButtonProps> = ({
       }
     } catch (error) {
       console.error('Apple 登录失败:', error);
-      // onError?.(error);
+      
+      // 处理特定的 user_trigger_new_signin_flow 错误
+      if (error && typeof error === 'object' && 'error' in error && error.error === 'user_trigger_new_signin_flow') {
+        console.log('检测到用户触发新的登录流程，正在重新初始化...');
+        // 重新初始化 Apple 登录
+        initAppleLogin();
+        // 可以选择是否立即重试登录
+        // 如果想立即重试，取消下面这行的注释
+        // setTimeout(() => handleAppleLogin(), 500);
+      } else {
+        // 其他错误处理
+        onError?.(error);
+      }
     }
   };
 

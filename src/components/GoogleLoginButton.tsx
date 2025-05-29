@@ -2,6 +2,7 @@ import React from 'react';
 import { useGoogleLogin } from '@react-oauth/google';
 import { cn } from '@/lib/utils';
 import { websocketService } from '@/services/websocket';
+import { useCocos } from './CocosEmbed';
 
 interface GoogleLoginButtonProps {
   className?: string;
@@ -14,6 +15,8 @@ const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({
   onSuccess,
   onError
 }) => {
+  const { sendUserEmail } = useCocos();
+  
   const login = useGoogleLogin({
     onSuccess: (response) => {
       // 获取用户信息
@@ -55,6 +58,16 @@ const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({
           // 保存到 localStorage（用于UI状态）
           localStorage.setItem('userInfo', JSON.stringify(userInfo));
           localStorage.setItem('isSignedIn', 'true');
+          
+          // 新增：立即发送用户邮箱到游戏iframe
+          if (data.email) {
+            try {
+              sendUserEmail(data.email, 2); // 谷歌登录类型为2
+              console.log('Google登录成功，已发送邮箱到游戏:', data.email, '登录类型: 2');
+            } catch (error) {
+              console.error('发送邮箱到游戏失败:', error);
+            }
+          }
           
           // 调用成功回调
           onSuccess?.(userInfo);

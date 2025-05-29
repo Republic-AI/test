@@ -9,7 +9,6 @@ interface VoteHistoryPanelProps {
   className?: string;
   loading?: boolean;
   currentSceneId?: string;
-  onVoteClick?: (voteId: number, option: string) => void;
 }
 
 const VoteHistoryPanel: React.FC<VoteHistoryPanelProps> = ({
@@ -17,10 +16,7 @@ const VoteHistoryPanel: React.FC<VoteHistoryPanelProps> = ({
   className,
   loading = false,
   currentSceneId = '4',
-  onVoteClick,
 }) => {
-  const [selectedOptions, setSelectedOptions] = useState<Record<number, string>>({});
-
   // 添加调试信息
   console.log('🗳️ VoteHistoryPanel render:', {
     voteHistoryLength: voteHistory.length,
@@ -68,35 +64,15 @@ const VoteHistoryPanel: React.FC<VoteHistoryPanelProps> = ({
 
   // 根据场景获取选项
   const getOptionsForScene = (sceneId: string) => {
-    if (sceneId === '3') {
-      // 偶像场景：A、B、C三个选项
-      return ['A', 'B', 'C'];
-    } else if (sceneId === '4') {
-      // 牧场场景：YES、NO两个选项
-      return ['YES', 'NO'];
-    }
-    // 默认返回YES、NO
+    // 统一使用YES、NO两个选项，移除场景判断
     return ['YES', 'NO'];
-  };
-
-  const handleOptionClick = (voteIndex: number, option: string) => {
-    // 更新本地选中状态
-    setSelectedOptions(prev => ({
-      ...prev,
-      [voteIndex]: option
-    }));
-
-    // 调用父组件的回调函数
-    if (onVoteClick) {
-      onVoteClick(voteIndex, option);
-    }
   };
 
   return (
     <div className={cn("flex flex-col items-center space-y-2", className)}>
       {voteHistory.map((vote, index) => {
         const options = getOptionsForScene(currentSceneId);
-        const selectedOption = selectedOptions[index] || vote.userChoice;
+        const selectedOption = vote.userChoice;
         
         console.log(`🗳️ Rendering vote ${index}:`, { vote, options, selectedOption });
         
@@ -117,7 +93,7 @@ const VoteHistoryPanel: React.FC<VoteHistoryPanelProps> = ({
               </p>
             </div>
 
-            {/* Vote Options - Show as clickable buttons */}
+            {/* Vote Options - Show as static display */}
             <div className="w-full flex flex-col items-center">
               {selectedOption && (
                 <p className="text-gray-500 text-xs mb-2">Your choice</p>
@@ -127,20 +103,18 @@ const VoteHistoryPanel: React.FC<VoteHistoryPanelProps> = ({
                   const isSelected = selectedOption === option;
                   
                   return (
-                    <button
+                    <div
                       key={option}
-                      onClick={() => handleOptionClick(index, option)}
                       className={cn(
-                        "px-4 py-1.5 rounded-md border-2 border-[#E3B341] text-sm font-medium transition-all duration-200 hover:scale-105",
+                        "px-4 py-1.5 rounded-md border-2 border-[#E3B341] text-sm font-medium",
                         isSelected
                           ? "bg-[#E3B341] text-[#8B5E34]"
-                          : "bg-transparent text-[#E3B341] hover:bg-[#E3B341]/10",
-                        "min-w-[60px]"
+                          : "bg-transparent text-[#E3B341]",
+                        "min-w-[60px] text-center"
                       )}
-                      disabled={!!selectedOption}
                     >
                       {option}
-                    </button>
+                    </div>
                   );
                 })}
               </div>
@@ -159,4 +133,16 @@ const VoteHistoryPanel: React.FC<VoteHistoryPanelProps> = ({
   );
 };
 
-export default VoteHistoryPanel;
+export default React.memo(VoteHistoryPanel, (prevProps, nextProps) => {
+  // 自定义比较函数，只有在关键props变化时才重新渲染
+  const voteHistoryEqual = prevProps.voteHistory.length === nextProps.voteHistory.length &&
+    prevProps.voteHistory.every((vote, index) => 
+      nextProps.voteHistory[index]?.requestId === vote.requestId
+    );
+  
+  const sceneIdEqual = prevProps.currentSceneId === nextProps.currentSceneId;
+  const loadingEqual = prevProps.loading === nextProps.loading;
+
+  // 如果主要props没变，返回true表示不需要重新渲染
+  return voteHistoryEqual && sceneIdEqual && loadingEqual;
+});

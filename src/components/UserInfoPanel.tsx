@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Loader2, LogOut, ChevronDown } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import GoogleLoginButton from './GoogleLoginButton';
 import AppleLoginButton from './AppleLoginButton';
-import AuthError from './AuthError';
+import { websocketService, Commands } from '@/services/websocket';
 
 interface UserInfo {
   userId: string;
@@ -38,6 +38,7 @@ const UserInfoPanel: React.FC<UserInfoPanelProps> = ({
   const [error, setError] = React.useState<string | null>(null);
   const [avatarError, setAvatarError] = React.useState(false);
   const [avatarLoading, setAvatarLoading] = React.useState(true);
+  const [loginAddress, setLoginAddress] = React.useState<string | null>(null);
 
   // 添加处理ID显示的函数
   const formatUserId = (id: string) => {
@@ -60,6 +61,39 @@ const UserInfoPanel: React.FC<UserInfoPanelProps> = ({
     setAvatarError(false);
     setAvatarLoading(true);
   }, [userInfo?.avatar]);
+
+  // 监听登录响应获取地址信息
+  useEffect(() => {
+    const handleLoginResponse = (event: any) => {
+      if (event.code === 0 && event.data) {
+        // 从登录响应中获取地址信息
+        const address = event.data.address;
+        if (address) {
+          setLoginAddress(address);
+          
+          // 更新localStorage中的userInfo
+          const storedUserInfo = localStorage.getItem('userInfo');
+          if (storedUserInfo) {
+            try {
+              const userInfoObj = JSON.parse(storedUserInfo);
+              userInfoObj.location = address;
+              localStorage.setItem('userInfo', JSON.stringify(userInfoObj));
+            } catch (error) {
+              console.error('解析用户信息失败:', error);
+            }
+          }
+        }
+      }
+    };
+
+    // 注册登录响应事件处理
+    websocketService.on(Commands.LOGIN, handleLoginResponse);
+    
+    return () => {
+      // 移除事件监听
+      websocketService.off(Commands.LOGIN, handleLoginResponse);
+    };
+  }, []);
 
   const handleGoogleLoginSuccess = (userInfo: UserInfo) => {
     setLoading(false);
@@ -87,6 +121,9 @@ const UserInfoPanel: React.FC<UserInfoPanelProps> = ({
   const toggleFold = () => {
     onFoldChange?.(!isFolded);
   };
+
+  // 显示地址，优先使用从服务器获取的地址
+  const displayLocation = loginAddress || userInfo?.location || 'Unknown';
 
   return (
     <div className={cn("mt-4 relative", className)}>
@@ -143,7 +180,7 @@ const UserInfoPanel: React.FC<UserInfoPanelProps> = ({
                   <div className="flex-1 min-w-0">
                     <div className="font-bold text-lg text-gray-800 -mt-3 truncate">{userInfo.userId}</div>
                     <div className="text-sm text-gray-500 mt-0.5">
-                      <div>📍 {userInfo.location}</div>
+                      <div>📍 {displayLocation}</div>
                     </div>
                   </div>
                 </div>
@@ -187,20 +224,16 @@ const UserInfoPanel: React.FC<UserInfoPanelProps> = ({
           </div>
         ) : (
           <>
-            {error ? (
-              <AuthError error={error} onRetry={handleRetry} />
-            ) : (
-              <div className="space-y-3">
-                <GoogleLoginButton
-                  onSuccess={handleGoogleLoginSuccess}
-                  onError={handleGoogleLoginError}
-                />
-                <AppleLoginButton
-                  onSuccess={handleGoogleLoginSuccess}
-                  onError={handleGoogleLoginError}
-                />
-              </div>
-            )}
+            <div className="space-y-3">
+              <GoogleLoginButton
+                onSuccess={handleGoogleLoginSuccess}
+                onError={handleGoogleLoginError}
+              />
+              <AppleLoginButton
+                onSuccess={handleGoogleLoginSuccess}
+                onError={handleGoogleLoginError}
+              />
+            </div>
           </>
         )}
       </div>

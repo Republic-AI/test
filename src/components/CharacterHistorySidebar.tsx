@@ -23,6 +23,35 @@ const CharacterHistorySidebar: React.FC<CharacterHistorySidebarProps> = ({
   const navigate = useNavigate();
   const { navigateToScene } = useCocos();
 
+  // 格式化时间，显示相对时间（例如：3小时前，2天前）
+  const formatRelativeTime = (timestamp: number | undefined): string => {
+    if (!timestamp) return '';
+    
+    // 将时间戳转换为毫秒（如果已经是毫秒则不需要）
+    const timeMs = timestamp * 1000;
+    const now = Date.now();
+    const diffMs = now - timeMs;
+    
+    // 转换为秒、分钟、小时、天
+    const diffSec = Math.floor(diffMs / 1000);
+    const diffMin = Math.floor(diffSec / 60);
+    const diffHour = Math.floor(diffMin / 60);
+    const diffDay = Math.floor(diffHour / 24);
+    
+    // 根据时间差返回合适的格式
+    if (diffDay > 30) {
+      return `${Math.floor(diffDay / 30)} months ago`;
+    } else if (diffDay > 0) {
+      return `${diffDay} days ago`;
+    } else if (diffHour > 0) {
+      return `${diffHour} hours ago`;
+    } else if (diffMin > 0) {
+      return `${diffMin} minutes ago`;
+    } else {
+      return 'Just now';
+    }
+  };
+
   const handleCharacterClick = (npcId: number) => {
     // 执行场景导航
     const jumpToSceneId = npcId.toString();
@@ -81,7 +110,7 @@ const CharacterHistorySidebar: React.FC<CharacterHistorySidebarProps> = ({
           <div className="absolute inset-0 bg-white/80 backdrop-blur-sm rounded-2xl flex items-center justify-center z-10">
             <div className="text-center">
               <div className="animate-spin h-6 w-6 border-2 border-primary border-t-transparent rounded-full mx-auto mb-2"></div>
-              <p className="text-sm text-gray-600">切换场景中...</p>
+              <p className="text-sm text-gray-600">Switching scene...</p>
             </div>
           </div>
         )}
@@ -106,10 +135,15 @@ const CharacterHistorySidebar: React.FC<CharacterHistorySidebarProps> = ({
               <div className="flex-1 min-w-0">
                 <div className="flex items-center space-x-2">
                   <span className="font-medium text-[#4A95E7] text-base capitalize">{getNpcName(character.npcId)}</span>
-                  <span className="text-gray-400 text-sm">1 day</span>
+                  {character.lastChatTime ? (
+                    <span className="text-gray-400 text-sm">{formatRelativeTime(character.lastChatTime)}</span>
+                  ) : null}
                 </div>
-                <p className="text-gray-600 text-sm mt-0.3 line-clamp-2 leading-[0.8]">
-                  {character.description}
+                <p className={cn(
+                  "text-gray-600 text-sm mt-1 line-clamp-3 leading-snug",
+                  !character.description && "text-gray-300 italic"
+                )}>
+                  {character.description || "No recent messages"}
                 </p>
               </div>
             </div>

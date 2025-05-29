@@ -36,6 +36,7 @@ export interface CharacterHistory {
   name: string;
   description: string;
   imageUrl: string;
+  lastChatTime?: number; // 添加最后聊天时间属性，用于排序
 }
 
 export interface VoteOption {

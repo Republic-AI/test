@@ -14,9 +14,6 @@ import { getNpcName } from '@/config/npc';
   // 推文操作 
   // 投票拉取历史记录
   
-// 删除Mock数据导入
-// import { MOCK_SCENE_CHARACTER_HISTORY, MOCK_SCENE_THREAD, MOCK_VOTE_HISTORY } from '@/mock/scene-data';
-
 import { toast } from '@/components/ui/use-toast';
 import CharacterHistorySidebar from '@/components/CharacterHistorySidebar';
 import { websocketService } from '@/services/websocket';
@@ -29,6 +26,82 @@ interface UserInfo {
   avatar: string;
   points: number;
 }
+
+// 添加根据NPC ID获取roomId的辅助函数
+const getNpcRoomId = (npcId: number): string => {
+  // 牧场场景 (roomId: 4)
+  if ([10016, 10017, 10018, 10019, 10020, 10021].includes(npcId)) {
+    return '4';
+  }
+  
+  // 偶像场景 (roomId: 3)
+  if ([10012, 10009, 10006, 10022].includes(npcId)) {
+    return '3';
+  }
+  
+  // 默认返回当前场景ID
+  return '0';
+};
+
+// 添加根据场景ID过滤NPC的函数
+const filterNpcsByScene = (characters: CharacterHistory[], sceneId: string): CharacterHistory[] => {
+  const roomId = sceneId;
+  
+  return characters.filter(character => {
+    // 牧场场景 (roomId: 4) 的NPC
+    if (roomId === '4') {
+      return [10016, 10017, 10018, 10019, 10020, 10021].includes(character.npcId);
+    }
+    
+    // 偶像场景 (roomId: 3) 的NPC
+    if (roomId === '3') {
+      return [10012, 10009, 10006, 10022].includes(character.npcId);
+    }
+    
+    // 默认显示所有NPC
+    return true;
+  });
+};
+
+// 添加根据场景ID过滤推文的函数
+const filterPostsByScene = (posts: AIPost[], sceneId: string): AIPost[] => {
+  const roomId = sceneId;
+  
+  return posts.filter(post => {
+    // 牧场场景 (roomId: 4) 的NPC推文
+    if (roomId === '4') {
+      return [10016, 10017, 10018, 10019, 10020, 10021].includes(post.npcId);
+    }
+    
+    // 偶像场景 (roomId: 3) 的NPC推文
+    if (roomId === '3') {
+      return [10012, 10009, 10006, 10022].includes(post.npcId);
+    }
+    
+    // 默认显示所有推文
+    return true;
+  });
+};
+
+// 添加根据场景ID过滤投票的函数
+const filterVotesByScene = (votes: VoteHistory[], sceneId: string): VoteHistory[] => {
+  console.log('🗳️ Filtering votes:', {
+    totalVotes: votes.length,
+    sceneId: sceneId,
+    votes: votes.map(v => ({ roomId: v.roomId, content: v.content }))
+  });
+  
+  // 投票历史已经通过roomId进行了过滤，因为我们在获取数据时就指定了roomId
+  // 但为了保险起见，我们可以再次过滤
+  const filtered = votes.filter(vote => vote.roomId === sceneId);
+  
+  console.log('🗳️ Filtered votes result:', {
+    filteredCount: filtered.length,
+    filtered: filtered.map(v => ({ roomId: v.roomId, content: v.content }))
+  });
+  
+  return filtered;
+};
 
 const Scene: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -56,11 +129,13 @@ const Scene: React.FC = () => {
 
   const effectiveSceneId = getEffectiveSceneId(sceneId);
   const [lastSceneId, setLastSceneId] = useState<string>(effectiveSceneId);
+  const [currentPage, setCurrentPage] = useState<number>(0); // 添加当前页面状态
 
   // 当场景ID变化时，强制重新加载数据
   useEffect(() => {
     if (sceneId !== lastSceneId) {
       setLastSceneId(sceneId);
+      setCurrentPage(0); // 重置页码
       // 不需要显式调用fetchSceneData()，因为effectiveSceneId的变化会触发主要useEffect
       console.log('Scene ID changed:', { from: lastSceneId, to: sceneId });
     }
@@ -108,6 +183,14 @@ const Scene: React.FC = () => {
     }
   }, []);
 
+  // 使用useRef保存当前页码，避免闭包问题
+  const currentPageRef = React.useRef(currentPage);
+  
+  // 当currentPage变化时更新ref
+  React.useEffect(() => {
+    currentPageRef.current = currentPage;
+  }, [currentPage]);
+
   // 处理事件处理器和事件依赖项
   const handleSceneFeed = React.useCallback((data: any) => {
     if (data && data.tweetVoList) {
@@ -116,6 +199,7 @@ const Scene: React.FC = () => {
         currentSceneId: searchParams.get('sceneId'),
         effectiveSceneId: getEffectiveSceneId(searchParams.get('sceneId') || 'MainMenu'),
         tweetCount: data.tweetVoList.length,
+        currentPage: currentPageRef.current, // 使用ref中的值
         tweets: data.tweetVoList.map((tweet: any) => ({
           id: tweet.id,
           content: tweet.content.substring(0, 50) + '...',
@@ -128,7 +212,7 @@ const Scene: React.FC = () => {
       setPostsLoading(false); // 推文数据加载完成
       console.log('Updated aiPosts with', data.tweetVoList.length, 'tweets for roomId:', data.roomId);
     }
-  }, []);
+  }, []); // 移除所有依赖项，使用ref保持最新状态
   
   const handleVoteHistory = React.useCallback((event: any) => {
     console.log('🗳️ handleVoteHistory called with event:', event);
@@ -144,23 +228,12 @@ const Scene: React.FC = () => {
       const formattedVoteHistory = event.data.voteHistoryInfoList.map((vote: any, index: number) => {
         console.log(`🗳️ Processing vote ${index}:`, vote);
         
-        // 根据场景确定选项格式
+        // 统一使用YES、NO两个选项，移除场景判断
         let userChoice: string | undefined;
-        let options: string[];
+        const options = ['YES', 'NO'];
         
-        if (effectiveSceneId === '3') {
-          // 偶像场景：A、B、C三个选项
-          options = ['A', 'B', 'C'];
-          // 这里需要根据实际API响应来映射选项
-          if (vote.myYesCount > 0) userChoice = 'A';
-          else if (vote.myNoCount > 0) userChoice = 'B';
-          // 如果有第三个选项的数据，可以在这里添加
-        } else {
-          // 牧场场景：YES、NO两个选项
-          options = ['YES', 'NO'];
-          if (vote.myYesCount > 0) userChoice = 'YES';
-          else if (vote.myNoCount > 0) userChoice = 'NO';
-        }
+        if (vote.myYesCount > 0) userChoice = 'YES';
+        else if (vote.myNoCount > 0) userChoice = 'NO';
         
         return {
           roomId: effectiveSceneId, // 直接使用当前的effectiveSceneId
@@ -198,32 +271,69 @@ const Scene: React.FC = () => {
       const characters: CharacterHistory[] = [];
       
       for (const npcId in event.data.playerNpcChatDataMap) {
-        // 使用getNpcName获取NPC名称，为不同NPC提供合适的描述
+        // 使用getNpcName获取NPC名称
         const id = parseInt(npcId);
-        let description = ""; 
         
-        // 针对不同NPC提供合适的描述
-        if (id === 10016) description = "Left fame behind—now paints silence, sorrow, and secret dreams.";
-        else if (id === 10017) description = "Bakes love daily—her smile's the town's unofficial sunshine.";
-        else if (id === 10018) description = "Commands every room—cool mind, loyal heart, secrets under control.";
-        else if (id === 10019) description = "Moves quietly, thinks sharply—wisdom wrapped in grace and elegance.";
-        else if (id === 10020) description = "Earth in her hands—quiet strength beneath sun-warmed simplicity.";
-        else if (id === 10021) description = "Golden boy on court—searching hard for his real self.";
-        else if (id === 10012) description = "A passionate dancer with dreams of debuting in a top idol group.";
-        else if (id === 10009) description = "The company's star trainee known for his angelic voice.";
-        else if (id === 10006) description = "A revolutionary who is determined to change the world.";
-        else if (id === 10022) description = "A young musical genius producer with extraordinary vision.";
-        else description = `Character #${id}`;
+        // 获取聊天记录数组
+        const chatHistory = event.data.playerNpcChatDataMap[npcId];
+        
+        // 默认描述为空字符串
+        let description = "";
+        let lastChatTime = 0; // 添加最后聊天时间用于排序
+        
+        // 如果有聊天记录，找出NPC发送的最后一条消息作为描述
+        if (chatHistory && chatHistory.length > 0) {
+          // 按时间排序，确保最新的消息在最后
+          const sortedHistory = [...chatHistory].sort((a, b) => a.time - b.time);
+          
+          // 筛选出NPC发送的消息
+          const npcMessages = sortedHistory.filter(msg => msg.npcSend === true);
+          
+          // 如果有NPC消息，使用最后一条作为描述
+          if (npcMessages.length > 0) {
+            const lastMessage = npcMessages[npcMessages.length - 1];
+            description = lastMessage.content;
+            lastChatTime = lastMessage.time;
+          }
+          
+          // 如果没有NPC消息，使用最后一条消息的时间（无论是否是NPC发送的）
+          if (lastChatTime === 0 && sortedHistory.length > 0) {
+            lastChatTime = sortedHistory[sortedHistory.length - 1].time;
+          }
+        }
         
         const character: CharacterHistory = {
           roomId: getEffectiveSceneId(searchParams.get('sceneId') || 'MainMenu'),
           npcId: id,
           name: getNpcName(id), // 使用getNpcName获取名称
           description: description,
-          imageUrl: `/images/scene/headDir_${id}.png` // 修复图片路径
+          imageUrl: `/images/scene/headDir_${id}.png`, // 修复图片路径
+          lastChatTime: lastChatTime // 添加最后聊天时间属性
         };
         characters.push(character);
       }
+      
+      // 按照最后聊天时间排序，最近有聊天的NPC排在前面
+      // 有聊天记录的NPC按时间倒序排列，没有聊天记录的NPC按NPC ID排序放在后面
+      characters.sort((a, b) => {
+        const aHasChat = (a.lastChatTime || 0) > 0;
+        const bHasChat = (b.lastChatTime || 0) > 0;
+        
+        if (aHasChat && bHasChat) {
+          // 都有聊天记录，按时间倒序排列（最新的在前）
+          return (b.lastChatTime || 0) - (a.lastChatTime || 0);
+        } else if (aHasChat && !bHasChat) {
+          // a有聊天记录，b没有，a排在前面
+          return -1;
+        } else if (!aHasChat && bHasChat) {
+          // b有聊天记录，a没有，b排在前面
+          return 1;
+        } else {
+          // 都没有聊天记录，按NPC ID排序
+          return a.npcId - b.npcId;
+        }
+      });
+      
       setCharacterHistory(characters);
       console.log('Updated characterHistory with', characters.length, 'characters');
     }
@@ -250,35 +360,45 @@ const Scene: React.FC = () => {
       });
       
       // 根据操作类型显示不同的成功消息
-      let successMessage = "Operation successful";
+      let successMessage = "操作成功";
       switch (responseData?.type) {
         case 1:
-          successMessage = "Like successful";
+          successMessage = "点赞成功";
           break;
         case 2:
-          successMessage = `Comment successful${responseData?.commentId ? ` (Comment ID: ${responseData.commentId})` : ''}`;
+          successMessage = `评论成功${responseData?.commentId ? ` (评论ID: ${responseData.commentId})` : ''}`;
           break;
         case 3:
-          successMessage = "Vote successful";
+          successMessage = "投票成功";
           break;
       }
       
       toast({
         title: successMessage,
-        description: `Operation completed, data is syncing...`
+        description: `操作已完成，数据同步中...`
       });
       
       console.log('💬 Refreshing feed data...');
       
-      // 延迟更长时间后刷新数据，确保服务器端数据已更新
-      setTimeout(() => {
-        console.log('💬 Sending GET_SCENE_FEED request to refresh data...');
-        websocketService.send(Commands.GET_SCENE_FEED, { 
-          roomId: Number(effectiveSceneId), 
-          page: 0, 
-          size: 99 
-        });
-      }, 1000); // 增加到1秒延迟
+      // 只更新推文数据，不触发整个页面重新加载
+      if (websocketService.isConnectionOpen()) {
+        setPostsLoading(true); // 只设置推文加载状态
+        
+        // 延迟更长时间后刷新数据，确保服务器端数据已更新
+        setTimeout(() => {
+          console.log('💬 Sending GET_SCENE_FEED request to refresh data...');
+          websocketService.send(Commands.GET_SCENE_FEED, { 
+            roomId: Number(effectiveSceneId), 
+            page: currentPageRef.current, 
+            size: 10 
+          });
+          
+          // 短暂延迟后重置加载状态
+          setTimeout(() => {
+            setPostsLoading(false);
+          }, 1000);
+        }, 1000); // 增加到1秒延迟
+      }
     } else {
       console.error('💬 Tweet operation failed:', {
         code: event?.code,
@@ -286,22 +406,54 @@ const Scene: React.FC = () => {
         data: event?.data
       });
       toast({
-        title: "Operation failed",
-        description: event?.message || "Tweet operation failed, please try again",
+        title: "操作失败",
+        description: event?.message || "推文操作失败，请重试",
         variant: "destructive"
       });
     }
   }, [effectiveSceneId]);
 
+  // 处理页面切换
+  const handlePageChange = React.useCallback((newPage: number) => {
+    console.log(`Switching to page ${newPage + 1}`);
+    setCurrentPage(newPage);
+    // 只更新推文数据，不触发整个页面重新加载
+    if (websocketService.isConnectionOpen()) {
+      setPostsLoading(true); // 只设置推文加载状态
+      websocketService.send(Commands.GET_SCENE_FEED, { 
+        roomId: Number(effectiveSceneId), 
+        page: newPage, 
+        size: 10
+      });
+      // 短暂延迟后重置加载状态，避免长时间显示加载中
+      setTimeout(() => {
+        setPostsLoading(false);
+      }, 1000);
+    }
+  }, [effectiveSceneId]);
+  
   // 初始化加载和设置WebSocket事件处理器
   useEffect(() => {
-    console.log('Initial load with sceneId:', sceneId, 'effectiveSceneId:', effectiveSceneId);
+    console.log('Initializing WebSocket event handlers');
     
     // 注册WebSocket事件处理器
     websocketService.subscribe(handleSceneFeed);
     websocketService.on(Commands.VOTE_THREAD, handleVoteHistory);
     websocketService.on(Commands.GET_CHARACTER_HISTORY, handleCharacterHistory);
-    websocketService.on(Commands.OPERATE_TWEET, handleOperateTweetResponse); // 添加推文操作响应监听
+    websocketService.on(Commands.OPERATE_TWEET, handleOperateTweetResponse);
+    
+    return () => {
+      // 清理事件处理器
+      websocketService.unsubscribe(handleSceneFeed);
+      websocketService.off(Commands.VOTE_THREAD, handleVoteHistory);
+      websocketService.off(Commands.GET_CHARACTER_HISTORY, handleCharacterHistory);
+      websocketService.off(Commands.OPERATE_TWEET, handleOperateTweetResponse);
+    };
+  }, [handleSceneFeed, handleVoteHistory, handleCharacterHistory, handleOperateTweetResponse]);
+
+  // 分离数据加载为单独的effect，避免事件处理器重新注册
+  useEffect(() => {
+    console.log('Loading scene data, sceneId:', sceneId, 'effectiveSceneId:', effectiveSceneId);
     
     // 延迟加载数据，确保WebSocket连接有时间建立
     const timer = setTimeout(() => {
@@ -310,15 +462,15 @@ const Scene: React.FC = () => {
       setPostsLoading(true); // 重置推文加载状态
       setVotesLoading(true); // 重置投票加载状态
       try {
-        console.log(`开始获取场景数据，场景ID: ${effectiveSceneId}`);
+        console.log(`Starting to fetch scene data, Scene ID: ${effectiveSceneId}`);
         
         // 确保WebSocket连接已建立
         if (websocketService.isConnectionOpen()) {
-          // 获取场景推文数据
+          // 获取场景推文数据，使用当前页码
           websocketService.send(Commands.GET_SCENE_FEED, { 
             roomId: Number(effectiveSceneId), 
-            page: 0, 
-            size: 99 
+            page: currentPageRef.current, 
+            size: 10 // 每页10条
           });
           
           // 获取投票历史记录
@@ -340,21 +492,21 @@ const Scene: React.FC = () => {
             }, 2000); // 额外2秒等待数据
           }, 1500);
         } else {
-          console.warn("WebSocket连接尚未建立，等待连接...");
+          console.warn("WebSocket connection not established, waiting for connection...");
           // WebSocket未连接，延迟重试
           setTimeout(() => {
             if (websocketService.isConnectionOpen()) {
               websocketService.send(Commands.GET_SCENE_FEED, { 
                 roomId: Number(effectiveSceneId), 
-                page: 0, 
-                size: 99 
+                page: currentPageRef.current, 
+                size: 10 
               });
               websocketService.getVoteHistory(Number(effectiveSceneId));
               websocketService.send(Commands.GET_CHARACTER_HISTORY, {
                 roomId: Number(effectiveSceneId)
               });
             } else {
-              console.error("WebSocket连接失败");
+              console.error("WebSocket connection failed");
             }
             setLoading(false);
             // 重置loading状态
@@ -371,17 +523,13 @@ const Scene: React.FC = () => {
         });
         setLoading(false);
       }
-    }, 1000); // 延迟1000ms确保WebSocket连接已建立
+    }, 300);
     
     return () => {
-      // 清理事件处理器和定时器
+      // 清理定时器
       clearTimeout(timer);
-      websocketService.unsubscribe(handleSceneFeed);
-      websocketService.off(Commands.VOTE_THREAD, handleVoteHistory);
-      websocketService.off(Commands.GET_CHARACTER_HISTORY, handleCharacterHistory);
-      websocketService.off(Commands.OPERATE_TWEET, handleOperateTweetResponse); // 清理推文操作响应监听器
     };
-  }, [effectiveSceneId, handleSceneFeed, handleVoteHistory, handleCharacterHistory, handleOperateTweetResponse]);
+  }, [effectiveSceneId]); // 只依赖effectiveSceneId
 
   // 删除重复的WebSocket监听器
   useEffect(() => {
@@ -456,8 +604,8 @@ const Scene: React.FC = () => {
     });
   };
 
-  // 更新点赞方法，使用WebSocket
-  function handleLike(tweetId: number): void {
+  // 使用useCallback包装所有事件处理函数
+  const handleLike = React.useCallback((tweetId: number): void => {
     // 立即更新本地UI状态
     setAiPosts(prevPosts => {
       return prevPosts.map(post => {
@@ -476,10 +624,10 @@ const Scene: React.FC = () => {
     
     // 发送WebSocket请求 - type=1 表示点赞
     websocketService.operateTweet(tweetId, 1, "", 0, 0);
-  }
+  }, []);
 
   // 处理投票方法
-  function handleVote(tweetId: number, optionIndex: number): void {
+  const handleVote = React.useCallback((tweetId: number, optionIndex: number): void => {
     if (!isSignedIn) {
       toast({
         title: "Please sign in",
@@ -491,7 +639,7 @@ const Scene: React.FC = () => {
     // 找到对应的推文
     const targetPost = aiPosts.find(post => post.id === tweetId);
     if (!targetPost) {
-      console.error('找不到对应的推文:', tweetId);
+      console.error('Cannot find tweet:', tweetId);
       return;
     }
 
@@ -565,10 +713,46 @@ const Scene: React.FC = () => {
     
     // 发送WebSocket请求 - type=3 表示选择/投票，使用实际的tweetId和rateList
     websocketService.operateTweet(tweetId, 3, "", 0, optionIndex, currentRateList);
-  }
+  }, [isSignedIn, aiPosts]);
+
+  const handleComment = React.useCallback((tweetId: number, comment: string): void => {
+    if (!isSignedIn) {
+      toast({
+        title: "Please sign in",
+        description: "You need to sign in to post a comment"
+      });
+      return;
+    }
+    
+    console.log('💬 Submitting comment:', {
+      tweetId,
+      comment,
+      effectiveSceneId,
+      timestamp: new Date().toISOString()
+    });
+    
+    // 发送WebSocket请求提交评论 - type=2 表示评论，使用tweetId
+    websocketService.operateTweet(tweetId, 2, comment, 0, 0);
+  }, [isSignedIn, effectiveSceneId]);
+
+  // 使用useMemo缓存过滤后的结果
+  const filteredPosts = React.useMemo(
+    () => filterPostsByScene(aiPosts, effectiveSceneId),
+    [aiPosts, effectiveSceneId]
+  );
+  
+  const filteredVotes = React.useMemo(
+    () => filterVotesByScene(voteHistory, effectiveSceneId),
+    [voteHistory, effectiveSceneId]
+  );
+
+  const filteredCharacters = React.useMemo(
+    () => filterNpcsByScene(characterHistory, effectiveSceneId),
+    [characterHistory, effectiveSceneId]
+  );
 
   // 处理选择NPC事件
-  const handleSelectNpc = (npcId: number) => {
+  const handleSelectNpc = React.useCallback((npcId: number) => {
     // 根据NPC ID获取对应的roomId
     const newRoomId = getNpcRoomId(npcId);
     const currentRoomId = effectiveSceneId;
@@ -601,7 +785,7 @@ const Scene: React.FC = () => {
         websocketService.send(Commands.GET_SCENE_FEED, { 
           roomId: Number(newRoomId), 
           page: 0, 
-          size: 99 
+          size: 10 
         });
         
         // 获取新场景的投票历史记录
@@ -623,13 +807,13 @@ const Scene: React.FC = () => {
           }, 2000); // 额外2秒等待数据
         }, 1500);
       } else {
-        console.warn("WebSocket连接尚未建立，等待连接...");
+        console.warn("WebSocket connection not established, waiting for connection...");
         setTimeout(() => {
           if (websocketService.isConnectionOpen()) {
             websocketService.send(Commands.GET_SCENE_FEED, { 
               roomId: Number(newRoomId), 
               page: 0, 
-              size: 99 
+              size: 10 
             });
             websocketService.getVoteHistory(Number(newRoomId));
             websocketService.send(Commands.GET_CHARACTER_HISTORY, {
@@ -653,200 +837,9 @@ const Scene: React.FC = () => {
         description: `Switching to ${newRoomId === '3' ? 'Idol Scene' : 'Ranch Scene'}...`
       });
     }
-  };
+  }, [effectiveSceneId, navigate, setAiPosts, setVoteHistory, setCharacterHistory, setLoading, setPostsLoading, setVotesLoading, setNpcSwitchLoading, navigateToScene]);
 
-  // 添加根据NPC ID获取roomId的辅助函数
-  const getNpcRoomId = (npcId: number): string => {
-    // 牧场场景 (roomId: 4)
-    if ([10016, 10017, 10018, 10019, 10020, 10021].includes(npcId)) {
-      return '4';
-    }
-    
-    // 偶像场景 (roomId: 3)
-    if ([10012, 10009, 10006, 10022].includes(npcId)) {
-      return '3';
-    }
-    
-    // 默认返回当前场景ID
-    return effectiveSceneId;
-  };
-
-  // 添加根据场景ID过滤NPC的函数
-  const filterNpcsByScene = (characters: CharacterHistory[], sceneId: string): CharacterHistory[] => {
-    const roomId = sceneId;
-    
-    return characters.filter(character => {
-      // 牧场场景 (roomId: 4) 的NPC
-      if (roomId === '4') {
-        return [10016, 10017, 10018, 10019, 10020, 10021].includes(character.npcId);
-      }
-      
-      // 偶像场景 (roomId: 3) 的NPC
-      if (roomId === '3') {
-        return [10012, 10009, 10006, 10022].includes(character.npcId);
-      }
-      
-      // 默认显示所有NPC
-      return true;
-    });
-  };
-
-  // 过滤后的角色列表
-  const filteredCharacters = filterNpcsByScene(characterHistory, effectiveSceneId);
-
-  // 添加根据场景ID过滤推文的函数
-  const filterPostsByScene = (posts: AIPost[], sceneId: string): AIPost[] => {
-    const roomId = sceneId;
-    
-    return posts.filter(post => {
-      // 牧场场景 (roomId: 4) 的NPC推文
-      if (roomId === '4') {
-        return [10016, 10017, 10018, 10019, 10020, 10021].includes(post.npcId);
-      }
-      
-      // 偶像场景 (roomId: 3) 的NPC推文
-      if (roomId === '3') {
-        return [10012, 10009, 10006, 10022].includes(post.npcId);
-      }
-      
-      // 默认显示所有推文
-      return true;
-    });
-  };
-
-  // 添加根据场景ID过滤投票的函数
-  const filterVotesByScene = (votes: VoteHistory[], sceneId: string): VoteHistory[] => {
-    console.log('🗳️ Filtering votes:', {
-      totalVotes: votes.length,
-      sceneId: sceneId,
-      votes: votes.map(v => ({ roomId: v.roomId, content: v.content }))
-    });
-    
-    // 投票历史已经通过roomId进行了过滤，因为我们在获取数据时就指定了roomId
-    // 但为了保险起见，我们可以再次过滤
-    const filtered = votes.filter(vote => vote.roomId === sceneId);
-    
-    console.log('🗳️ Filtered votes result:', {
-      filteredCount: filtered.length,
-      filtered: filtered.map(v => ({ roomId: v.roomId, content: v.content }))
-    });
-    
-    return filtered;
-  };
-
-  // 处理投票历史面板的投票点击
-  const handleVoteHistoryClick = (voteIndex: number, option: string) => {
-    console.log(`🗳️ Vote history clicked: index ${voteIndex}, option ${option}`);
-    
-    if (!isSignedIn) {
-      toast({
-        title: "Please sign in",
-        description: "You need to sign in to participate in voting"
-      });
-      return;
-    }
-    
-    // 获取对应的投票记录
-    const vote = filteredVotes[voteIndex];
-    if (!vote) {
-      console.error('找不到对应的投票记录:', voteIndex);
-      return;
-    }
-    
-    // 检查是否已经投过票
-    if (vote.hasVoted || vote.userChoice) {
-      toast({
-        title: "Already voted",
-        description: "You have already voted on this thread"
-      });
-      return;
-    }
-    
-    console.log('🗳️ 发送投票历史请求:', {
-      voteIndex,
-      option,
-      vote: vote,
-      roomId: effectiveSceneId,
-      timestamp: new Date().toISOString()
-    });
-    
-    // 根据选项确定投票类型
-    let voteValue: number;
-    if (effectiveSceneId === '3') {
-      // 偶像场景：A=0, B=1, C=2
-      const optionMap: Record<string, number> = { 'A': 0, 'B': 1, 'C': 2 };
-      voteValue = optionMap[option] ?? 0;
-    } else {
-      // 牧场场景：YES=1, NO=0
-      voteValue = option === 'YES' ? 1 : 0;
-    }
-    
-    // 发送投票请求到后端
-    // 使用新的voteOnHistory方法发送投票历史的投票
-    websocketService.voteOnHistory(
-      Number(effectiveSceneId),
-      vote.requestId,
-      option,
-      voteValue,
-      vote.content
-    );
-    
-    // 立即更新本地状态以提供即时反馈
-    setVoteHistory(prevVotes => {
-      return prevVotes.map((v, idx) => {
-        if (idx === voteIndex) {
-          return {
-            ...v,
-            hasVoted: true,
-            userChoice: option,
-            // 更新投票计数
-            myYesCount: option === 'YES' ? '1' : v.myYesCount,
-            myNoCount: option === 'NO' ? '1' : v.myNoCount
-          };
-        }
-        return v;
-      });
-    });
-    
-    toast({
-      title: "Vote successful",
-      description: `You selected ${option}`
-    });
-  };
-
-  // 过滤后的推文和投票列表
-  const filteredPosts = filterPostsByScene(aiPosts, effectiveSceneId);
-  const filteredVotes = filterVotesByScene(voteHistory, effectiveSceneId);
-
-  console.log('📊 Rendering Scene with:', {
-    effectiveSceneId,
-    totalVoteHistory: voteHistory.length,
-    filteredVotes: filteredVotes.length,
-    filteredPosts: filteredPosts.length,
-    loading
-  });
-
-  // 处理评论方法
-  function handleComment(tweetId: number, comment: string): void {
-    if (!isSignedIn) {
-      toast({
-        title: "Please sign in",
-        description: "You need to sign in to post a comment"
-      });
-      return;
-    }
-    
-    console.log('💬 Submitting comment:', {
-      tweetId,
-      comment,
-      effectiveSceneId,
-      timestamp: new Date().toISOString()
-    });
-    
-    // 发送WebSocket请求提交评论 - type=2 表示评论，使用tweetId
-    websocketService.operateTweet(tweetId, 2, comment, 0, 0);
-  }
-
+  // 渲染内容
   return (
     <div className="h-screen flex overflow-hidden">
       {/* Sidebar */}
@@ -891,11 +884,14 @@ const Scene: React.FC = () => {
               <div className="flex-1 h-full overflow-y-auto border border-gray-200 rounded-lg p-4">
                 <SceneThreadFeed 
                   posts={filteredPosts} 
+                  loading={postsLoading} 
                   isSignedIn={isSignedIn}
-                  loading={postsLoading}
-                  onLike={handleLike}
                   onVote={handleVote}
+                  onLike={handleLike}
                   onComment={handleComment}
+                  roomId={Number(effectiveSceneId)}
+                  currentPage={currentPage}
+                  onPageChange={handlePageChange}
                 />
               </div>
               
@@ -905,7 +901,6 @@ const Scene: React.FC = () => {
                   voteHistory={filteredVotes} 
                   currentSceneId={effectiveSceneId}
                   loading={votesLoading}
-                  onVoteClick={handleVoteHistoryClick}
                 />
               </div>
             </div>

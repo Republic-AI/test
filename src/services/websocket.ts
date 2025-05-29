@@ -669,7 +669,8 @@ class WebSocketService {
     this.login(loginData);
   }
 
-  getSceneFeed(roomId: number = 0, page: number = 0, size: number = 100) {
+  getSceneFeed(roomId: number = 0, page: number = 0, size: number = 10) {
+    console.log(`获取场景推文，房间ID: ${roomId}, 页码: ${page}, 每页数量: ${size}`);
     this.send(Commands.GET_SCENE_FEED, { roomId , page, size });
   }
 
@@ -794,9 +795,26 @@ class WebSocketService {
     if (response.code === 0) {
       console.log('Login successful');
       this.isLoggedIn = true;
-      const loginData = response.data as LoginResponseData;
+      const loginData = response.data as any; // 使用any类型以访问可能存在的address字段
       localStorage.setItem('token', loginData.token);
       localStorage.setItem('playerId', loginData.player.playerId);
+      
+      // 更新用户信息中的地址
+      // 根据实际响应，address可能在data顶层
+      if (loginData.address) {
+        const storedUserInfo = localStorage.getItem('userInfo');
+        if (storedUserInfo) {
+          try {
+            const userInfo = JSON.parse(storedUserInfo);
+            userInfo.location = loginData.address;
+            localStorage.setItem('userInfo', JSON.stringify(userInfo));
+            console.log('已更新用户登录地址:', loginData.address);
+          } catch (error) {
+            console.error('更新用户地址信息失败:', error);
+          }
+        }
+      }
+      
       this.processPendingRequests();
     } else {
       console.error('Login failed:', response.message);
